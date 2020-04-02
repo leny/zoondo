@@ -1,0 +1,115 @@
+{
+  "slug": "europa-warus",
+  "edition": "europa",
+  "name": "Warus",
+  "description": "…",
+  "fighters": [
+    {
+      "slug": "harold-de-jarl",
+      "name": "Harold de Jarl",
+      "type": "CHIEF",
+      "corners": [4, 3, 2, 2],
+      "value": 20,
+      "moves": [
+        [[-1, 0]],
+        [[-1, 1]],
+        [[0, 1]],
+        [[1, 1]],
+        [[0, 1]],
+        [[1, -1]],
+        [[0, -1]],
+        [[-1, -1]]
+      ]
+    },
+    {
+      "slug": "jorund",
+      "name": "Jorund",
+      "type": "HERO",
+      "corners": [6, 6, 1, 1],
+      "value": 22,
+      "moves": [[[-1, 0]], [[0, 1]], [[1, 0]], [[0, -1]]]
+    },
+    {
+      "slug": "mourse",
+      "name": "Mourse",
+      "type": "MONSTER",
+      "variants": [{"corners": [3, 4, 2, 1]}, {"corners": [4, 3, 1, 2]}],
+      "value": 17,
+      "moves": [
+        [[-1, 0]],
+        [[-1, -1]],
+        [[0, -1], [0, -2]],
+        [[1, 1]],
+        [[1, 0]],
+        [[0, -1]]
+      ]
+    },
+    {
+      "slug": "berserkorse",
+      "name": "Berserkorse",
+      "type": "ELITE",
+      "variants": [{"corners": [2, 3, 1, "*"]}, {"corners": [3, 2, "*", 1]}],
+      "power": "…",
+      "value": 10,
+      "moves": [[[-1, 0]], [[-1, -1]], [[0, 1]], [[1, 1]], [[1, 0]]]
+    },
+    {
+      "slug": "korse",
+      "name": "Korse",
+      "type": "SOLDIER",
+      "variants": [{"corners": [2, 1, 0, 1]}, {"corners": [1, 2, 1, 0]}],
+      "value": 8,
+      "moves": [[[-1, 0]], [[0, 1]], [[1, 0]], [[0, -1]]]
+    },
+    {
+      "slug": "draknar",
+      "name": "Draknar",
+      "type": "EMBLEM",
+      "corners": [3, 2, 0, 1],
+      "value": 12,
+      "moves": []
+    }
+  ],
+  "trumps": [
+    {
+      "slug": "hache-virevoltante",
+      "name": "Hache virevoltante",
+      "type": "SHOOTING",
+      "usableBy": ["SOLDIER"],
+      "usage": "UNLIMITED",
+      "corners": [3, 2, "X", 0],
+      "target": [[[0, 1, true]]],
+      "value": 1
+    },
+    {
+      "slug": "fleche-petard",
+      "name": "Flèche pétard",
+      "type": "SHOOTING",
+      "usableBy": ["SOLDIER"],
+      "usage": "UNLIMITED",
+      "corners": [3, 4, 0, "X"],
+      "target": [[[0, 2, true]]],
+      "value": 2
+    },
+    {
+      "slug": "conque-de-charge",
+      "name": "Conque de charge",
+      "type": "TACTICAL",
+      "usage": "ONCE"
+    }
+  ],
+  "composition": [
+    "harold-de-jarl",
+    "jorund",
+    "mourse:0",
+    "mourse:1",
+    "berserkorse:0",
+    "berserkorse:1",
+    "berserkorse:1",
+    "kassin:0",
+    "kassin:0",
+    "kassin:1",
+    "kassin:1",
+    "darknar"
+  ]
+}
