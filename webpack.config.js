@@ -36,9 +36,9 @@ module.exports = ({env, watch = false}) => {
                 {
                     loader: "file-loader",
                     options: {
-                        name: `assets/[${
-                            env.includes("dev") ? "name" : "hash"
-                        }].[ext]`,
+                        name: `assets/${
+                            env.includes("dev") ? "[path][name]" : "[hash]"
+                        }.[ext]`,
                     },
                 },
                 {
