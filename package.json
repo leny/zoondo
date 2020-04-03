@@ -71,7 +71,6 @@
     "core-js": "^3.6.4",
     "emotion-box-sizing-reset": "^0.2.0",
     "emotion-meyer-reset": "^0.2.0",
-    "koutla-swiss": "^0.11.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   }
