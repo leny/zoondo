@@ -7,10 +7,17 @@
  */
 
 import React from "react";
-import {Global, css} from "@emotion/core";
+import {Global} from "@emotion/core";
+import {percent} from "@pwops/core";
+import {css} from "@pwops/emotion-css";
 import boxSizingReset from "emotion-box-sizing-reset";
 import meyerReset from "emotion-meyer-reset";
-import {percent, size} from "koutla-swiss";
+
+import {
+    BCG_COLOR,
+    TEXT_COLOR,
+    SOURCE_SANS_PRO_STACK,
+} from "../../core/constants";
 
 const StylesGlobal = () => (
     <>
@@ -19,15 +26,20 @@ const StylesGlobal = () => (
         <Global
             styles={css({
                 html: {
-                    ...size(percent(100)),
-                    background: "black",
-                    color: "white",
+                    size: percent(100),
+                    background: BCG_COLOR,
+                    font: [
+                        "normal",
+                        `${percent(62.5)}/1.5`,
+                        SOURCE_SANS_PRO_STACK,
+                    ],
+                    color: TEXT_COLOR,
                 },
                 body: {
-                    ...size(percent(100)),
+                    size: percent(100),
                 },
                 "#app": {
-                    ...size(percent(100)),
+                    size: percent(100),
                 },
             })}
         />

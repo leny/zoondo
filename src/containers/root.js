@@ -8,6 +8,7 @@
 
 import React from "react";
 import StylesGlobal from "../components/styles/global";
+import "@pwops/mixins";
 
 import Board from "../components/board/board";
 import BoardCard from "../components/board/card";
