@@ -3,7 +3,12 @@
   "version": "0.0.1",
   "private": true,
   "description": "Implementing an old boardgame in web.",
-  "scripts": {},
+  "scripts": {
+    "build": "npm run build:dev",
+    "build:dev": "npx webpack --env.env=dev --progress --profile --colors",
+    "build:prod": "npx webpack --env.env=prod --progress --profile --colors",
+    "work": "npx cross-env NODE_OPTIONS='--max-old-space-size=8192' npx webpack-dev-server --env.env=dev --env.watch --progress --hot"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/leny/zoondo.git"
@@ -16,15 +21,30 @@
   },
   "homepage": "https://github.com/leny/zoondo#readme",
   "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "@babel/preset-react": "^7.9.4",
     "@becode/eslint-config": "^0.9.0",
     "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.1.0",
+    "cache-loader": "^4.1.0",
+    "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-unicorn": "^18.0.1",
+    "file-loader": "^6.0.0",
+    "html-webpack-plugin": "^4.0.4",
     "husky": "^4.2.3",
+    "imagemin-gifsicle": "^7.0.0",
+    "imagemin-mozjpeg": "^8.0.0",
+    "imagemin-pngquant": "^8.0.0",
+    "img-loader": "^3.0.1",
     "lint-staged": "^10.1.1",
-    "prettier": "^2.0.2"
+    "prettier": "^2.0.2",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
   },
   "lint-staged": {
     "*.js": [
