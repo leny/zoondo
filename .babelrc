@@ -8,9 +8,10 @@
             "targets": "> 0.25%, not dead"
         }
     ],
-    "@babel/preset-react"
+    "@babel/preset-react",
+    "@emotion/babel-preset-css-prop"
   ],
-  "plugins": [],
+  "plugins": ["emotion"],
   "compact": false,
   "comments": false
 }
