@@ -6,4 +6,9 @@
  * started at 03/04/2020
  */
 
-console.log("Hello, Zoondo!");
+import React from "react";
+import ReactDOM from "react-dom";
+
+import RootContainer from "./containers/root";
+
+ReactDOM.render(<RootContainer />, document.querySelector("#app"));
