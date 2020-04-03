@@ -8,6 +8,15 @@
 
 import React from "react";
 
-const RootContainer = () => <div>{"Hello, world!"}</div>;
+import BoardCard from "../components/board/card";
+import boarixCoat from "../assets/tribes/boarix/coat.png";
+import warusCoat from "../assets/tribes/warus/coat.png";
+
+const RootContainer = () => (
+    <div>
+        <BoardCard isOwn coat={boarixCoat} />
+        <BoardCard coat={warusCoat} />
+    </div>
+);
 
 export default RootContainer;
