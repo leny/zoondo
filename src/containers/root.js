@@ -11,8 +11,6 @@ import StylesGlobal from "../components/styles/global";
 
 import Board from "../components/board/board";
 import BoardCard from "../components/board/card";
-import boarixCoat from "../assets/tribes/boarix/coat.png";
-import warusCoat from "../assets/tribes/warus/coat.png";
 
 const RootContainer = () => (
     <div>
@@ -20,8 +18,21 @@ const RootContainer = () => (
 
         <Board
             cards={[
-                {x: 0, y: 0, card: <BoardCard isOwn coat={boarixCoat} />},
-                {x: 5, y: 5, card: <BoardCard coat={warusCoat} />},
+                {
+                    x: 0,
+                    y: 0,
+                    card: (
+                        <BoardCard
+                            isOwn
+                            coat={"/assets/tribes/boarix/coat.png"}
+                        />
+                    ),
+                },
+                {
+                    x: 5,
+                    y: 5,
+                    card: <BoardCard coat={"/assets/tribes/warus/coat.png"} />,
+                },
             ]}
         />
     </div>

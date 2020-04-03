@@ -12,6 +12,9 @@
 const webpack = require("webpack");
 const {resolve, join} = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+const ImageminWebpackPlugin = require("imagemin-webpack-plugin").default;
+const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 
 const isTruthy = m => !!m;
 
@@ -81,6 +84,7 @@ module.exports = ({env, watch = false}) => {
     // ----- Plugins
 
     const plugins = [
+        new CleanWebpackPlugin(),
         new webpack.EnvironmentPlugin({
             ZOONDO_ENV: env.includes("dev") ? "dev" : env,
             NODE_ENV: env !== "prod" ? "development" : "production",
@@ -91,6 +95,13 @@ module.exports = ({env, watch = false}) => {
             template: resolve(__dirname, "./src/index.html"),
             path: "../",
         }),
+        new CopyWebpackPlugin([
+            {
+                from: "assets/tribes",
+                to: "assets/tribes",
+            },
+        ]),
+        new ImageminWebpackPlugin({test: /\.(jpe?g|png|gif)$/i}),
     ];
 
     // ----- Optimization (staging & prod)
