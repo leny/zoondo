@@ -21,17 +21,12 @@ const RootContainer = () => (
                 {
                     x: 0,
                     y: 0,
-                    card: (
-                        <BoardCard
-                            isOwn
-                            coat={"/assets/tribes/boarix/coat.png"}
-                        />
-                    ),
+                    card: <BoardCard isOwn tribe={"boarix"} />,
                 },
                 {
                     x: 5,
                     y: 5,
-                    card: <BoardCard coat={"/assets/tribes/warus/coat.png"} />,
+                    card: <BoardCard tribe={"warus"} />,
                 },
             ]}
         />

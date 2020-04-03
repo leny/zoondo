@@ -32,15 +32,19 @@ const styles = {
     },
 };
 
-const BoardCard = ({coat, isOwn = false}) => (
+const BoardCard = ({tribe, isOwn = false}) => (
     <div css={styles.card}>
-        <img css={styles.coat} src={coat} alt={"Blason de la tribu"} />
+        <img
+            css={styles.coat}
+            src={`/assets/tribes/${tribe}/coat.png`}
+            alt={"Blason de la tribu"}
+        />
         <img css={styles.decoration} src={isOwn ? cardBack : cardBackAlt} />
     </div>
 );
 
 BoardCard.propTypes = {
-    coat: PropTypes.string.isRequired,
+    tribe: PropTypes.string.isRequired,
     isOwn: PropTypes.bool,
 };
 
