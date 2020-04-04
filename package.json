@@ -65,9 +65,10 @@
   },
   "dependencies": {
     "@emotion/core": "^10.0.28",
-    "@pwops/core": "^0.1.5",
-    "@pwops/emotion-css": "^0.1.5",
-    "@pwops/mixins": "^0.1.5",
+    "@pwops/core": "^0.2.0",
+    "@pwops/emotion-css": "^0.2.0",
+    "@pwops/mixins": "^0.2.0",
+    "@pwops/react-hooks": "^0.2.0",
     "core-js": "^3.6.4",
     "emotion-box-sizing-reset": "^0.2.0",
     "emotion-meyer-reset": "^0.2.0",

@@ -9,7 +9,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {px} from "@pwops/core";
-import {usePwops} from "../../core/hooks/use-pwops";
+import {usePwops} from "@pwops/react-hooks";
 
 import {BORDER_COLOR} from "../../core/constants";
 
