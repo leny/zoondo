@@ -95,7 +95,8 @@
       "slug": "conque-de-charge",
       "name": "Conque de charge",
       "type": "TACTICAL",
-      "usage": "ONCE"
+      "usage": "ONCE",
+      "value": 3
     }
   ],
   "composition": [
