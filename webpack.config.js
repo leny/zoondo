@@ -32,6 +32,8 @@ module.exports = ({env, watch = false}) => {
             assets: "src/assets",
             core: "src/core",
             components: "src/components",
+            containers: "src/containers",
+            types: "src/core/types",
         }).map(([key, path]) => [key, resolve(__dirname, path)]),
     );
 
