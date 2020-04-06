@@ -9,6 +9,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import RootContainer from "./containers/root";
+import "@pwops/mixins";
+
+import RootContainer from "containers/root";
 
 ReactDOM.render(<RootContainer />, document.querySelector("#app"));

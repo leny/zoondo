@@ -7,31 +7,15 @@
  */
 
 import React from "react";
-import StylesGlobal from "../components/styles/global";
-import "@pwops/mixins";
 
-import Board from "../components/board/board";
-import BoardCard from "../components/board/card";
+import StylesGlobal from "components/styles/global";
+import Game from "containers/structure/game";
 
 const RootContainer = () => (
-    <div>
+    <>
         <StylesGlobal />
-
-        <Board
-            cards={[
-                {
-                    x: 0,
-                    y: 0,
-                    card: <BoardCard isOwn tribe={"boarix"} />,
-                },
-                {
-                    x: 5,
-                    y: 5,
-                    card: <BoardCard tribe={"warus"} />,
-                },
-            ]}
-        />
-    </div>
+        <Game />
+    </>
 );
 
 export default RootContainer;
