@@ -27,7 +27,13 @@ module.exports = ({env, watch = false}) => {
 
     // ----- resolve alias
 
-    // TODO
+    const alias = Object.fromEntries(
+        Object.entries({
+            assets: "src/assets",
+            core: "src/core",
+            components: "src/components",
+        }).map(([key, path]) => [key, resolve(__dirname, path)]),
+    );
 
     // ----- loader rules
 
@@ -120,7 +126,7 @@ module.exports = ({env, watch = false}) => {
         module: {
             rules,
         },
-        // resolve: {alias},
+        resolve: {alias},
         node: {fs: "empty"},
         plugins,
         optimization,
