@@ -23,7 +23,7 @@ const BoardCard = ({tribe, isOwn = false}) => {
         },
         coat: {
             size: px(40),
-            absolute: [px(41), 0, 0, px(41)],
+            absolute: [px(47), 0, 0, px(41)],
             zIndex: 5,
         },
         decoration: {
