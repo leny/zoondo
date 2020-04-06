@@ -8,7 +8,7 @@
 
 import React from "react";
 import {Global} from "@emotion/core";
-import {percent} from "@pwops/core";
+import {percent, vw, vh, px} from "@pwops/core";
 import {css} from "@pwops/emotion-css";
 import boxSizingReset from "emotion-box-sizing-reset";
 import meyerReset from "emotion-meyer-reset";
@@ -26,7 +26,7 @@ const StylesGlobal = () => (
         <Global
             styles={css({
                 html: {
-                    size: percent(100),
+                    size: [vw(100), vh(100)],
                     background: BCG_COLOR,
                     font: [
                         "normal",
@@ -40,6 +40,7 @@ const StylesGlobal = () => (
                 },
                 "#app": {
                     size: percent(100),
+                    padding: [px(1), 0, 0],
                 },
             })}
         />
