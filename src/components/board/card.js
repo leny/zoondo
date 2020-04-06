@@ -12,8 +12,8 @@ import PropTypes from "prop-types";
 import {px} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
 
-import cardBack from "../../assets/game/card-back-board.png";
-import cardBackAlt from "../../assets/game/card-back-board-alt.png";
+import cardBack from "assets/game/card-back-board.png";
+import cardBackAlt from "assets/game/card-back-board-alt.png";
 
 const BoardCard = ({tribe, isOwn = false}) => {
     const styles = usePwops({
