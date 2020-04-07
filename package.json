@@ -54,6 +54,9 @@
     "webpack-dev-server": "^3.10.3"
   },
   "lint-staged": {
+    "*.json": [
+      "npx prettier --write"
+    ],
     "*.js": [
       "npx eslint --fix --cache"
     ]
