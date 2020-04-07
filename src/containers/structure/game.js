@@ -18,6 +18,7 @@ import Header from "components/header";
 import Board from "components/board/board";
 import BoardCard from "components/board/card";
 import CardInfos from "components/tools/card-infos";
+import Chat from "components/tools/chat";
 
 const Game = () => {
     const styles = usePwops({
@@ -26,14 +27,15 @@ const Game = () => {
             margin: [px(10), "auto", 0],
         },
         main: {
-            flexRow: ["space-between", "flex-start"],
+            flexRow: ["space-between", "stretch"],
         },
         board: {
             flex: "none",
         },
         tools: {
             flex: [1, 0, 0],
-            paddingTop: rem(2.1),
+            flexColumn: ["space-between", "stretch"],
+            padding: [rem(2.1), 0],
             marginLeft: rem(2),
         },
     });
@@ -71,6 +73,8 @@ const Game = () => {
                         slug={"cloboulon"}
                         data={fighters.cloboulon}
                     />
+
+                    <Chat />
                 </div>
             </main>
         </div>

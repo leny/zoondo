@@ -14,12 +14,14 @@ export const PlayerShape = PropTypes.shape({
     tribe: PropTypes.string.isRequired,
 });
 
+export const Corners = PropTypes.arrayOf(
+    PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+);
+
 export const Moves = PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.array));
 
 export const FighterVariant = PropTypes.shape({
-    corners: PropTypes.arrayOf(
-        PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    ),
+    corners: Corners,
     moves: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.array)),
 });
 
@@ -27,9 +29,7 @@ export const FighterShape = PropTypes.shape({
     name: PropTypes.string.isRequired,
     type: PropTypes.oneOf(FIGHTER_TYPES).isRequired,
     variants: PropTypes.arrayOf(FighterVariant),
-    corners: PropTypes.arrayOf(
-        PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    ),
+    corners: Corners,
     power: PropTypes.string,
     value: PropTypes.number.isRequired,
     moves: Moves,
