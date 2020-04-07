@@ -3,40 +3,58 @@
   "edition": "europa",
   "name": "Rhinogoths",
   "description": "…",
-  "fighters": [
-    {
-      "slug": "goolgoth-1",
+  "fighters": {
+    "goolgoth-1": {
       "name": "Goolgoth I",
       "type": "CHIEF",
       "corners": [5, 4, 2, 3],
       "value": 24,
       "moves": [
-        [[-1, 1]], [ [0, 1], [0, 2] ], [[1, 1]], [[1, -1]], [[-1, -1]]
+        [[-1, 1]],
+        [
+          [0, 1],
+          [0, 2]
+        ],
+        [[1, 1]],
+        [[1, -1]],
+        [[-1, -1]]
       ]
     },
-    {
-      "slug": "oto-von-rhino",
+    "oto-von-rhino": {
       "name": "Oto von Rhino",
       "type": "HERO",
       "corners": [5, 3, 0, 3],
       "value": 16,
       "moves": [
-        [ [0, 1], [0, 2] ], [[1, -1]], [[-1, -1]]
+        [
+          [0, 1],
+          [0, 2]
+        ],
+        [[1, -1]],
+        [[-1, -1]]
       ]
     },
-    {
-      "slug": "bigoth",
+    "bigoth": {
       "name": "Bigoth",
       "type": "PRIEST",
       "corners": [2, 6, "*", 0],
       "power": "…",
       "value": 15,
       "moves": [
-        [ [-1, 1], [-2, 2] ], [ [1, 1], [2, 2] ], [[1, -1]], [[0, -1]], [[-1, -1]]
+        [
+          [-1, 1],
+          [-2, 2]
+        ],
+        [
+          [1, 1],
+          [2, 2]
+        ],
+        [[1, -1]],
+        [[0, -1]],
+        [[-1, -1]]
       ]
     },
-    {
-      "slug": "trice",
+    "trice": {
       "name": "Trice",
       "type": "MONSTER",
       "corners": [8, 4, 0, "*"],
@@ -44,8 +62,7 @@
       "value": 15,
       "moves": [[[-1, 1]], [[0, 1]], [[1, 1]]]
     },
-    {
-      "slug": "ratops",
+    "ratops": {
       "name": "Ratops",
       "type": "MONSTER",
       "corners": [4, 8, "*", 0],
@@ -53,26 +70,21 @@
       "value": 15,
       "moves": [[[-1, 1]], [[0, 1]], [[1, 1]]]
     },
-    {
-      "slug": "rhinogore",
+    "rhinogore": {
       "name": "Rhinogore",
       "type": "ELITE",
       "variants": [{"corners": [5, 4, 1, 2]}, {"corners": [4, 5, 2, 1]}],
       "value": 20,
-      "moves": [
-        [[-1, 0]], [[-1, 1]], [[0, 1]], [[1, 1]], [[1, 0]], [[0, -1]]
-      ]
+      "moves": [[[-1, 0]], [[-1, 1]], [[0, 1]], [[1, 1]], [[1, 0]], [[0, -1]]]
     },
-    {
-      "slug": "rhino",
+    "rhino": {
       "name": "Rhino",
       "type": "SOLDIER",
       "variants": [{"corners": [3, 2, 0, 1]}, {"corners": [2, 3, 1, 0]}],
       "value": 8,
       "moves": [[[-1, 0]], [[0, 1]], [[1, 0]]]
     },
-    {
-      "slug": "ouistiti",
+    "ouistiti": {
       "name": "Ouistiti",
       "type": "EMBLEM",
       "corners": [0, 0, 0, "*"],
@@ -80,30 +92,27 @@
       "value": 0,
       "moves": []
     }
-  ],
-  "trumps": [
-    {
-      "slug": "furie",
+  },
+  "trumps": {
+    "furie": {
       "name": "Furie",
       "type": "COMBAT",
       "usage": "ONCE",
       "value": 1
     },
-    {
-      "slug": "binome-de-choc",
+    "binome-de-choc": {
       "name": "Binôme de choc",
       "type": "TACTICAL",
       "usage": "ONCE",
       "value": 2
     },
-    {
-      "slug": "poudre-descampette",
+    "poudre-descampette": {
       "name": "Poudre d'escampette",
       "type": "TACTICAL",
       "usage": "ONCE",
       "value": 3
     }
-  ],
+  },
   "composition": [
     "goolgoth-1",
     "oto-von-rhino",

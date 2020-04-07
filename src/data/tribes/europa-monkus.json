@@ -3,30 +3,45 @@
   "edition": "europa",
   "name": "Monkus",
   "description": "…",
-  "fighters": [
-    {
-      "slug": "king-louis",
+  "fighters": {
+    "king-louis": {
       "name": "King Louis",
       "type": "CHIEF",
       "corners": [5, 5, 2, "*"],
       "power": "…",
       "value": 22,
       "moves": [
-        [[-1, 0]], [ [-1, 1], [-2, 2] ], [[0, 1]], [ [1, 1], [2, 2] ], [[1,0]], [[0, -1]]
+        [[-1, 0]],
+        [
+          [-1, 1],
+          [-2, 2]
+        ],
+        [[0, 1]],
+        [
+          [1, 1],
+          [2, 2]
+        ],
+        [[1, 0]],
+        [[0, -1]]
       ]
     },
-    {
-      "slug": "titus",
+    "titus": {
       "name": "Titus",
       "type": "HERO",
       "corners": [4, 4, 2, 1],
       "value": 21,
       "moves": [
-        [[-1, 0]], [[-2, 1, true]], [ [0, 1], [0, 2] ], [[1, 0]], [[2, 1, true]]
+        [[-1, 0]],
+        [[-2, 1, true]],
+        [
+          [0, 1],
+          [0, 2]
+        ],
+        [[1, 0]],
+        [[2, 1, true]]
       ]
     },
-    {
-      "slug": "kombo-bongo",
+    "kombo-bongo": {
       "name": "Kombo Bongo",
       "type": "PRIEST",
       "corners": [3, 1, "*", "*"],
@@ -34,59 +49,66 @@
       "value": 10,
       "moves": [[[-1, 0]], [[-1, 1]], [[1, 1]], [[1, 0]], [[1, -1]], [[-1, -1]]]
     },
-    {
-      "slug": "king",
+    "king": {
       "name": "King",
       "type": "MONSTER",
       "corners": [6, 3, 0, 2],
       "value": 15,
       "moves": [[[-1, 1]], [[0, 2, true]], [[1, 1]]]
     },
-    {
-      "slug": "kong",
+    "kong": {
       "name": "Kong",
       "type": "MONSTER",
       "corners": [3, 6, 2, 0],
       "value": 15,
       "moves": [[[-1, 1]], [[0, 2, true]], [[1, 1]]]
     },
-    {
-      "slug": "coco-bang",
+    "coco-bang": {
       "name": "Coco Bang",
       "type": "ELITE",
       "variants": [{"corners": [3, 2, 1, 2]}, {"corners": [2, 3, 2, 1]}],
       "value": 12,
       "moves": [[[-1, 0]], [[0, 1]], [[1, 0]], [[0, -1]]]
     },
-    {
-      "slug": "bouga",
+    "bouga": {
       "name": "Bouga",
       "type": "SOLDIER",
       "variants": [{"corners": [2, 1, 0, 1]}, {"corners": [1, 2, 1, 0]}],
       "value": 9,
       "moves": [
-        [[-1, 0]], [ [0, 1], [0, 2] ], [[1, 0]], [[0, -1]]
+        [[-1, 0]],
+        [
+          [0, 1],
+          [0, 2]
+        ],
+        [[1, 0]],
+        [[0, -1]]
       ]
     },
-    {
-      "slug": "virzil",
+    "virzil": {
       "name": "Virzil",
       "type": "SOLDIER",
       "corners": [3, 3, 0, 0],
       "value": 9,
       "moves": [[[-1, 1]], [[0, 2, true]], [[1, 1]]]
     },
-    {
-      "slug": "queen-mary",
+    "queen-mary": {
       "name": "Queen Mary",
       "type": "EMBLEM",
       "corners": [2, 2, 0, 0],
       "value": 16,
       "moves": [
-        [ [-1, 0], [-2, 0] ], [ [1, 0], [2, 0] ]
+        [
+          [-1, 0],
+          [-2, 0]
+        ],
+        [
+          [1, 0],
+          [2, 0]
+        ]
       ]
     }
-  ],
+  },
   "trumps": [
     {
       "slug": "tortue",

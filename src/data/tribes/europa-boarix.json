@@ -3,31 +3,54 @@
   "edition": "europa",
   "name": "Boarix",
   "description": "…",
-  "fighters": [
-    {
-      "slug": "cloboulon",
+  "fighters": {
+    "cloboulon": {
       "name": "Cloboulon",
       "type": "CHIEF",
       "corners": [4, 5, "*", 2],
       "power": "…",
       "value": 20,
       "moves": [
-        [[-1, 0]], [[-1, 1]], [[0, 1]], [[1, 1]], [[1, 0]], [[1, -1]], [[0, -1]], [[-1, -1]]
+        [[-1, 0]],
+        [[-1, 1]],
+        [[0, 1]],
+        [[1, 1]],
+        [[1, 0]],
+        [[1, -1]],
+        [[0, -1]],
+        [[-1, -1]]
       ]
     },
-    {
-      "slug": "gold-hure",
+    "gold-hure": {
       "name": "Gold-Hure",
       "type": "HERO",
       "corners": [4, 4, 2, "*"],
       "power": "…",
       "value": 24,
       "moves": [
-        [[-1, 0]], [[-1, 1], [-2, 2]], [[0, 1], [0, 2]], [[1, 1], [2, 2]], [[1, 0]], [[1, -1]], [[0, -1], [0, -2]], [[-1, -1]]
+        [[-1, 0]],
+        [
+          [-1, 1],
+          [-2, 2]
+        ],
+        [
+          [0, 1],
+          [0, 2]
+        ],
+        [
+          [1, 1],
+          [2, 2]
+        ],
+        [[1, 0]],
+        [[1, -1]],
+        [
+          [0, -1],
+          [0, -2]
+        ],
+        [[-1, -1]]
       ]
     },
-    {
-      "slug": "bouclefeuille",
+    "bouclefeuille": {
       "name": "Bouclefeuille",
       "type": "PRIEST",
       "corners": [2, 0, 0, "*"],
@@ -35,60 +58,62 @@
       "value": 2,
       "moves": [[[-1, 0]], [[1, 0]]]
     },
-    {
-      "slug": "grognard",
+    "grognard": {
       "name": "Grognard",
       "type": "ELITE",
       "variants": [{"corners": [3, 4, 2, 1]}, {"corners": [4, 3, 1, 2]}],
       "value": 16,
       "moves": [
-        [[-1, 0]], [[-1, 1], [-2, 2]], [[0, 1]], [[1, 1], [2, 2]], [[1, 0]]
+        [[-1, 0]],
+        [
+          [-1, 1],
+          [-2, 2]
+        ],
+        [[0, 1]],
+        [
+          [1, 1],
+          [2, 2]
+        ],
+        [[1, 0]]
       ]
     },
-    {
-      "slug": "kassin",
+    "kassin": {
       "name": "Kassin",
       "type": "SOLDIER",
-      "variants": [{"corners": [1,2,0,0]},{"corners":[2,1,0,0]}],
+      "variants": [{"corners": [1, 2, 0, 0]}, {"corners": [2, 1, 0, 0]}],
       "value": 7,
-      "moves": [
-        [[-1,0]],[[0,1]],[[1,0]],[[0,-1]]
-      ]
+      "moves": [[[-1, 0]], [[0, 1]], [[1, 0]], [[0, -1]]]
     },
-    {
-      "slug": "sacrechene",
+    "sacrechene": {
       "name": "Sacrechêne",
       "type": "EMBLEM",
-      "corners": [4,2,0,0],
+      "corners": [4, 2, 0, 0],
       "value": 12,
       "moves": []
     }
-  ],
-  "trumps": [
-    {
-      "slug": "pluie-de-menhirs",
+  },
+  "trumps": {
+    "pluie-de-menhirs": {
       "name": "Pluie de menhirs",
       "type": "SHOOTING",
       "usage": "ONCE",
-      "corners": [6,4,0,2],
+      "corners": [6, 4, 0, 2],
       "value": 1
     },
-    {
-      "slug": "mur-darbres",
+    "mur-darbres": {
       "name": "Mur d'arbres",
       "type": "PROTECTION",
       "usage": "ONCE",
       "value": 2
     },
-    {
-      "slug": "cage-de-racines",
+    "cage-de-racines": {
       "name": "Cage de racines",
       "type": "PROTECTION",
       "usableBy": ["PRIEST"],
       "usage": "ONCE",
       "value": 3
     }
-  ],
+  },
   "composition": [
     "cloboulon",
     "gold-hure",
@@ -96,6 +121,10 @@
     "grognard:0",
     "grognard:0",
     "grognard:1",
-    "grognard:1","kassin:0","kassin:0","kassin:1","kassin:1"
+    "grognard:1",
+    "kassin:0",
+    "kassin:0",
+    "kassin:1",
+    "kassin:1"
   ]
 }
