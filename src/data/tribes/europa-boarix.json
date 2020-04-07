@@ -8,7 +8,7 @@
       "name": "Cloboulon",
       "type": "CHIEF",
       "corners": [4, 5, "*", 2],
-      "power": "…",
+      "power": "Le combat se solde par une égalité. Si tu viens de déplacer Cloboulon, tu déplaces un Grognard.",
       "value": 20,
       "moves": [
         [[-1, 0]],
@@ -25,7 +25,7 @@
       "name": "Gold-Hure",
       "type": "HERO",
       "corners": [4, 4, 2, "*"],
-      "power": "…",
+      "power": "Le combat se solde par une égalité. Si tu viens de déplacer Gold-Hure, tu le déplaces à nouveau.",
       "value": 24,
       "moves": [
         [[-1, 0]],
@@ -54,7 +54,7 @@
       "name": "Bouclefeuille",
       "type": "PRIEST",
       "corners": [2, 0, 0, "*"],
-      "power": "…",
+      "power": "Le combat se solde par une égalité. Tu déplaces Bouclefeuille dans une case libre du champs de bataille.",
       "value": 2,
       "moves": [[[-1, 0]], [[1, 0]]]
     },
