@@ -46,7 +46,7 @@
     "imagemin-pngquant": "^8.0.0",
     "imagemin-webpack-plugin": "^2.4.2",
     "img-loader": "^3.0.1",
-    "lint-staged": "^10.1.1",
+    "lint-staged": "^10.1.2",
     "prettier": "^2.0.4",
     "prop-types": "^15.7.2",
     "webpack": "^4.42.1",
