@@ -18,3 +18,17 @@ export const TEXT_COLOR = "white";
 export const BORDER_COLOR = "#666";
 
 export const SOURCE_SANS_PRO_STACK = `"Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif`;
+
+export const FIGHTER_TYPES = [
+    "CHIEF",
+    "HERO",
+    "PRIEST",
+    "MONSTER",
+    "ELITE",
+    "SOLDIER",
+    "EMBLEM",
+];
+export const CARD_TYPES = {
+    FIGHTER: "fighters",
+    TRUMP: "trumps",
+};
