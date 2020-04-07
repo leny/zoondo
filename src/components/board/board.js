@@ -19,7 +19,7 @@ const COL_SIZE = 6;
 const CASE_SIZE = 120;
 const GAP_SIZE = 4;
 
-const Board = ({cards = [], opponent, player}) => {
+const Board = ({className, cards = [], opponent, player}) => {
     const boardSize = useMemo(
         () => [
             CASE_SIZE * COL_SIZE + (COL_SIZE - 1) * GAP_SIZE,
@@ -53,7 +53,7 @@ const Board = ({cards = [], opponent, player}) => {
     });
 
     return (
-        <div css={styles.container}>
+        <div css={styles.container} className={className}>
             <div css={styles.player}>
                 <span>{"Adversaire :"}</span>
                 {NBSP}
