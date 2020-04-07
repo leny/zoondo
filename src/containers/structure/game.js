@@ -8,18 +8,33 @@
 
 import React from "react";
 
-import {px} from "@pwops/core";
+import {px, rem} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
+
+import {CARD_TYPES} from "core/constants";
+import {fighters} from "../../data/tribes/europa-boarix.json";
 
 import Header from "components/header";
 import Board from "components/board/board";
 import BoardCard from "components/board/card";
+import CardInfos from "components/tools/card-infos";
 
 const Game = () => {
     const styles = usePwops({
         container: {
             width: px(1200),
             margin: [px(10), "auto", 0],
+        },
+        main: {
+            flexRow: ["space-between", "flex-start"],
+        },
+        board: {
+            flex: "none",
+        },
+        tools: {
+            flex: [1, 0, 0],
+            paddingTop: rem(2.1),
+            marginLeft: rem(2),
         },
     });
 
@@ -31,8 +46,9 @@ const Game = () => {
                 opponent={{name: "Tibus", tribe: "Warus", score: 0}}
             />
 
-            <main>
+            <main css={styles.main}>
                 <Board
+                    css={styles.board}
                     player={{name: "Leny", tribe: "Boarix", score: 0}}
                     opponent={{name: "Tibus", tribe: "Warus", score: 0}}
                     cards={[
@@ -48,6 +64,14 @@ const Game = () => {
                         },
                     ]}
                 />
+                <div css={styles.tools}>
+                    <CardInfos
+                        tribe={"boarix"}
+                        type={CARD_TYPES.FIGHTER}
+                        slug={"cloboulon"}
+                        data={fighters.cloboulon}
+                    />
+                </div>
             </main>
         </div>
     );
