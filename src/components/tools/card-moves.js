@@ -18,6 +18,7 @@ const CELL_GAP = 2;
 const GRID_SIZE = 5;
 
 const CardMoves = ({
+    className,
     moves,
     cellSize = CELL_SIZE,
     cellGap = CELL_GAP,
@@ -110,7 +111,15 @@ const CardMoves = ({
         ctx.fill();
     }, [moves, cellSize, cellGap, gridSize]);
 
-    return <canvas id={"grid"} ref={canvas} width={size} height={size} />;
+    return (
+        <canvas
+            className={className}
+            id={"grid"}
+            ref={canvas}
+            width={size}
+            height={size}
+        />
+    );
 };
 
 CardMoves.propTypes = {
