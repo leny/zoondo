@@ -9,8 +9,6 @@ assignees: leny
 
 Implémentation de la tribu **nom de la tribu**.
 
-## TODO
-
 - [ ] Assets
   - [ ] Blason
   - [ ] Zoons
