@@ -115,6 +115,7 @@
       "name": "Tortue",
       "type": "TACTICAL",
       "usage": "ONCE",
+      "text": "Déplace jusqu'à deux de tes Soldats, l'un après l'autre. Ils ajoutent un point à leurs scores de touche.",
       "value": 1
     },
     {
@@ -133,6 +134,7 @@
       "type": "SHOOTING",
       "usage": "UNLIMITED",
       "corners": [2, 4, 0, "X"],
+      "text": "Vise un Zoon ennemi situé dans ton camp.",
       "value": 3
     }
   ]

@@ -98,12 +98,14 @@
       "type": "SHOOTING",
       "usage": "ONCE",
       "corners": [6, 4, 0, 2],
+      "text": "Vise un Zoon ennemi situé dans ton camp.",
       "value": 1
     },
     "mur-darbres": {
       "name": "Mur d'arbres",
       "type": "PROTECTION",
       "usage": "ONCE",
+      "text": "Place le Mur d'Arbres sur une case libre du champ de bataille. Cette case devient un Obstacle jusqu'à la fin de la partie.",
       "value": 2
     },
     "cage-de-racines": {
@@ -111,6 +113,7 @@
       "type": "PROTECTION",
       "usableBy": ["PRIEST"],
       "usage": "ONCE",
+      "text": "Place la Cage de racines sur un Zoon ennemi situé dans ta zone de déploiement. Il devient un Obstacle sans déplacement jusqu'à la fin de la partie.",
       "value": 3
     }
   },
