@@ -18,6 +18,7 @@ import CardCorners from "components/tools/card-corners";
 import CardMoves from "components/tools/card-moves";
 
 const CardInfos = ({
+    className,
     tribe,
     // type,
     slug,
@@ -65,7 +66,7 @@ const CardInfos = ({
     if (data.power) {
         $details = (
             <div css={styles.details}>
-                <strong>{"Power:"}</strong>
+                <strong>{"Pouvoir :"}</strong>
                 {NBSP}
                 {data.power}
             </div>
@@ -73,7 +74,7 @@ const CardInfos = ({
     }
 
     return (
-        <div css={styles.container}>
+        <div css={styles.container} className={className}>
             <span css={styles.name}>
                 {"Carte active:"}
                 {NBSP}

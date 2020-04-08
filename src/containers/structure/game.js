@@ -18,6 +18,7 @@ import Header from "components/header";
 import Board from "components/board/board";
 import BoardCard from "components/board/card";
 import CardInfos from "components/tools/card-infos";
+import GameInfos from "components/tools/game-infos";
 import Chat from "components/tools/chat";
 
 const Game = () => {
@@ -38,6 +39,9 @@ const Game = () => {
             padding: [rem(2.1), 0],
             marginLeft: rem(2),
         },
+        cardInfos: {flex: "none"},
+        gameInfos: {flex: "none", margin: [rem(2), 0]},
+        chat: {flex: [1, 0, 0]},
     });
 
     return (
@@ -68,13 +72,20 @@ const Game = () => {
                 />
                 <div css={styles.tools}>
                     <CardInfos
+                        css={styles.cardInfos}
                         tribe={"boarix"}
                         type={CARD_TYPES.FIGHTER}
                         slug={"cloboulon"}
                         data={fighters.cloboulon}
                     />
 
-                    <Chat />
+                    <GameInfos
+                        css={styles.gameInfos}
+                        activePlayer={"Leny"}
+                        timer={30}
+                    />
+
+                    <Chat css={styles.chat} />
                 </div>
             </main>
         </div>

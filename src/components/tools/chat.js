@@ -13,7 +13,7 @@ import {BORDER_COLOR} from "core/constants";
 import {px, rem, percent, translateY} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
 
-const Chat = () => {
+const Chat = ({className}) => {
     const styles = usePwops({
         container: {
             relative: true,
@@ -32,7 +32,7 @@ const Chat = () => {
     });
 
     return (
-        <div css={styles.container}>
+        <div css={styles.container} className={className}>
             <span css={styles.name}>{"Chat"}</span>
             {"TODO"}
         </div>
