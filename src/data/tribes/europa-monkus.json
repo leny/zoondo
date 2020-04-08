@@ -2,13 +2,13 @@
   "slug": "europa-monkus",
   "edition": "europa",
   "name": "Monkus",
-  "description": "…",
+  "description": "Ces tribus ont largement exploité les vestiges archéologiques fourmillant sur leur territoire. Leurs membres ont développé des traditions fortement inspirées par l'antiquité. Les Monkus forment un peuple expansionniste. Leur découverte précoce d'un langage primitif et d'un alphabet rudimentaire a rapidement permis à ses élites intellextuelles de saisir certaines applications des objets retrouvés sur leurs sites archéologiques. Hélas, leur soif de connaissance va à l'encontre de leur tendance naturelle à la plaisanterie lourde et au jeu. Le manque de rigueur entraîné par leur humour bête et méchant fait échouer quasi systématiquement leurs tentatives de conquêtes. De plus, leurs incessantes blagues sont souvent vécues comme des provocations par les autres tribus qui leur vouent une haîne sans limite.",
   "fighters": {
     "king-louis": {
       "name": "King Louis",
       "type": "CHIEF",
       "corners": [5, 5, 2, "*"],
-      "power": "…",
+      "power": "Le combat se solde par une égalité. King Louis et le Zoon ennemi échangent leur position sur le champ de bataille.",
       "value": 22,
       "moves": [
         [[-1, 0]],
@@ -45,7 +45,7 @@
       "name": "Kombo Bongo",
       "type": "PRIEST",
       "corners": [3, 1, "*", "*"],
-      "power": "…",
+      "power": "Le combat se solde par une égalité. Kombo Bongo et Kin ou Kong (au choix) échangent leur position sur le champ de bataille. Si King et Kong ne sont plus sur le champ de bataille, Kombo Bongo conserve sa position.",
       "value": 10,
       "moves": [[[-1, 0]], [[-1, 1]], [[1, 1]], [[1, 0]], [[1, -1]], [[-1, -1]]]
     },
