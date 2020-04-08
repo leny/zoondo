@@ -31,6 +31,7 @@ module.exports = ({env, watch = false}) => {
         Object.entries({
             assets: "src/assets",
             core: "src/core",
+            utils: "src/core/utils",
             components: "src/components",
             containers: "src/containers",
             types: "src/core/types",
