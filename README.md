@@ -1,6 +1,6 @@
-# leny/zoondo-client
+# leny/zoondo
 
-> Implementing an old boardgame for the web (following a YouTube serie) - client code.
+> Implementing an old boardgame for the web (following a YouTube serie).
 
 * * *
 
