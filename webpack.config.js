@@ -15,6 +15,8 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ImageminWebpackPlugin = require("imagemin-webpack-plugin").default;
 const {CleanWebpackPlugin} = require("clean-webpack-plugin");
+const nodeExternals = require("webpack-node-externals");
+const NodemonPlugin = require("nodemon-webpack-plugin");
 
 const isTruthy = m => !!m;
 
@@ -38,7 +40,9 @@ module.exports = ({target, env, watch = false}) => {
                     containers: "src/client/containers",
                     types: "src/client/core/types",
                 },
-                server: {},
+                server: {
+                    core: "src/server/core",
+                },
             }[target],
         ).map(([key, path]) => [key, resolve(__dirname, path)]),
     );
@@ -139,6 +143,13 @@ module.exports = ({target, env, watch = false}) => {
             NODE_ENV: env !== "prod" ? "development" : "production",
             VERSION: pkgVars.version,
             BUILD_TIME: Date.now(),
+            ...{
+                client: {},
+                server: {
+                    APP_PORT: 8000,
+                    CLIENT_PATH: resolve(__dirname, "./bin/client"),
+                },
+            }[target],
         }),
         target === "client" &&
             new HtmlWebpackPlugin({
@@ -154,6 +165,9 @@ module.exports = ({target, env, watch = false}) => {
             ]),
         target === "client" &&
             new ImageminWebpackPlugin({test: /\.(jpe?g|png|gif)$/i}),
+        watch &&
+            target === "server" &&
+            new NodemonPlugin({nodeArgs: ["--inspect"]}),
     ].filter(isTruthy);
 
     // ----- Optimization (staging & prod)
@@ -163,6 +177,7 @@ module.exports = ({target, env, watch = false}) => {
     // -----
 
     return {
+        target: target === "client" ? "web" : "node",
         mode: env.includes("dev") ? "development" : "production",
         devtool: env.includes("dev")
             ? "cheap-module-eval-source-map"
@@ -176,6 +191,7 @@ module.exports = ({target, env, watch = false}) => {
             rules,
         },
         resolve: {alias},
+        externals: [target === "server" && nodeExternals()].filter(isTruthy),
         node: {
             client: {fs: "empty"},
             server: {},
@@ -197,16 +213,13 @@ module.exports = ({target, env, watch = false}) => {
             },
         }[target],
         watch: env.includes("dev") && watch,
-        devServer:
-            target === "client"
-                ? {
-                      compress: true,
-                      historyApiFallback: true,
-                      open: true,
-                      contentBase: join(__dirname, "bin"),
-                      watchContentBase: true,
-                      writeToDisk: true,
-                  }
-                : null,
+        devServer: {
+            compress: true,
+            historyApiFallback: true,
+            open: true,
+            contentBase: join(__dirname, "bin"),
+            watchContentBase: true,
+            writeToDisk: true,
+        },
     };
 };

@@ -5,6 +5,10 @@
   "description": "Implementing an old boardgame in web.",
   "scripts": {
     "start": "node ./bin/server/server.js",
+    "build:server": "npm run build:server:dev",
+    "build:server:dev": "npx webpack --env.env=dev --env.target=server --progress --profile --colors",
+    "build:server:prod": "npx webpack --env.env=prod --env.target=server --progress --profile --colors",
+    "work:server": "npx webpack --env.env=dev --env.target=server --env.watch --progress",
     "build:client": "npm run build:client:dev",
     "build:client:dev": "npx webpack --env.env=dev --env.target=client --progress --profile --colors",
     "build:client:prod": "npx webpack --env.env=prod --env.target=client --progress --profile --colors",
@@ -48,11 +52,13 @@
     "imagemin-webpack-plugin": "^2.4.2",
     "img-loader": "^3.0.1",
     "lint-staged": "^10.1.2",
+    "nodemon-webpack-plugin": "^4.3.1",
     "prettier": "^2.0.4",
     "prop-types": "^15.7.2",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3"
+    "webpack-dev-server": "^3.10.3",
+    "webpack-node-externals": "^1.7.2"
   },
   "lint-staged": {
     "*.json": [
