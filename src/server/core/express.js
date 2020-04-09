@@ -12,8 +12,6 @@ import express from "express";
 
 const app = express();
 
-console.log("static:", CLIENT_PATH);
-
 app.use("/", express.static(CLIENT_PATH));
 
 export const init = next =>
