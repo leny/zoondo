@@ -4,10 +4,10 @@
   "private": true,
   "description": "Implementing an old boardgame in web.",
   "scripts": {
-    "build": "npm run build:dev",
-    "build:dev": "npx webpack --env.env=dev --progress --profile --colors",
-    "build:prod": "npx webpack --env.env=prod --progress --profile --colors",
-    "work": "npx cross-env NODE_OPTIONS='--max-old-space-size=8192' npx webpack-dev-server --env.env=dev --env.watch --progress --hot"
+    "build:client": "npm run build:client:dev",
+    "build:client:dev": "npx webpack --env.env=dev --env.target=client --progress --profile --colors",
+    "build:client:prod": "npx webpack --env.env=prod --env.target=client --progress --profile --colors",
+    "work:client": "npx cross-env NODE_OPTIONS='--max-old-space-size=8192' npx webpack-dev-server --env.env=dev --env.target=client --env.watch --progress --hot"
   },
   "repository": {
     "type": "git",

@@ -18,7 +18,7 @@ const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 
 const isTruthy = m => !!m;
 
-module.exports = ({env, watch = false}) => {
+module.exports = ({target, env, watch = false}) => {
     // ----- config & vars extraction
 
     process.env.NODE_ENV = env.includes("dev") ? "development" : "production";
@@ -28,67 +28,107 @@ module.exports = ({env, watch = false}) => {
     // ----- resolve alias
 
     const alias = Object.fromEntries(
-        Object.entries({
-            assets: "src/assets",
-            core: "src/core",
-            utils: "src/core/utils",
-            components: "src/components",
-            containers: "src/containers",
-            types: "src/core/types",
-        }).map(([key, path]) => [key, resolve(__dirname, path)]),
+        Object.entries(
+            {
+                client: {
+                    assets: "src/client/assets",
+                    core: "src/client/core",
+                    utils: "src/client/core/utils",
+                    components: "src/client/components",
+                    containers: "src/client/containers",
+                    types: "src/client/core/types",
+                },
+                server: {},
+            }[target],
+        ).map(([key, path]) => [key, resolve(__dirname, path)]),
     );
 
     // ----- loader rules
 
-    const rules = [
-        // --- Images
-        {
-            test: /\.(png|jpg|gif)$/,
-            use: [
-                {
-                    loader: "file-loader",
-                    options: {
-                        name: `assets/${
-                            env.includes("dev") ? "[path][name]" : "[hash]"
-                        }.[ext]`,
-                    },
+    // --- Images
+    const imagesLoader = {
+        test: /\.(png|jpg|gif)$/,
+        use: [
+            {
+                loader: "file-loader",
+                options: {
+                    name: `assets/${
+                        env.includes("dev") ? "[path][name]" : "[hash]"
+                    }.[ext]`,
                 },
-                {
-                    loader: "img-loader",
-                    options: {
-                        plugins: [
-                            require("imagemin-gifsicle")({
-                                interlaced: false,
-                            }),
-                            require("imagemin-mozjpeg")({
-                                progressive: true,
-                                arithmetic: false,
-                            }),
-                            require("imagemin-pngquant")({
-                                floyd: 0.5,
-                                speed: 2,
-                            }),
-                        ],
-                    },
+            },
+            {
+                loader: "img-loader",
+                options: {
+                    plugins: [
+                        require("imagemin-gifsicle")({
+                            interlaced: false,
+                        }),
+                        require("imagemin-mozjpeg")({
+                            progressive: true,
+                            arithmetic: false,
+                        }),
+                        require("imagemin-pngquant")({
+                            floyd: 0.5,
+                            speed: 2,
+                        }),
+                    ],
                 },
-            ],
-        },
+            },
+        ],
+    };
 
-        // --- JS modules
-        {
-            test: /\.js$/,
-            exclude: [/node_modules/],
-            use: [
-                env.includes("dev") && "cache-loader",
-                {
-                    loader: "babel-loader",
-                    options: {
-                        cacheDirectory: env.includes("dev"),
-                    },
+    // --- JS modules
+    const jsLoader = {
+        test: /\.js$/,
+        exclude: [/node_modules/],
+        use: [
+            env.includes("dev") && "cache-loader",
+            {
+                loader: "babel-loader",
+                options: {
+                    cacheDirectory: env.includes("dev"),
+                    ...{
+                        client: {
+                            presets: [
+                                [
+                                    "@babel/preset-env",
+                                    {
+                                        useBuiltIns: "usage",
+                                        corejs: "3",
+                                        targets: "> 0.25%, not dead",
+                                    },
+                                ],
+                                "@babel/preset-react",
+                                "@emotion/babel-preset-css-prop",
+                            ],
+                            plugins: ["emotion"],
+                        },
+                        server: {
+                            presets: [
+                                [
+                                    "@babel/preset-env",
+                                    {
+                                        useBuiltIns: "usage",
+                                        corejs: "3",
+                                        targets: {
+                                            node: "12.13.0",
+                                        },
+                                    },
+                                ],
+                            ],
+                        },
+                    }[target],
+                    compact: false,
+                    comments: false,
                 },
-            ].filter(isTruthy),
-        },
-    ];
+            },
+        ].filter(isTruthy),
+    };
+
+    const rules = [target === "client" && imagesLoader, jsLoader].filter(
+        isTruthy,
+    );
 
     // ----- Plugins
 
@@ -100,18 +140,21 @@ module.exports = ({env, watch = false}) => {
             VERSION: pkgVars.version,
             BUILD_TIME: Date.now(),
         }),
-        new HtmlWebpackPlugin({
-            template: resolve(__dirname, "./src/index.html"),
-            path: "../",
-        }),
-        new CopyWebpackPlugin([
-            {
-                from: "assets/tribes",
-                to: "assets/tribes",
-            },
-        ]),
-        new ImageminWebpackPlugin({test: /\.(jpe?g|png|gif)$/i}),
-    ];
+        target === "client" &&
+            new HtmlWebpackPlugin({
+                template: resolve(__dirname, "./src/client/index.html"),
+                path: "../",
+            }),
+        target === "client" &&
+            new CopyWebpackPlugin([
+                {
+                    from: "assets/tribes",
+                    to: "assets/tribes",
+                },
+            ]),
+        target === "client" &&
+            new ImageminWebpackPlugin({test: /\.(jpe?g|png|gif)$/i}),
+    ].filter(isTruthy);
 
     // ----- Optimization (staging & prod)
 
@@ -124,31 +167,46 @@ module.exports = ({env, watch = false}) => {
         devtool: env.includes("dev")
             ? "cheap-module-eval-source-map"
             : "hidden-source-map",
-        context: resolve(__dirname, "./src"),
-        entry: ["./app.js"],
+        context: resolve(__dirname, `./src/${target}`),
+        entry: {
+            client: ["./app.js"],
+            server: ["./index.js"],
+        }[target],
         module: {
             rules,
         },
         resolve: {alias},
-        node: {fs: "empty"},
+        node: {
+            client: {fs: "empty"},
+            server: {},
+        }[target],
         plugins,
         optimization,
         performance: {hints: false},
         output: {
-            path: resolve(__dirname, "./bin"),
-            filename: env.includes("dev")
-                ? "js/bundle.js"
-                : "js/[chunkhash].js",
-            publicPath: "/",
-        },
+            client: {
+                path: resolve(__dirname, "./bin/client"),
+                filename: env.includes("dev")
+                    ? "js/bundle.js"
+                    : "js/[chunkhash].js",
+                publicPath: "/",
+            },
+            server: {
+                path: resolve(__dirname, "./bin/server"),
+                filename: "server.js",
+            },
+        }[target],
         watch: env.includes("dev") && watch,
-        devServer: {
-            compress: true,
-            historyApiFallback: true,
-            open: true,
-            contentBase: join(__dirname, "bin"),
-            watchContentBase: true,
-            writeToDisk: true,
-        },
+        devServer:
+            target === "client"
+                ? {
+                      compress: true,
+                      historyApiFallback: true,
+                      open: true,
+                      contentBase: join(__dirname, "bin"),
+                      watchContentBase: true,
+                      writeToDisk: true,
+                  }
+                : null,
     };
 };
