@@ -1,6 +1,6 @@
 /* leny/zoondo
  *
- * /src/components/tools/card-moves.js - CardMoves
+ * /src/client/components/tools/card-moves.js - CardMoves
  *
  * coded by leny
  * started at 07/04/2020

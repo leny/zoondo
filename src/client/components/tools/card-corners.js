@@ -1,6 +1,6 @@
 /* leny/zoondo
  *
- * /src/components/tools/card-corners.js - CardCorners
+ * /src/client/components/tools/card-corners.js - CardCorners
  *
  * coded by leny
  * started at 07/04/2020

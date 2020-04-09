@@ -1,6 +1,6 @@
 /* leny/zoondo
  *
- * /src/containers/root.js - Root Container
+ * /src/client/containers/root.js - Root Container
  *
  * coded by leny
  * started at 03/04/2020

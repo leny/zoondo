@@ -1,6 +1,6 @@
 /* leny/zoondo
  *
- * /src/components/tools/game-infos.js - GameInfos
+ * /src/client/components/tools/game-infos.js - GameInfos
  *
  * coded by leny
  * started at 08/04/2020

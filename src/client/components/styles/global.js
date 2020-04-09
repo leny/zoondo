@@ -1,6 +1,6 @@
 /* leny/zoondo
  *
- * /src/components/styles/global.js - Styles Components: Global
+ * /src/client/components/styles/global.js - Styles Components: Global
  *
  * coded by leny
  * started at 03/04/2020

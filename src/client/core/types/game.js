@@ -1,6 +1,6 @@
 /* leny/zoondo
  *
- * /src/core/types/game.js - Game-related custom PropTypes
+ * /src/client/core/types/game.js - Game-related custom PropTypes
  *
  * coded by leny
  * started at 06/04/2020

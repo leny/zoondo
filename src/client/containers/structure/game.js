@@ -1,6 +1,6 @@
 /* leny/zoondo
  *
- * /src/containers/structure/game.js - Structure containers: Game
+ * /src/client/containers/structure/game.js - Structure containers: Game
  *
  * coded by leny
  * started at 06/04/2020
@@ -12,7 +12,7 @@ import {px, rem} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
 
 import {CARD_TYPES} from "core/constants";
-import {fighters} from "../../data/tribes/europa-boarix.json";
+import {fighters} from "../../../data/tribes/europa-boarix.json";
 
 import Header from "components/header";
 import Board from "components/board/board";

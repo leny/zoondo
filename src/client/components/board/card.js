@@ -1,6 +1,6 @@
 /* leny/zoondo
  *
- * /src/components/board/card.js - Board Components: Card
+ * /src/client/components/board/card.js - Board Components: Card
  *
  * coded by leny
  * started at 03/04/2020

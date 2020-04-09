@@ -1,6 +1,6 @@
 /* leny/zoondo
  *
- * /src/components/tools/chat.js - Chat
+ * /src/client/components/tools/chat.js - Chat
  *
  * coded by leny
  * started at 08/04/2020

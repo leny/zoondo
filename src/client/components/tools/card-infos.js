@@ -1,6 +1,6 @@
 /* leny/zoondo
  *
- * /src/components/tools/card-infos.js - CardInfo
+ * /src/client/components/tools/card-infos.js - CardInfo
  *
  * coded by leny
  * started at 07/04/2020

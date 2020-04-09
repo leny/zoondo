@@ -1,6 +1,6 @@
 /* leny/zoondo
  *
- * /src/components/header/index.js - Header Components: Header
+ * /src/client/components/header/index.js - Header Components: Header
  *
  * coded by leny
  * started at 06/04/2020

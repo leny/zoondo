@@ -1,6 +1,6 @@
 /* leny/zoondo
  *
- * /src/components/commons/button.js - Commons components: Button
+ * /src/client/components/commons/button.js - Commons components: Button
  *
  * coded by leny
  * started at 08/04/2020

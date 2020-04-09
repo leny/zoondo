@@ -1,6 +1,6 @@
 /* leny/zoondo
  *
- * /src/core/utils/index.js - Utils
+ * /src/client/core/utils/index.js - Utils
  *
  * coded by leny
  * started at 08/04/2020

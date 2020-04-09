@@ -1,6 +1,6 @@
 /* leny/zoondo
  *
- * /src/core/constants.js - Constants
+ * /src/client/core/constants.js - Constants
  *
  * coded by leny
  * started at 03/04/2020
