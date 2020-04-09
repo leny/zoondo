@@ -25,6 +25,7 @@ const Button = ({className, children, onClick = noop}) => {
             fontSize: rem(1.6),
             background: "transparent",
             color: "white",
+            cursor: "pointer",
         },
     });
 
