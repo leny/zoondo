@@ -9,7 +9,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import {px} from "@pwops/core";
+import {px, rotateX, deg} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
 
 import cardBack from "assets/game/card-back-board.png";
@@ -32,10 +32,14 @@ const BoardCard = ({tribe, isOwn = false}) => {
             size: [px(120)],
             zIndex: 10,
         },
+        opponentCard: {
+            transform: rotateX(deg(180)),
+            transformOrigin: "preserve-3d",
+        },
     });
 
     return (
-        <div css={styles.card}>
+        <div css={[styles.card, isOwn || styles.opponentCard]}>
             <img
                 css={styles.coat}
                 src={`/assets/tribes/${tribe}/coat.png`}
