@@ -40,6 +40,9 @@ const CardMoves = ({
     useEffect(() => {
         const ctx = canvas.current.getContext("2d");
 
+        // clean previous grid
+        ctx.clearRect(0, 0, size[0], size[1]);
+
         // draw grid
         ctx.strokeStyle = "#888";
         ctx.lineWidth = 1;
