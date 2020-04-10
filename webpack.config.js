@@ -42,6 +42,8 @@ module.exports = ({target, env, watch = false}) => {
                 },
                 server: {
                     core: "src/server/core",
+                    game: "src/server/game",
+                    utils: "src/server/core/utils",
                 },
             }[target],
         ).map(([key, path]) => [key, resolve(__dirname, path)]),
