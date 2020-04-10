@@ -129,5 +129,23 @@
     "kassin:0",
     "kassin:1",
     "kassin:1"
+  ],
+  "disposition": [
+    [
+      "gold-hure",
+      "grognard:0",
+      "kassin:0",
+      "kassin:1",
+      "grognard:1",
+      "cloboulon"
+    ],
+    [
+      "sacrechene",
+      "grognard:1",
+      "bouclefeuille",
+      "grognard:0",
+      "kassin:1",
+      "kassin:0"
+    ]
   ]
 }

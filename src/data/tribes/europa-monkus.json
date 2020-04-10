@@ -137,5 +137,33 @@
       "text": "Vise un Zoon ennemi situé dans ton camp.",
       "value": 3
     }
+  ],
+  "composition": [
+    "king-louis",
+    "kombo-bongo",
+    "king",
+    "kong",
+    "coco-bang:0",
+    "coco-bang:0",
+    "coco-bang:1",
+    "bouga:0",
+    "bouga:0",
+    "bouga:1",
+    "bouga:1",
+    "queen-mary"
+  ],
+  "disposition": [
+    "coco-bang:0",
+    "bouga:0",
+    "kombo-bongo",
+    "bouga:1",
+    "coco-bang:0",
+    "coco-bang:1",
+    "bouga:1",
+    "kong",
+    "queen-mary",
+    "king-louis",
+    "king",
+    "bouga:0"
   ]
 }

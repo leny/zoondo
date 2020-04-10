@@ -129,5 +129,9 @@
     "rhino:1",
     "rhino:1",
     "ouistiti"
+  ],
+  "disposition": [
+    ["rhino:0", "ratops", "goolgoth-1", "oto-von-rhino", "trice", "rhino:1"],
+    ["rhino:1", "rhinogore:0", "ouistiti", "rhino:0", "rhinogore:1", "rhino:0"]
   ]
 }

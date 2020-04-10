@@ -106,6 +106,17 @@
     "kassin:0",
     "kassin:1",
     "kassin:1",
-    "darknar"
+    "draknar"
+  ],
+  "disposition": [
+    [
+      "berserkorse:1",
+      "korse:0",
+      "berserkorse:0",
+      "jorund",
+      "korse:0",
+      "berserkorse:1"
+    ],
+    ["korse:1", "mourse:0", "harold-de-jarl", "draknar", "mouse:1", "korse:1"]
   ]
 }
