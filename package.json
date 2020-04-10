@@ -80,7 +80,7 @@
     "@pwops/emotion-css": "^0.2.0",
     "@pwops/mixins": "^0.2.0",
     "@pwops/react-hooks": "^0.2.0",
-    "core-js": "^3.6.4",
+    "core-js": "^3.6.5",
     "dayjs": "^1.8.24",
     "emotion-box-sizing-reset": "^0.2.0",
     "emotion-meyer-reset": "^0.2.0",
