@@ -52,13 +52,13 @@ const Game = ({player}) => {
         socket.emit("register", {player});
     }, [player]);
 
+    useSocket("state", state => {
+        console.log("new game state:", state);
+    });
+
     return (
         <div css={styles.container}>
-            <Header
-                round={1}
-                player={{name: "Leny", tribe: "Boarix", score: 0}}
-                opponent={{name: "Tibus", tribe: "Warus", score: 0}}
-            />
+            <Header round={1} player={player} />
 
             <main css={styles.main}>
                 <Board
