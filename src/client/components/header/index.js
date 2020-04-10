@@ -8,7 +8,7 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import {PlayerShape} from "types";
+import {Player} from "types";
 
 import {percent, rem} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
@@ -61,8 +61,8 @@ const Header = ({player, opponent, round}) => {
 
 Header.propTypes = {
     round: PropTypes.number.isRequired,
-    player: PlayerShape.isRequired,
-    opponent: PlayerShape.isRequired,
+    player: Player.isRequired,
+    opponent: Player.isRequired,
 };
 
 export default Header;

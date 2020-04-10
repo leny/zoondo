@@ -8,7 +8,7 @@
 
 import React, {useMemo} from "react";
 import PropTypes from "prop-types";
-import {PlayerShape} from "types";
+import {Player} from "types";
 import {px, rem} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
 
@@ -95,8 +95,8 @@ Board.propTypes = {
             card: PropTypes.element.isRequired,
         }),
     ),
-    player: PlayerShape,
-    opponent: PlayerShape,
+    player: Player,
+    opponent: Player,
 };
 
 export default Board;

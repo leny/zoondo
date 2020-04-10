@@ -6,7 +6,8 @@
  * started at 06/04/2020
  */
 
-import React from "react";
+import React, {useEffect} from "react";
+import {Player} from "types";
 
 import {px, rem} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
@@ -21,7 +22,7 @@ import CardInfos from "components/tools/card-infos";
 import GameInfos from "components/tools/game-infos";
 import Chat from "components/tools/chat";
 
-const Game = () => {
+const Game = ({player}) => {
     const styles = usePwops({
         container: {
             width: px(1200),
@@ -43,6 +44,11 @@ const Game = () => {
         gameInfos: {flex: "none", margin: [rem(2), 0]},
         chat: {flex: [1, 0, 0]},
     });
+
+    useEffect(() => {
+        // init game
+        console.log("init game as:", player);
+    }, [player]);
 
     return (
         <div css={styles.container}>
@@ -91,5 +97,7 @@ const Game = () => {
         </div>
     );
 };
+
+Game.propTypes = {player: Player};
 
 export default Game;

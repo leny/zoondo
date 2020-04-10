@@ -9,7 +9,7 @@
 import PropTypes from "prop-types";
 import {FIGHTER_TYPES} from "core/constants";
 
-export const PlayerShape = PropTypes.shape({
+export const Player = PropTypes.shape({
     name: PropTypes.string.isRequired,
     tribe: PropTypes.string.isRequired,
 });
