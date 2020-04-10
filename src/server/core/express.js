@@ -9,13 +9,18 @@
 import {APP_PORT, CLIENT_PATH} from "core/constants";
 
 import express from "express";
+import http from "http";
 
 const app = express();
+export const server = http.Server(app);
 
 app.use("/", express.static(CLIENT_PATH));
 
-export const init = next =>
-    app.listen(APP_PORT, () => {
-        console.log(`Server launched & listening on port ${APP_PORT}.`);
-        next && next();
-    });
+export const init = next => {
+    server.listen(APP_PORT);
+    console.clear();
+    console.log(`Server launched & listening on port ${APP_PORT}.`);
+    next && next();
+};
+
+export default app;
