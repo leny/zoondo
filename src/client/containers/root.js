@@ -10,6 +10,9 @@ import React from "react";
 
 import StylesGlobal from "components/styles/global";
 import Game from "containers/structure/game";
+import {SocketIOProvider} from "use-socketio";
+
+import {SERVER_PATH} from "core/constants";
 
 const player = {
     name: `Player (${Math.round(Math.random() * 100)})`,
@@ -18,13 +21,15 @@ const player = {
         "europa-warus",
         "europa-monkus",
         "europa-rhinogoths",
-    ][Math.floor(Math.random() * 4)],
+    ][Math.floor(Math.random() * 100) % 4],
 };
 
 const RootContainer = () => (
     <>
         <StylesGlobal />
-        <Game player={player} />
+        <SocketIOProvider url={SERVER_PATH}>
+            <Game player={player} />
+        </SocketIOProvider>
     </>
 );
 
