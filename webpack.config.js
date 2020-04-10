@@ -121,6 +121,9 @@ module.exports = ({target, env, watch = false}) => {
                                     },
                                 ],
                             ],
+                            plugins: [
+                                "@babel/plugin-proposal-class-properties",
+                            ],
                         },
                     }[target],
                     compact: false,
