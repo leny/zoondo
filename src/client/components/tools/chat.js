@@ -6,16 +6,27 @@
  * started at 08/04/2020
  */
 
-import React, {useRef, useEffect} from "react";
-import PropTypes from "prop-types";
+import React, {useRef, useState, useEffect} from "react";
 
 import {BORDER_COLOR} from "core/constants";
 import {px, rem, percent, translateY} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
+import {useSocket} from "use-socketio";
 
 import ChatMessage from "components/tools/chat-message";
 
-const Chat = ({className, messages = []}) => {
+const Chat = ({className}) => {
+    const [messages, setMessages] = useState([]);
+    useSocket("message", message =>
+        setMessages([
+            ...messages,
+            {
+                isSystem: message.system,
+                message: message.content,
+                timestamp: message.timestamp,
+            },
+        ]),
+    );
     const list = useRef(null);
 
     const styles = usePwops({
@@ -67,10 +78,6 @@ const Chat = ({className, messages = []}) => {
             </div>
         </div>
     );
-};
-
-Chat.propTypes = {
-    messages: PropTypes.array,
 };
 
 export default Chat;
