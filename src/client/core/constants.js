@@ -11,6 +11,8 @@ export const NODE_ENV = process.env.NODE_ENV;
 export const VERSION = process.env.VERSION;
 export const BUILD_TIME = process.env.BUILD_TIME;
 
+export const SERVER_PATH = process.env.SERVER_PATH;
+
 export const NBSP = "\u00a0";
 
 export const BCG_COLOR = "black";

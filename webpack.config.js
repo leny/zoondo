@@ -144,7 +144,9 @@ module.exports = ({target, env, watch = false}) => {
             VERSION: pkgVars.version,
             BUILD_TIME: Date.now(),
             ...{
-                client: {},
+                client: {
+                    SERVER_PATH: "http://localhost:8000",
+                },
                 server: {
                     APP_PORT: 8000,
                     CLIENT_PATH: resolve(__dirname, "./bin/client"),
