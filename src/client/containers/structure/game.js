@@ -11,6 +11,7 @@ import {Player} from "types";
 
 import {px, rem} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
+import {useSocket} from "use-socketio";
 
 import {CARD_TYPES} from "core/constants";
 import {fighters} from "../../../data/tribes/europa-boarix.json";
@@ -23,6 +24,7 @@ import GameInfos from "components/tools/game-infos";
 import Chat from "components/tools/chat";
 
 const Game = ({player}) => {
+    const {socket} = useSocket();
     const styles = usePwops({
         container: {
             width: px(1200),
@@ -47,7 +49,7 @@ const Game = ({player}) => {
 
     useEffect(() => {
         // init game
-        console.log("init game as:", player);
+        socket.emit("register", {player});
     }, [player]);
 
     return (
