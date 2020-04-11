@@ -94,7 +94,9 @@ export default class Game {
                 ),
             };
 
-            this.server.sockets[id].emit("state", state);
+            if (this.server.sockets[id]) {
+                this.server.sockets[id].emit("state", state);
+            }
         });
     }
 }
