@@ -13,3 +13,9 @@ export const isFalsy = m => !m;
 export const noop = () => {};
 
 export const wait = ms => new Promise(r => setTimeout(r, ms));
+
+export const preventDefault = (handler, stopPropagation = false) => e => {
+    e.preventDefault();
+    stopPropagation && e.stopPropagation();
+    handler(e);
+};
