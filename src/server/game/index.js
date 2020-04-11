@@ -84,6 +84,14 @@ export default class Game {
                 opponent: Object.values(this.players).find(
                     player => player.id !== id,
                 ),
+                board: this.board.map(
+                    ({player, x, y, card: {tribe, type, slug}}) => ({
+                        player,
+                        x,
+                        y,
+                        card: player === id ? {tribe, type, slug} : {tribe},
+                    }),
+                ),
             };
 
             this.server.sockets[id].emit("state", state);
