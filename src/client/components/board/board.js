@@ -19,7 +19,7 @@ const COL_SIZE = 6;
 const CASE_SIZE = 120;
 const GAP_SIZE = 4;
 
-const Board = ({className, cards = [], opponent, player}) => {
+const Board = ({className, cards = [], activeCell, opponent, player}) => {
     const boardSize = useMemo(
         () => [
             CASE_SIZE * COL_SIZE + (COL_SIZE - 1) * GAP_SIZE,
@@ -53,22 +53,40 @@ const Board = ({className, cards = [], opponent, player}) => {
             border: [px(1), "solid", BORDER_COLOR],
             borderRadius: px(3),
         },
+        selectedCell: {borderColor: "orange"},
     });
 
-    return (
-        <div css={styles.container} className={className}>
-            <div css={styles.player}>
+    let $opponent;
+
+    if (opponent) {
+        $opponent = (
+            <>
                 <span>{"Adversaire :"}</span>
                 {NBSP}
                 <strong>{opponent.name}</strong>
                 {NBSP}
                 <span>{`(${opponent.tribe})`}</span>
-            </div>
+            </>
+        );
+    } else {
+        $opponent = <span>{"En attente d'un adversaire..."}</span>;
+    }
+
+    return (
+        <div css={styles.container} className={className}>
+            <div css={styles.player}>{$opponent}</div>
             <div css={styles.board}>
                 {Array.from(new Array(ROW_SIZE).keys()).map(i => (
                     <div key={`row-${i}`} css={styles.row}>
                         {Array.from(new Array(COL_SIZE).keys()).map(j => (
-                            <div key={`case-${i}-${j}`} css={styles.cell}>
+                            <div
+                                key={`cell-${i}-${j}`}
+                                css={[
+                                    styles.cell,
+                                    activeCell?.x === j &&
+                                        activeCell?.y === i &&
+                                        styles.selectedCell,
+                                ]}>
                                 {(
                                     cards.find(
                                         ({x, y}) => x === j && y === i,
@@ -91,6 +109,10 @@ const Board = ({className, cards = [], opponent, player}) => {
 };
 
 Board.propTypes = {
+    activeCell: PropTypes.shape({
+        x: PropTypes.number,
+        y: PropTypes.number,
+    }),
     cards: PropTypes.arrayOf(
         PropTypes.shape({
             x: PropTypes.number.isRequired,

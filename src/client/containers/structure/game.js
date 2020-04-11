@@ -6,15 +6,12 @@
  * started at 06/04/2020
  */
 
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {Player} from "types";
 
 import {px, rem} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
 import {useSocket} from "use-socketio";
-
-import {CARD_TYPES} from "core/constants";
-import {fighters} from "../../../data/tribes/europa-boarix.json";
 
 import Header from "components/header";
 import Board from "components/board/board";
@@ -23,7 +20,12 @@ import CardInfos from "components/tools/card-infos";
 import GameInfos from "components/tools/game-infos";
 import Chat from "components/tools/chat";
 
-const Game = ({player}) => {
+const Game = ({player: rawPlayer}) => {
+    const [player, setPlayer] = useState(rawPlayer);
+    const [opponent, setOpponent] = useState(null);
+    // const [turn, setTurn] = useState(null);
+    const [board, setBoard] = useState([]);
+    const [activeCard, setActiveCard] = useState(null);
     const {socket} = useSocket();
     const styles = usePwops({
         container: {
@@ -54,38 +56,36 @@ const Game = ({player}) => {
 
     useSocket("state", state => {
         console.log("new game state:", state);
+        setPlayer(state.player);
+        setOpponent(state.opponent);
+        setBoard(state.board);
+        // setTurn(state.turn);
     });
 
     return (
         <div css={styles.container}>
-            <Header round={1} player={player} />
+            <Header round={1} player={player} opponent={opponent} />
 
             <main css={styles.main}>
                 <Board
                     css={styles.board}
-                    player={{name: "Leny", tribe: "Boarix", score: 0}}
-                    opponent={{name: "Tibus", tribe: "Warus", score: 0}}
-                    cards={[
-                        {
-                            x: 0,
-                            y: 0,
-                            card: <BoardCard isOwn tribe={"boarix"} />,
-                        },
-                        {
-                            x: 5,
-                            y: 5,
-                            card: <BoardCard tribe={"warus"} />,
-                        },
-                    ]}
+                    player={player}
+                    opponent={opponent}
+                    activeCell={{x: activeCard?.x, y: activeCard?.y}}
+                    cards={board.map(({player: playerId, x, y, card}) => ({
+                        x,
+                        y,
+                        card: (
+                            <BoardCard
+                                {...card}
+                                isOwn={player.id === playerId}
+                                onSelect={() => setActiveCard({x, y, ...card})}
+                            />
+                        ),
+                    }))}
                 />
                 <div css={styles.tools}>
-                    <CardInfos
-                        css={styles.cardInfos}
-                        tribe={"boarix"}
-                        type={CARD_TYPES.FIGHTER}
-                        slug={"cloboulon"}
-                        data={fighters.cloboulon}
-                    />
+                    <CardInfos css={styles.cardInfos} card={activeCard} />
 
                     <GameInfos
                         css={styles.gameInfos}

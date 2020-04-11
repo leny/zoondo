@@ -15,7 +15,7 @@ import {usePwops} from "@pwops/react-hooks";
 
 import {NBSP} from "core/constants";
 
-const Header = ({player, opponent = {name: "???"}, round}) => {
+const Header = ({player, opponent, round}) => {
     const styles = usePwops({
         container: {
             width: percent(100),
@@ -45,7 +45,7 @@ const Header = ({player, opponent = {name: "???"}, round}) => {
                 {NBSP}
                 <span>{"vs"}</span>
                 {NBSP}
-                <strong>{opponent.name}</strong>
+                <strong>{opponent?.name || "???"}</strong>
             </h2>
 
             <div css={styles.score}>
@@ -54,7 +54,7 @@ const Header = ({player, opponent = {name: "???"}, round}) => {
                 {"-"}
                 {NBSP}
                 <span>
-                    {`Score : ${player.score || 0} / ${opponent.score || 0}`}
+                    {`Score : ${player.score || 0} / ${opponent?.score || 0}`}
                 </span>
             </div>
         </header>

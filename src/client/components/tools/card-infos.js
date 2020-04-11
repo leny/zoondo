@@ -6,27 +6,47 @@
  * started at 07/04/2020
  */
 
-import React from "react";
+import React, {useMemo} from "react";
 import PropTypes from "prop-types";
-import {FighterShape} from "types";
 import {NBSP, CARD_TYPES, BORDER_COLOR} from "core/constants";
 
+import tribes from "data/tribes";
 import {px, rem, percent, translateY} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
 
 import CardCorners from "components/tools/card-corners";
 import CardMoves from "components/tools/card-moves";
 
-const CardInfos = ({
-    className,
-    tribe,
-    // type,
-    slug,
-    data,
-}) => {
+const CardInfos = ({className, card}) => {
+    const data = useMemo(() => {
+        if (!card) {
+            return null;
+        }
+
+        const {tribe, type} = card;
+        const [slug, variant] = card.slug.split(":");
+
+        const tribeData = tribes.get(tribe);
+
+        const cardData = {
+            ...tribeData[type][slug],
+            slug,
+            tribe: tribeData.name,
+        };
+
+        if (Array.isArray(cardData.variants) && !isNaN(+variant)) {
+            return {
+                ...cardData,
+                ...cardData.variants[+variant],
+            };
+        }
+
+        return cardData;
+    }, [card]);
     const styles = usePwops({
         container: {
             relative: true,
+            minHeight: rem(24),
             padding: [rem(2), rem(1), rem(1)],
             border: [px(1), "solid", BORDER_COLOR],
             borderRadius: px(3),
@@ -59,56 +79,81 @@ const CardInfos = ({
             marginTop: rem(1),
             fontSize: rem(1.6),
         },
+        empty: {
+            padding: [rem(4.8), 0],
+            fontSize: rem(1.4),
+            textAlign: "center",
+        },
     });
 
-    let $details;
+    let $content, $details;
 
-    if (data.power) {
-        $details = (
-            <div css={styles.details}>
-                <strong>{"Pouvoir :"}</strong>
-                {NBSP}
-                {data.power}
-            </div>
+    if (data) {
+        if (data.power) {
+            $details = (
+                <div css={styles.details}>
+                    <strong>{"Pouvoir :"}</strong>
+                    {NBSP}
+                    {data.power}
+                </div>
+            );
+        }
+
+        $content = (
+            <>
+                <span css={styles.name}>
+                    {"Carte active:"}
+                    {NBSP}
+                    <span>
+                        <strong>{data.name}</strong>
+                        {NBSP}
+                        {`(${data.type}, ${data.tribe})`}
+                    </span>
+                </span>
+
+                <div css={styles.params}>
+                    <figure css={styles.illustration}>
+                        <img
+                            css={styles.image}
+                            src={`/assets/tribes/${card.tribe}/${data.slug}.png`}
+                            alt={data.name}
+                        />
+                    </figure>
+
+                    <div css={styles.infos}>
+                        <CardCorners corners={data.corners} />
+                        <CardMoves moves={data.moves} />
+                    </div>
+                </div>
+                {$details}
+            </>
+        );
+    } else {
+        $content = (
+            <>
+                <span css={styles.name}>{"Carte active:"}</span>
+                <p css={styles.empty}>
+                    {
+                        "Cliquez sur une de vos cartes pour avoir plus d'informations."
+                    }
+                </p>
+            </>
         );
     }
 
     return (
         <div css={styles.container} className={className}>
-            <span css={styles.name}>
-                {"Carte active:"}
-                {NBSP}
-                <span>
-                    <strong>{data.name}</strong>
-                    {NBSP}
-                    {`(${data.type}, ${tribe})`}
-                </span>
-            </span>
-
-            <div css={styles.params}>
-                <figure css={styles.illustration}>
-                    <img
-                        css={styles.image}
-                        src={`/assets/tribes/${tribe}/${slug}.png`}
-                        alt={data.name}
-                    />
-                </figure>
-
-                <div css={styles.infos}>
-                    <CardCorners corners={data.corners} />
-                    <CardMoves moves={data.moves} />
-                </div>
-            </div>
-            {$details}
+            {$content}
         </div>
     );
 };
 
 CardInfos.propTypes = {
-    tribe: PropTypes.string.isRequired,
-    type: PropTypes.oneOf(Object.values(CARD_TYPES)).isRequired,
-    slug: PropTypes.string.isRequired,
-    data: PropTypes.oneOfType([FighterShape]).isRequired,
+    card: PropTypes.shape({
+        tribe: PropTypes.string,
+        type: PropTypes.oneOf(Object.values(CARD_TYPES)),
+        slug: PropTypes.string,
+    }),
 };
 
 export default CardInfos;

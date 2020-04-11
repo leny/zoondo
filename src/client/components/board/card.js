@@ -11,15 +11,17 @@ import PropTypes from "prop-types";
 
 import {px, rotateX, deg} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
+import {noop, preventDefault} from "utils";
 
 import cardBack from "assets/game/card-back-board.png";
 import cardBackAlt from "assets/game/card-back-board-alt.png";
 
-const BoardCard = ({tribe, isOwn = false}) => {
+const BoardCard = ({tribe, isOwn = false, onSelect = noop}) => {
     const styles = usePwops({
         card: {
             size: px(120),
             position: "relative",
+            display: "block",
         },
         coat: {
             size: px(40),
@@ -38,21 +40,40 @@ const BoardCard = ({tribe, isOwn = false}) => {
         },
     });
 
-    return (
-        <div css={[styles.card, isOwn || styles.opponentCard]}>
+    const $content = (
+        <>
             <img
                 css={styles.coat}
                 src={`/assets/tribes/${tribe}/coat.png`}
                 alt={"Blason de la tribu"}
             />
             <img css={styles.decoration} src={isOwn ? cardBack : cardBackAlt} />
-        </div>
+        </>
+    );
+
+    if (isOwn) {
+        return (
+            <a
+                href={"#"}
+                onClick={preventDefault(onSelect)}
+                css={[styles.card, isOwn || styles.opponentCard]}>
+                {$content}
+            </a>
+        );
+    }
+
+    return (
+        <span css={[styles.card, isOwn || styles.opponentCard]}>
+            {$content}
+        </span>
     );
 };
 
 BoardCard.propTypes = {
     tribe: PropTypes.string.isRequired,
     isOwn: PropTypes.bool,
+    isSelected: PropTypes.bool,
+    onSelect: PropTypes.func,
 };
 
 export default BoardCard;
