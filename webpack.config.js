@@ -35,6 +35,7 @@ module.exports = ({target, env, watch = false}) => {
                 client: {
                     assets: "src/client/assets",
                     core: "src/client/core",
+                    data: "src/data",
                     utils: "src/client/core/utils",
                     components: "src/client/components",
                     containers: "src/client/containers",
@@ -43,7 +44,7 @@ module.exports = ({target, env, watch = false}) => {
                 server: {
                     core: "src/server/core",
                     game: "src/server/game",
-                    data: "src/server/data",
+                    data: "src/data",
                     utils: "src/server/core/utils",
                 },
             }[target],
