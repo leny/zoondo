@@ -39,7 +39,10 @@ const Board = ({className, cards = [], opponent, player}) => {
         },
         board: {
             size: boardSize.map(px),
-            flexColumnReverse: ["space-between", "middle"],
+            [player.isFirstPlayer ? "flexColumnReverse" : "flexColumn"]: [
+                "space-between",
+                "middle",
+            ],
             margin: [px(5), 0],
         },
         row: {

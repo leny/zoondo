@@ -23,7 +23,7 @@ export default class Game {
     constructor(server, roomId, firstPlayer) {
         this.server = server;
         this.room = roomId;
-        this.players[firstPlayer.id] = firstPlayer;
+        this.players[firstPlayer.id] = {...firstPlayer, isFirstPlayer: true};
         this.sendMessage("Game room created. Waiting for player two...");
         this.sendState();
     }
