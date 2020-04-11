@@ -153,17 +153,14 @@
     "queen-mary"
   ],
   "disposition": [
-    "coco-bang:0",
-    "bouga:0",
-    "kombo-bongo",
-    "bouga:1",
-    "coco-bang:0",
-    "coco-bang:1",
-    "bouga:1",
-    "kong",
-    "queen-mary",
-    "king-louis",
-    "king",
-    "bouga:0"
+    [
+      "coco-bang:0",
+      "bouga:0",
+      "kombo-bongo",
+      "bouga:1",
+      "coco-bang:0",
+      "coco-bang:1"
+    ],
+    ["bouga:1", "kong", "queen-mary", "king-louis", "king", "bouga:0"]
   ]
 }
