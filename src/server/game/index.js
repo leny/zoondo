@@ -6,6 +6,8 @@
  * started at 10/04/2020
  */
 
+import tribes from "data/tribes";
+
 export default class Game {
     server = null;
     room = null;
@@ -24,12 +26,44 @@ export default class Game {
         this.server = server;
         this.room = roomId;
         this.players[firstPlayer.id] = {...firstPlayer, isFirstPlayer: true};
+        const tribe = tribes.get(firstPlayer.tribe);
+        Array.from(tribe.disposition).forEach((row, y) =>
+            row.forEach((slug, x) =>
+                this.board.push({
+                    player: firstPlayer.id,
+                    x,
+                    y,
+                    card: {
+                        tribe: firstPlayer.tribe,
+                        type: "fighters",
+                        slug,
+                    },
+                }),
+            ),
+        );
         this.sendMessage("Game room created. Waiting for player two...");
         this.sendState();
     }
 
     join(secondPlayer) {
         this.players[secondPlayer.id] = secondPlayer;
+        const tribe = tribes.get(secondPlayer.tribe);
+        Array.from(tribe.disposition)
+            .reverse()
+            .forEach((row, y) =>
+                row.forEach((slug, x) =>
+                    this.board.push({
+                        player: secondPlayer.id,
+                        x: 5 - x,
+                        y: 5 - y,
+                        card: {
+                            tribe: secondPlayer.tribe,
+                            type: "fighters",
+                            slug,
+                        },
+                    }),
+                ),
+            );
         this.sendMessage(`**${secondPlayer.name}** joined the game.`);
         this.sendState();
     }
