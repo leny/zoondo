@@ -53,7 +53,10 @@ const Board = ({className, cards = [], activeCell, opponent, player}) => {
             border: [px(1), "solid", BORDER_COLOR],
             borderRadius: px(3),
         },
-        selectedCell: {borderColor: "orange"},
+        selectedCell: {
+            borderColor: "orange",
+            boxShadow: ["inset", 0, 0, px(10), "orange"],
+        },
     });
 
     let $opponent;
