@@ -43,6 +43,7 @@ module.exports = ({target, env, watch = false}) => {
                 server: {
                     core: "src/server/core",
                     game: "src/server/game",
+                    data: "src/server/data",
                     utils: "src/server/core/utils",
                 },
             }[target],
