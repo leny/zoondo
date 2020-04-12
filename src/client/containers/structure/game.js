@@ -52,7 +52,7 @@ const Game = ({player: rawPlayer}) => {
     useEffect(() => {
         // init game
         socket.emit("register", {player});
-    }, [player]);
+    }, []);
 
     useSocket("state", state => {
         console.log("new game state:", state);
