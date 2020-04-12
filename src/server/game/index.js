@@ -12,11 +12,11 @@ export default class Game {
     server = null;
     room = null;
     players = {};
-    state = "waiting";
     turn = {
         count: 0,
         activePlayer: null,
-        phase: null,
+        phase: "waiting",
+        timer: 30,
     };
     board = [];
     supports = [];
@@ -87,7 +87,12 @@ export default class Game {
     sendState() {
         Object.values(this.players).forEach(({id}) => {
             const state = {
-                turn: this.turn,
+                turn: {
+                    ...this.turn,
+                    activePlayer: this.turn.activePlayer
+                        ? this.players[this.turn.activePlayer]
+                        : null,
+                },
                 player: this.players[id],
                 opponent: Object.values(this.players).find(
                     player => player.id !== id,

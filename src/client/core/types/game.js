@@ -14,6 +14,13 @@ export const Player = PropTypes.shape({
     tribe: PropTypes.string.isRequired,
 });
 
+export const Turn = PropTypes.shape({
+    count: PropTypes.number.isRequired,
+    activePlayer: Player,
+    phase: PropTypes.string.isRequired,
+    timer: PropTypes.number,
+});
+
 export const Corners = PropTypes.arrayOf(
     PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 );

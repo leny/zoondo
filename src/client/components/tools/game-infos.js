@@ -7,7 +7,7 @@
  */
 
 import React from "react";
-import PropTypes from "prop-types";
+import {Turn} from "types";
 
 import Button from "components/commons/button";
 
@@ -16,7 +16,8 @@ import {BORDER_COLOR, NBSP} from "core/constants";
 import {px, rem, percent, translateY} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
 
-const GameInfos = ({className, activePlayer = "Inconnu", timer}) => {
+const GameInfos = ({className, turn}) => {
+    const {count, activePlayer, phase, timer} = turn || {};
     const styles = usePwops({
         container: {
             relative: true,
@@ -53,41 +54,58 @@ const GameInfos = ({className, activePlayer = "Inconnu", timer}) => {
         },
     });
 
+    let $activePlayer, tips, $tools;
+
+    switch (phase) {
+        case "waiting":
+            tips = "En attente d'un second joueur…";
+            break;
+
+        case "main":
+            $activePlayer = (
+                <div css={styles.activePlayer}>
+                    <span>
+                        {"Joueur actif :"}
+                        {NBSP}
+                        <strong>{activePlayer}</strong>
+                    </span>
+                </div>
+            );
+            tips = "Cliquez sur une carte ou choisissez une action ci-dessous.";
+            $tools = (
+                <div css={styles.tools}>
+                    <Button>{"Voir mes atouts"}</Button>
+                    <Button>{"Voir mes renforts"}</Button>
+                </div>
+            );
+            break;
+
+        // no default
+    }
+
     return (
         <div css={styles.container} className={className}>
-            <span css={styles.name}>{"Partie"}</span>
+            <span css={styles.name}>
+                {`Partie${count ? ` - tour ${count}` : ""}`}
+            </span>
 
-            <div css={styles.activePlayer}>
-                <span>
-                    {"Joueur actif :"}
-                    {NBSP}
-                    <strong>{activePlayer}</strong>
-                </span>
-            </div>
+            {$activePlayer}
 
             <div css={styles.timer}>
                 <span>{`${timer}`.padStart(2, "0")}</span>
             </div>
 
             <div css={styles.tips}>
-                <span>
-                    {
-                        "Cliquez sur une carte ou choisissez une action ci-dessous."
-                    }
-                </span>
+                <span>{tips}</span>
             </div>
 
-            <div css={styles.tools}>
-                <Button>{"Voir mes atouts"}</Button>
-                <Button>{"Voir mes renforts"}</Button>
-            </div>
+            {$tools}
         </div>
     );
 };
 
 GameInfos.propTypes = {
-    activePlayer: PropTypes.string,
-    timer: PropTypes.number,
+    turn: Turn,
 };
 
 export default GameInfos;

@@ -23,7 +23,7 @@ import Chat from "components/tools/chat";
 const Game = ({player: rawPlayer}) => {
     const [player, setPlayer] = useState(rawPlayer);
     const [opponent, setOpponent] = useState(null);
-    // const [turn, setTurn] = useState(null);
+    const [turn, setTurn] = useState(null);
     const [board, setBoard] = useState([]);
     const [activeCard, setActiveCard] = useState(null);
     const {socket} = useSocket();
@@ -59,7 +59,7 @@ const Game = ({player: rawPlayer}) => {
         setPlayer(state.player);
         setOpponent(state.opponent);
         setBoard(state.board);
-        // setTurn(state.turn);
+        setTurn(state.turn);
     });
 
     return (
@@ -87,11 +87,7 @@ const Game = ({player: rawPlayer}) => {
                 <div css={styles.tools}>
                     <CardInfos css={styles.cardInfos} card={activeCard} />
 
-                    <GameInfos
-                        css={styles.gameInfos}
-                        activePlayer={"Leny"}
-                        timer={30}
-                    />
+                    <GameInfos css={styles.gameInfos} turn={turn} />
 
                     <Chat css={styles.chat} />
                 </div>
