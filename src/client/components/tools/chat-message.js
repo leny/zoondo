@@ -52,8 +52,13 @@ const ChatMessage = ({
         },
         content: {flex: [1, 0, 0]},
         message: {
-            "em,i": {fontStyle: "italic"},
-            "strong,b": {fontWeight: "bold"},
+            "em, i": {fontStyle: "italic"},
+            "strong, b": {fontWeight: "bold"},
+            a: {
+                color: "cyan",
+                textDecoration: "none",
+                "&:hover": {textDecoration: "underline"},
+            },
         },
     });
 
