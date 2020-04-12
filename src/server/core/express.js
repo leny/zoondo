@@ -18,7 +18,6 @@ app.use("/", express.static(CLIENT_PATH));
 
 export const init = next => {
     server.listen(APP_PORT);
-    console.clear();
     console.log(`Server launched & listening on port ${APP_PORT}.`);
     next && next();
 };
