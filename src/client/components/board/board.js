@@ -46,7 +46,10 @@ const Board = ({className, cards = [], activeCell, opponent, player}) => {
             margin: [px(5), 0],
         },
         row: {
-            flexRow: ["space-between", "middle"],
+            [player.isFirstPlayer ? "flexRow" : "flexRowReverse"]: [
+                "space-between",
+                "middle",
+            ],
         },
         cell: {
             relative: true,

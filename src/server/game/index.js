@@ -56,7 +56,7 @@ export default class Game {
                 row.forEach((slug, x) =>
                     this.board.push({
                         player: secondPlayer.id,
-                        x,
+                        x: 5 - x,
                         y: 5 - y,
                         card: {
                             tribe: secondPlayer.tribe,
