@@ -43,7 +43,7 @@ export default class Game {
                     }),
                 ),
             );
-        this.sendMessage("Game room created. Waiting for player two...");
+        this.sendMessage("Partie créée. En attente d'un second joueur…");
         this.sendState();
     }
 
@@ -66,14 +66,23 @@ export default class Game {
                     }),
                 ),
             );
-        this.sendMessage(`**${secondPlayer.name}** joined the game.`);
+        this.sendMessage(`**${secondPlayer.name}** a rejoint la partie.`);
         this.sendState();
+        this.startTurn(Object.keys(this.players)[Math.round(Math.random())]);
     }
 
     leave(playerId) {
         const leavingPlayer = this.players[playerId];
 
-        this.sendMessage(`**${leavingPlayer.name}** left the game.`);
+        this.sendMessage(`**${leavingPlayer.name}** a quitté la partie.`);
+    }
+
+    startTurn(playerId) {
+        this.turn.count++;
+        this.turn.activePlayer = playerId;
+        this.turn.phase = "main";
+        this.sendState();
+        this.sendMessage(`Début de tour : **${this.players[playerId].name}**.`);
     }
 
     sendMessage(message) {

@@ -28,9 +28,8 @@ export default (server, socket) => ({player}) => {
     const createGame = () => {
         console.log("createGame");
         const id = `game-${shorthash(Date.now())}`;
-        const game = new Game(server, id, {...player, id: socket.id});
-        games.set(id, game);
         socket.join(id);
+        games.set(id, new Game(server, id, {...player, id: socket.id}));
     };
 
     if (!gameRooms.length || gameRooms.every(({length}) => length === 2)) {

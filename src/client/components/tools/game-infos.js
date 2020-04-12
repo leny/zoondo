@@ -67,7 +67,7 @@ const GameInfos = ({className, turn}) => {
                     <span>
                         {"Joueur actif :"}
                         {NBSP}
-                        <strong>{activePlayer}</strong>
+                        <strong>{activePlayer.name}</strong>
                     </span>
                 </div>
             );
