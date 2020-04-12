@@ -225,6 +225,7 @@ module.exports = ({target, env, watch = false}) => {
         devServer: {
             compress: true,
             historyApiFallback: true,
+            port: 8888,
             open: true,
             contentBase: join(__dirname, "bin"),
             watchContentBase: true,
