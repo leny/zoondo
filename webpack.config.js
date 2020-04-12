@@ -150,6 +150,7 @@ module.exports = ({target, env, watch = false}) => {
             NODE_ENV: env !== "prod" ? "development" : "production",
             VERSION: pkgVars.version,
             BUILD_TIME: Date.now(),
+            DEBUG_MODE: env !== "prod" && watch,
             ...{
                 client: {
                     SERVER_PATH: "http://localhost:8000",

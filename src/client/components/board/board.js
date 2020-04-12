@@ -9,10 +9,10 @@
 import React, {useMemo} from "react";
 import PropTypes from "prop-types";
 import {Player} from "types";
-import {px, rem} from "@pwops/core";
+import {px, rem, percent, rgba, translate} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
 
-import {BORDER_COLOR, NBSP} from "core/constants";
+import {BORDER_COLOR, NBSP, DEBUG_MODE} from "core/constants";
 
 const ROW_SIZE = 6;
 const COL_SIZE = 6;
@@ -49,9 +49,22 @@ const Board = ({className, cards = [], activeCell, opponent, player}) => {
             flexRow: ["space-between", "middle"],
         },
         cell: {
+            relative: true,
             size: px(CASE_SIZE),
             border: [px(1), "solid", BORDER_COLOR],
             borderRadius: px(3),
+        },
+        cellDebug: {
+            absolute: [percent(50), false, false, percent(50)],
+            padding: [rem(0.25)],
+            pointerEvent: "none",
+            borderRadius: rem(0.5),
+            background: rgba(0, 0, 0, 0.5),
+            fontSize: rem(1.4),
+            fontFamily: "monospace",
+            color: "white",
+            zIndex: 10,
+            transform: translate(percent(-50), percent(-50)),
         },
         selectedCell: {
             borderColor: "orange",
@@ -90,6 +103,11 @@ const Board = ({className, cards = [], activeCell, opponent, player}) => {
                                         activeCell?.y === i &&
                                         styles.selectedCell,
                                 ]}>
+                                {DEBUG_MODE ? (
+                                    <span css={styles.cellDebug}>
+                                        {`${j},${i}`}
+                                    </span>
+                                ) : null}
                                 {(
                                     cards.find(
                                         ({x, y}) => x === j && y === i,

@@ -10,6 +10,7 @@ export const ZOONDO_ENV = process.env.ZOONDO_ENV;
 export const NODE_ENV = process.env.NODE_ENV;
 export const VERSION = process.env.VERSION;
 export const BUILD_TIME = process.env.BUILD_TIME;
+export const DEBUG_MODE = process.env.DEBUG_MODE;
 
 export const SERVER_PATH = process.env.SERVER_PATH;
 
