@@ -10,9 +10,9 @@ import React, {useMemo} from "react";
 import PropTypes from "prop-types";
 import {NBSP, CARD_TYPES, BORDER_COLOR} from "core/constants";
 
-import tribes from "data/tribes";
 import {px, rem, percent, translateY} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
+import {resolveCard} from "data/utils";
 
 import CardCorners from "components/tools/card-corners";
 import CardMoves from "components/tools/card-moves";
@@ -23,26 +23,9 @@ const CardInfos = ({className, card}) => {
             return null;
         }
 
-        const {tribe, type} = card;
-        const [slug, variant] = card.slug.split(":");
-
-        const tribeData = tribes.get(tribe);
-
-        const cardData = {
-            ...tribeData[type][slug],
-            slug,
-            tribe: tribeData.name,
-        };
-
-        if (Array.isArray(cardData.variants) && !isNaN(+variant)) {
-            return {
-                ...cardData,
-                ...cardData.variants[+variant],
-            };
-        }
-
-        return cardData;
+        return resolveCard(card);
     }, [card]);
+
     const styles = usePwops({
         container: {
             relative: true,

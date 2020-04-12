@@ -49,7 +49,7 @@ export default class Game {
     }
 
     join(secondPlayer) {
-        this.players[secondPlayer.id] = secondPlayer;
+        this.players[secondPlayer.id] = {...secondPlayer, isFirstPlayer: false};
         const tribe = tribes.get(secondPlayer.tribe);
         Array.from(tribe.disposition)
             .reverse()

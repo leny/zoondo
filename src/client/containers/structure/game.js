@@ -12,6 +12,7 @@ import {Player} from "types";
 import {px, rem} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
 import {useSocket} from "use-socketio";
+import {resolveMoves, resolveCard} from "data/utils";
 
 import Header from "components/header";
 import Board from "components/board/board";
@@ -57,11 +58,41 @@ const Game = ({player: rawPlayer}) => {
     }, []);
 
     useEffect(() => {
-        console.log("activeCard has changed");
         if (turn?.activePlayer?.id === player.id && turn?.phase === "main") {
-            console.log("I'm the active player & in my main phase");
-            // TODO: resolve moves, display on board
-            setOverlays([]);
+            const card = resolveCard(activeCard);
+            const moves = resolveMoves(
+                activeCard,
+                card.moves,
+                !turn.activePlayer.isFirstPlayer,
+            );
+            setOverlays(
+                moves.reduce((arr, move) => {
+                    move.reduce((keep, [x, y, ...position]) => {
+                        if (keep) {
+                            const cardAtPosition = board.find(
+                                crd => crd.x === x && crd.y === y,
+                            );
+
+                            if (cardAtPosition) {
+                                if (
+                                    cardAtPosition.player !==
+                                    turn.activePlayer.id
+                                ) {
+                                    arr.push([x, y, ...position, true]);
+                                }
+
+                                return false;
+                            }
+
+                            arr.push([x, y, ...position]);
+                        }
+
+                        return keep;
+                    }, true);
+
+                    return arr;
+                }, []),
+            );
         }
     }, [activeCard]);
 
