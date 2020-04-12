@@ -27,20 +27,22 @@ export default class Game {
         this.room = roomId;
         this.players[firstPlayer.id] = {...firstPlayer, isFirstPlayer: true};
         const tribe = tribes.get(firstPlayer.tribe);
-        Array.from(tribe.disposition).forEach((row, y) =>
-            row.forEach((slug, x) =>
-                this.board.push({
-                    player: firstPlayer.id,
-                    x,
-                    y,
-                    card: {
-                        tribe: firstPlayer.tribe,
-                        type: "fighters",
-                        slug,
-                    },
-                }),
-            ),
-        );
+        Array.from(tribe.disposition)
+            .reverse()
+            .forEach((row, y) =>
+                row.forEach((slug, x) =>
+                    this.board.push({
+                        player: firstPlayer.id,
+                        x,
+                        y,
+                        card: {
+                            tribe: firstPlayer.tribe,
+                            type: "fighters",
+                            slug,
+                        },
+                    }),
+                ),
+            );
         this.sendMessage("Game room created. Waiting for player two...");
         this.sendState();
     }
