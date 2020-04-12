@@ -7,6 +7,7 @@
  */
 
 import tribes from "data/tribes";
+import {sendSystemMessage} from "core/socket";
 
 export default class Game {
     server = null;
@@ -86,11 +87,7 @@ export default class Game {
     }
 
     sendMessage(message) {
-        this.server.to(this.room).emit("message", {
-            system: true,
-            timestamp: Date.now(),
-            content: message,
-        });
+        sendSystemMessage(this.server.to(this.room), message);
     }
 
     sendState() {

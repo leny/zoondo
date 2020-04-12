@@ -21,6 +21,7 @@ const Chat = ({className}) => {
         setMessages([
             ...messages,
             {
+                id: message.id,
                 isSystem: message.system,
                 message: message.content,
                 timestamp: message.timestamp,
@@ -68,9 +69,7 @@ const Chat = ({className}) => {
             <div css={styles.holder}>
                 <ul css={styles.messages} ref={list}>
                     {messages.map(message => (
-                        <li
-                            key={`${message.timestamp}-${message.author}`}
-                            css={styles.message}>
+                        <li key={message.id} css={styles.message}>
                             <ChatMessage {...message} />
                         </li>
                     ))}

@@ -8,13 +8,19 @@
 
 import {server} from "core/express";
 import socketIO from "socket.io";
+import {shorthash} from "utils/misc";
 
 const io = socketIO(server);
 
 export default io;
 
 export const sendSystemMessage = (socket, content) =>
-    socket.emit("message", {system: true, timestamp: Date.now(), content});
+    socket.emit("message", {
+        id: shorthash(process.hrtime()),
+        system: true,
+        timestamp: Date.now(),
+        content,
+    });
 
 export const getGameRooms = rooms =>
     Object.entries(rooms)
