@@ -12,3 +12,6 @@ import socketIO from "socket.io";
 const io = socketIO(server);
 
 export default io;
+
+export const sendSystemMessage = (socket, content) =>
+    socket.emit("message", {system: true, timestamp: Date.now(), content});

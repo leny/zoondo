@@ -9,16 +9,13 @@
 import {sha1} from "utils/misc";
 import games from "core/games";
 import Game from "game";
+import {sendSystemMessage} from "core/socket";
 
 export default io => {
     const server = io.sockets;
 
     io.on("connection", socket => {
-        socket.emit("message", {
-            system: true,
-            timestamp: Date.now(),
-            content: "Connecté au serveur.",
-        });
+        sendSystemMessage(socket, "Connecté au serveur.");
 
         socket.on("register", ({player}) => {
             console.log("register:", player);
