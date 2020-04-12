@@ -16,6 +16,7 @@ import {useSocket} from "use-socketio";
 import Header from "components/header";
 import Board from "components/board/board";
 import BoardCard from "components/board/card";
+import BoardOverlay from "components/board/overlay";
 import CardInfos from "components/tools/card-infos";
 import GameInfos from "components/tools/game-infos";
 import Chat from "components/tools/chat";
@@ -25,6 +26,7 @@ const Game = ({player: rawPlayer}) => {
     const [opponent, setOpponent] = useState(null);
     const [turn, setTurn] = useState(null);
     const [board, setBoard] = useState([]);
+    const [overlays, setOverlays] = useState([]);
     const [activeCard, setActiveCard] = useState(null);
     const {socket} = useSocket();
     const styles = usePwops({
@@ -54,6 +56,15 @@ const Game = ({player: rawPlayer}) => {
         socket.emit("register", {player});
     }, []);
 
+    useEffect(() => {
+        console.log("activeCard has changed");
+        if (turn?.activePlayer?.id === player.id && turn?.phase === "main") {
+            console.log("I'm the active player & in my main phase");
+            // TODO: resolve moves, display on board
+            setOverlays([]);
+        }
+    }, [activeCard]);
+
     useSocket("state", state => {
         console.log("new game state:", state);
         setPlayer(state.player);
@@ -72,6 +83,19 @@ const Game = ({player: rawPlayer}) => {
                     player={player}
                     opponent={opponent}
                     activeCell={{x: activeCard?.x, y: activeCard?.y}}
+                    overlays={overlays.map(([x, y, isJump, isCombat]) => ({
+                        x,
+                        y,
+                        overlay: (
+                            <BoardOverlay
+                                isJump={isJump}
+                                isCombat={isCombat}
+                                onSelect={() =>
+                                    console.log("Selected overlay:", {x, y})
+                                }
+                            />
+                        ),
+                    }))}
                     cards={board.map(({player: playerId, x, y, card}) => ({
                         x,
                         y,

@@ -19,7 +19,14 @@ const COL_SIZE = 6;
 const CASE_SIZE = 120;
 const GAP_SIZE = 4;
 
-const Board = ({className, cards = [], activeCell, opponent, player}) => {
+const Board = ({
+    className,
+    cards = [],
+    overlays = [],
+    activeCell,
+    opponent,
+    player,
+}) => {
     const boardSize = useMemo(
         () => [
             CASE_SIZE * COL_SIZE + (COL_SIZE - 1) * GAP_SIZE,
@@ -116,6 +123,11 @@ const Board = ({className, cards = [], activeCell, opponent, player}) => {
                                         ({x, y}) => x === j && y === i,
                                     ) || {}
                                 ).card || null}
+                                {(
+                                    overlays.find(
+                                        ({x, y}) => x === j && y === i,
+                                    ) || {}
+                                ).overlay || null}
                             </div>
                         ))}
                     </div>
@@ -141,7 +153,14 @@ Board.propTypes = {
         PropTypes.shape({
             x: PropTypes.number.isRequired,
             y: PropTypes.number.isRequired,
-            card: PropTypes.element.isRequired,
+            card: PropTypes.element,
+        }),
+    ),
+    overlays: PropTypes.arrayOf(
+        PropTypes.shape({
+            x: PropTypes.number.isRequired,
+            y: PropTypes.number.isRequired,
+            overlay: PropTypes.element,
         }),
     ),
     player: Player,

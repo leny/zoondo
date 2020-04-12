@@ -16,7 +16,7 @@ import {noop, preventDefault} from "utils";
 import cardBack from "assets/game/card-back-board.png";
 import cardBackAlt from "assets/game/card-back-board-alt.png";
 
-const BoardCard = ({tribe, isOwn = false, onSelect = noop}) => {
+const BoardCard = ({className, tribe, isOwn = false, onSelect = noop}) => {
     const styles = usePwops({
         card: {
             size: px(120),
@@ -56,6 +56,7 @@ const BoardCard = ({tribe, isOwn = false, onSelect = noop}) => {
             <a
                 href={"#"}
                 onClick={preventDefault(onSelect)}
+                className={className}
                 css={[styles.card, isOwn || styles.opponentCard]}>
                 {$content}
             </a>
@@ -63,7 +64,9 @@ const BoardCard = ({tribe, isOwn = false, onSelect = noop}) => {
     }
 
     return (
-        <span css={[styles.card, isOwn || styles.opponentCard]}>
+        <span
+            className={className}
+            css={[styles.card, isOwn || styles.opponentCard]}>
             {$content}
         </span>
     );
