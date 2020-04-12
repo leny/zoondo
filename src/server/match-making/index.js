@@ -8,6 +8,7 @@
 
 import {sendSystemMessage} from "core/socket";
 import register from "./handlers/register";
+import disconnecting from "./handlers/disconnecting";
 
 export default io => {
     const server = io.sockets;
@@ -16,5 +17,6 @@ export default io => {
         sendSystemMessage(socket, "Connecté au serveur.");
 
         socket.on("register", register(server, socket));
+        socket.on("disconnecting", disconnecting(server, socket));
     });
 };

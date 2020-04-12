@@ -15,3 +15,8 @@ export default io;
 
 export const sendSystemMessage = (socket, content) =>
     socket.emit("message", {system: true, timestamp: Date.now(), content});
+
+export const getGameRooms = rooms =>
+    Object.entries(rooms)
+        .filter(([key]) => key.startsWith("game-"))
+        .map(([key, value]) => ({id: key, ...value}));

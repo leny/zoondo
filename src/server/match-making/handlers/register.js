@@ -9,6 +9,7 @@
 import {shorthash} from "utils/misc";
 import games from "core/games";
 import Game from "game";
+import {getGameRooms} from "core/socket";
 
 export default (server, socket) => ({player}) => {
     console.log("register:", player);
@@ -22,9 +23,7 @@ export default (server, socket) => ({player}) => {
         return;
     }
 
-    const gameRooms = Object.entries(server.adapter.rooms)
-        .filter(([key]) => key.startsWith("game-"))
-        .map(([key, value]) => ({id: key, ...value}));
+    const gameRooms = getGameRooms(server.adapter.rooms);
 
     const createGame = () => {
         console.log("createGame");

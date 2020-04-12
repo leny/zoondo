@@ -56,7 +56,7 @@ export default class Game {
                 row.forEach((slug, x) =>
                     this.board.push({
                         player: secondPlayer.id,
-                        x: 5 - x,
+                        x,
                         y: 5 - y,
                         card: {
                             tribe: secondPlayer.tribe,
@@ -68,6 +68,12 @@ export default class Game {
             );
         this.sendMessage(`**${secondPlayer.name}** joined the game.`);
         this.sendState();
+    }
+
+    leave(playerId) {
+        const leavingPlayer = this.players[playerId];
+
+        this.sendMessage(`**${leavingPlayer.name}** left the game.`);
     }
 
     sendMessage(message) {
