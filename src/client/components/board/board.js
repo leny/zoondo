@@ -67,13 +67,13 @@ const Board = ({
         cellDebug: {
             absolute: [percent(50), false, false, percent(50)],
             padding: [rem(0.25)],
-            pointerEvent: "none",
+            pointerEvents: "none",
             borderRadius: rem(0.5),
             background: rgba(0, 0, 0, 0.5),
             fontSize: rem(1.4),
             fontFamily: "monospace",
             color: "white",
-            zIndex: 10,
+            zIndex: 1000,
             transform: translate(percent(-50), percent(-50)),
         },
         selectedCell: {

@@ -47,7 +47,7 @@ const CardInfos = ({className, card}) => {
         },
         illustration: {
             flex: "none",
-            width: rem(20),
+            size: [rem(20)],
             marginRight: rem(2),
         },
         image: {

@@ -6,7 +6,7 @@
  * started at 06/04/2020
  */
 
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {Player} from "types";
 
 import {px, rem} from "@pwops/core";
@@ -52,13 +52,37 @@ const Game = ({player: rawPlayer}) => {
         chat: {flex: [1, 0, 0]},
     });
 
+    const sendMovement = useCallback(
+        ({x, y}) =>
+            socket.emit("move", {card: activeCard, destination: {x, y}}),
+        [activeCard],
+    );
+
+    const selectActiveCard = useCallback(
+        ({x, y, ...card}) => {
+            if (activeCard?.x === x && activeCard?.y === y) {
+                setActiveCard(null);
+                return;
+            }
+
+            setActiveCard({x, y, ...card});
+        },
+        [activeCard, setActiveCard],
+    );
+
     useEffect(() => {
         // init game
+        document.title = `Zoondo - ${player.name}`;
         socket.emit("register", {player});
     }, []);
 
     useEffect(() => {
-        if (turn?.activePlayer?.id === player.id && turn?.phase === "main") {
+        if (!activeCard) {
+            setOverlays([]);
+        } else if (
+            turn?.activePlayer?.id === player.id &&
+            turn?.phase === "main"
+        ) {
             const card = resolveCard(activeCard);
             const moves = resolveMoves(
                 activeCard,
@@ -67,7 +91,7 @@ const Game = ({player: rawPlayer}) => {
             );
             setOverlays(
                 moves.reduce((arr, move) => {
-                    move.reduce((keep, [x, y, ...position]) => {
+                    move.reduce((keep, [x, y, isJump = false]) => {
                         if (keep) {
                             const cardAtPosition = board.find(
                                 crd => crd.x === x && crd.y === y,
@@ -78,13 +102,13 @@ const Game = ({player: rawPlayer}) => {
                                     cardAtPosition.player !==
                                     turn.activePlayer.id
                                 ) {
-                                    arr.push([x, y, ...position, true]);
+                                    arr.push([x, y, isJump, true]);
                                 }
 
                                 return false;
                             }
 
-                            arr.push([x, y, ...position]);
+                            arr.push([x, y, isJump]);
                         }
 
                         return keep;
@@ -102,6 +126,7 @@ const Game = ({player: rawPlayer}) => {
         setOpponent(state.opponent);
         setBoard(state.board);
         setTurn(state.turn);
+        setActiveCard(null);
     });
 
     return (
@@ -121,9 +146,7 @@ const Game = ({player: rawPlayer}) => {
                             <BoardOverlay
                                 isJump={isJump}
                                 isCombat={isCombat}
-                                onSelect={() =>
-                                    console.log("Selected overlay:", {x, y})
-                                }
+                                onSelect={() => sendMovement({x, y})}
                             />
                         ),
                     }))}
@@ -134,7 +157,9 @@ const Game = ({player: rawPlayer}) => {
                             <BoardCard
                                 {...card}
                                 isOwn={player.id === playerId}
-                                onSelect={() => setActiveCard({x, y, ...card})}
+                                onSelect={() =>
+                                    selectActiveCard({x, y, ...card})
+                                }
                             />
                         ),
                     }))}
