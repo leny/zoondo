@@ -22,7 +22,7 @@ export default (server, socket) => reason => {
 
         sendSystemMessage(
             server.to(id),
-            "Game is closed. [Reload](javascript:location.reload(true)) to start a new game.",
+            "Partie terminée. [Rechargez](javascript:location.reload(true)) pour démarrer une nouvelle partie.",
         );
 
         const room = server.adapter.rooms[id];
