@@ -8,6 +8,7 @@
 
 import {sendSystemMessage} from "core/socket";
 import register from "./handlers/register";
+import forwardToGame from "./handlers/forward-to-game";
 import disconnecting from "./handlers/disconnecting";
 
 export default io => {
@@ -18,5 +19,12 @@ export default io => {
 
         socket.on("register", register(server, socket));
         socket.on("disconnecting", disconnecting(server, socket));
+
+        socket.on(
+            "move",
+            forwardToGame(server, socket, (game, {card, destination}) =>
+                game.move(card, destination),
+            ),
+        );
     });
 };

@@ -8,6 +8,7 @@
 
 import tribes from "data/tribes";
 import {sendSystemMessage} from "core/socket";
+import {resolveMoves, resolveCard} from "data/utils";
 
 export default class Game {
     server = null;
@@ -44,8 +45,8 @@ export default class Game {
                     }),
                 ),
             );
-        this.sendMessage("Partie créée. En attente d'un second joueur…");
-        this.sendState();
+        this._sendMessage("Partie créée. En attente d'un second joueur…");
+        this._sendState();
     }
 
     join(secondPlayer) {
@@ -67,30 +68,117 @@ export default class Game {
                     }),
                 ),
             );
-        this.sendMessage(`**${secondPlayer.name}** a rejoint la partie.`);
-        this.sendState();
+        this._sendMessage(`**${secondPlayer.name}** a rejoint la partie.`);
+        this._sendState();
         this.startTurn(Object.keys(this.players)[Math.round(Math.random())]);
     }
 
     leave(playerId) {
         const leavingPlayer = this.players[playerId];
 
-        this.sendMessage(`**${leavingPlayer.name}** a quitté la partie.`);
+        this._sendMessage(`**${leavingPlayer.name}** a quitté la partie.`);
     }
 
     startTurn(playerId) {
         this.turn.count++;
         this.turn.activePlayer = playerId;
         this.turn.phase = "main";
-        this.sendState();
-        this.sendMessage(`Début de tour : **${this.players[playerId].name}**.`);
+        this._sendState();
+        this._sendMessage(
+            `Début de tour : **${this.players[playerId].name}**.`,
+        );
+        console.log(
+            "Starting turn:",
+            playerId,
+            this.players[playerId].name,
+            this.players[playerId].isFirstPlayer
+                ? "(first player)"
+                : "(second player)",
+        );
     }
 
-    sendMessage(message) {
+    endTurn() {
+        this._sendMessage("Fin de tour.");
+        // TODO: close turn, clean stuffs if needed
+
+        // return nextPlayer id
+        return Object.keys(this.players).find(
+            id => id !== this.turn.activePlayer,
+        );
+    }
+
+    move(card, destination) {
+        const [isValid, isCombat] = this._checkMove(card, destination);
+
+        if (!isValid) {
+            // TODO: send proper error
+            this._sendMessage("**Error** - déplacement invalide");
+            return;
+        }
+
+        if (isCombat) {
+            // perform combat
+            console.log("isCombat");
+            this._sendMessage("**Combat** - not implemented yet.");
+        } else {
+            // perform move
+            const cardIndex = this.board.findIndex(
+                ({x, y}) => card.x === x && card.y === y,
+            );
+            this.board[cardIndex] = {
+                ...this.board[cardIndex],
+                ...destination,
+            };
+            this._sendMessage(
+                `**Déplacement** - Zoon de _${[card.x, card.y].join(
+                    ",",
+                )}_ à _${[destination.x, destination.y].join(",")}_`,
+            );
+        }
+
+        this.startTurn(this.endTurn());
+    }
+
+    _checkMove({x, y, ...cardInfos}, {x: dX, y: dY}) {
+        const card = resolveCard(cardInfos);
+        const moves = resolveMoves(
+            {x, y},
+            card.moves,
+            !this.players[this.turn.activePlayer].isFirstPlayer,
+        ).reduce((arr, move) => {
+            move.reduce((keep, [mX, mY, isJump = false]) => {
+                if (keep) {
+                    const cardAtPosition = this.board.find(
+                        crd => crd.x === mX && crd.y === mY,
+                    );
+
+                    if (cardAtPosition) {
+                        if (cardAtPosition.player !== this.turn.activePlayer) {
+                            arr.push([mX, mY, isJump, true]);
+                        }
+
+                        return false;
+                    }
+
+                    arr.push([mX, mY, isJump, false]);
+                }
+
+                return keep;
+            }, true);
+
+            return arr;
+        }, []);
+
+        const destination = moves.find(([mX, mY]) => dX === mX && dY === mY);
+
+        return [!!destination, destination[3]];
+    }
+
+    _sendMessage(message) {
         sendSystemMessage(this.server.to(this.room), message);
     }
 
-    sendState() {
+    _sendState() {
         Object.values(this.players).forEach(({id}) => {
             const state = {
                 turn: {
