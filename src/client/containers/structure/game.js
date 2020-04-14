@@ -14,6 +14,8 @@ import {usePwops} from "@pwops/react-hooks";
 import {useSocket} from "use-socketio";
 import {resolveMoves, resolveCard} from "data/utils";
 
+import {DEBUG_MODE} from "core/constants";
+
 import Header from "components/header";
 import Board from "components/board/board";
 import BoardCard from "components/board/card";
@@ -79,8 +81,11 @@ const Game = ({player: rawPlayer}) => {
     );
 
     const sendCombatAction = useCallback(
-        (action, params) => socket.emit("combat", {action, ...params}),
-        [],
+        (action, params) => {
+            socket.emit("combat", {action, ...params});
+            setTurn({...turn, combat: {...turn.combat, step: "wait"}});
+        },
+        [turn, setTurn],
     );
 
     useEffect(() => {
@@ -134,7 +139,10 @@ const Game = ({player: rawPlayer}) => {
     }, [activeCard]);
 
     useSocket("state", state => {
-        console.log("new game state:", state);
+        DEBUG_MODE && console.log("state:", state);
+        document.title = `Zoondo - ${player.name}${
+            state.turn?.activePlayer?.id === player.id ? " - actif" : ""
+        }`;
         setPlayer(state.player);
         setOpponent(state.opponent);
         setBoard(state.board);
