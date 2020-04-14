@@ -8,14 +8,15 @@
 
 import React, {useMemo} from "react";
 import PropTypes from "prop-types";
-import {NBSP, CARD_TYPES, BORDER_COLOR} from "core/constants";
+import {NBSP, CARD_TYPES} from "core/constants";
 
-import {px, rem, percent, translateY} from "@pwops/core";
+import {rem, percent} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
 import {resolveCard} from "data/utils";
 
 import CardCorners from "components/tools/card-corners";
 import CardMoves from "components/tools/card-moves";
+import Box from "components/commons/box";
 
 const CardInfos = ({className, card}) => {
     const data = useMemo(() => {
@@ -27,21 +28,6 @@ const CardInfos = ({className, card}) => {
     }, [card]);
 
     const styles = usePwops({
-        container: {
-            relative: true,
-            minHeight: rem(24),
-            padding: [rem(2), rem(1), rem(1)],
-            border: [px(1), "solid", BORDER_COLOR],
-            borderRadius: px(3),
-        },
-        name: {
-            absolute: [0, false, false, rem(1)],
-            display: "inline-block",
-            background: "black",
-            padding: [0, rem(1)],
-            fontSize: rem(1.6),
-            transform: translateY(percent(-50)),
-        },
         params: {
             flexRow: ["space-between", "stretch"],
         },
@@ -69,7 +55,7 @@ const CardInfos = ({className, card}) => {
         },
     });
 
-    let $content, $details;
+    let title, $content, $details;
 
     if (data) {
         if (data.power) {
@@ -82,18 +68,20 @@ const CardInfos = ({className, card}) => {
             );
         }
 
+        title = (
+            <>
+                {"Carte active:"}
+                {NBSP}
+                <span>
+                    <strong>{data.name}</strong>
+                    {NBSP}
+                    {`(${data.type}, ${data.tribe})`}
+                </span>
+            </>
+        );
+
         $content = (
             <>
-                <span css={styles.name}>
-                    {"Carte active:"}
-                    {NBSP}
-                    <span>
-                        <strong>{data.name}</strong>
-                        {NBSP}
-                        {`(${data.type}, ${data.tribe})`}
-                    </span>
-                </span>
-
                 <div css={styles.params}>
                     <figure css={styles.illustration}>
                         <img
@@ -112,22 +100,20 @@ const CardInfos = ({className, card}) => {
             </>
         );
     } else {
+        title = "Carte active:";
         $content = (
-            <>
-                <span css={styles.name}>{"Carte active:"}</span>
-                <p css={styles.empty}>
-                    {
-                        "Cliquez sur une de vos cartes pour avoir plus d'informations."
-                    }
-                </p>
-            </>
+            <p css={styles.empty}>
+                {
+                    "Cliquez sur une de vos cartes pour avoir plus d'informations."
+                }
+            </p>
         );
     }
 
     return (
-        <div css={styles.container} className={className}>
+        <Box title={title} className={className}>
             {$content}
-        </div>
+        </Box>
     );
 };
 

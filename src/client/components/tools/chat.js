@@ -8,12 +8,12 @@
 
 import React, {useRef, useState, useEffect} from "react";
 
-import {BORDER_COLOR} from "core/constants";
-import {px, rem, percent, translateY} from "@pwops/core";
+import {percent} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
 import {useSocket} from "use-socketio";
 
 import ChatMessage from "components/tools/chat-message";
+import Box from "components/commons/box";
 
 const Chat = ({className}) => {
     const [messages, setMessages] = useState([]);
@@ -31,21 +31,6 @@ const Chat = ({className}) => {
     const list = useRef(null);
 
     const styles = usePwops({
-        container: {
-            relative: true,
-            flexColumn: ["space-between", "stretch"],
-            padding: [rem(2), rem(1), rem(1)],
-            border: [px(1), "solid", BORDER_COLOR],
-            borderRadius: px(3),
-        },
-        name: {
-            absolute: [0, false, false, rem(1)],
-            display: "inline-block",
-            background: "black",
-            padding: [0, rem(1)],
-            fontSize: rem(1.6),
-            transform: translateY(percent(-50)),
-        },
         holder: {overflow: "auto", flex: [1, 0, 0]},
         messages: {
             minHeight: percent(100),
@@ -64,8 +49,7 @@ const Chat = ({className}) => {
     }, [list.current, messages]);
 
     return (
-        <div css={styles.container} className={className}>
-            <span css={styles.name}>{"Chat"}</span>
+        <Box className={className} title={"Chat"}>
             <div css={styles.holder}>
                 <ul css={styles.messages} ref={list}>
                     {messages.map(message => (
@@ -75,7 +59,7 @@ const Chat = ({className}) => {
                     ))}
                 </ul>
             </div>
-        </div>
+        </Box>
     );
 };
 

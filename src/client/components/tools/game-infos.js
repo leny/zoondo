@@ -10,29 +10,16 @@ import React from "react";
 import {Turn} from "types";
 
 import Button from "components/commons/button";
+import Box from "components/commons/box";
 
-import {BORDER_COLOR, NBSP} from "core/constants";
+import {NBSP} from "core/constants";
 
-import {px, rem, percent, translateY} from "@pwops/core";
+import {rem} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
 
 const GameInfos = ({className, turn}) => {
     const {count, activePlayer, phase, timer} = turn || {};
     const styles = usePwops({
-        container: {
-            relative: true,
-            padding: [rem(2), rem(1), rem(1)],
-            border: [px(1), "solid", BORDER_COLOR],
-            borderRadius: px(3),
-        },
-        name: {
-            absolute: [0, false, false, rem(1)],
-            display: "inline-block",
-            background: "black",
-            padding: [0, rem(1)],
-            fontSize: rem(1.6),
-            transform: translateY(percent(-50)),
-        },
         activePlayer: {
             marginBottom: rem(0.5),
             fontSize: rem(2),
@@ -84,11 +71,9 @@ const GameInfos = ({className, turn}) => {
     }
 
     return (
-        <div css={styles.container} className={className}>
-            <span css={styles.name}>
-                {`Partie${count ? ` - tour ${count}` : ""}`}
-            </span>
-
+        <Box
+            className={className}
+            title={`Partie${count ? ` - tour ${count}` : ""}`}>
             {$activePlayer}
 
             <div css={styles.timer}>
@@ -100,7 +85,7 @@ const GameInfos = ({className, turn}) => {
             </div>
 
             {$tools}
-        </div>
+        </Box>
     );
 };
 
