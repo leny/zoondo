@@ -31,6 +31,9 @@ const Chat = ({className}) => {
     const list = useRef(null);
 
     const styles = usePwops({
+        box: {
+            flexColumn: ["space-between", "stretch"],
+        },
         holder: {overflow: "auto", flex: [1, 0, 0]},
         messages: {
             minHeight: percent(100),
@@ -49,7 +52,7 @@ const Chat = ({className}) => {
     }, [list.current, messages]);
 
     return (
-        <Box className={className} title={"Chat"}>
+        <Box className={className} css={styles.box} title={"Chat"}>
             <div css={styles.holder}>
                 <ul css={styles.messages} ref={list}>
                     {messages.map(message => (
