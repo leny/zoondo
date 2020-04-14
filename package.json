@@ -28,6 +28,7 @@
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-private-methods": "^7.8.3",
     "@babel/preset-env": "^7.9.5",
     "@babel/preset-react": "^7.9.4",
     "@becode/eslint-config": "^0.9.1",
@@ -85,6 +86,7 @@
     "emotion-box-sizing-reset": "^0.2.0",
     "emotion-meyer-reset": "^0.2.0",
     "express": "^4.17.1",
+    "lodash.clonedeep": "^4.5.0",
     "marked": "^0.8.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
