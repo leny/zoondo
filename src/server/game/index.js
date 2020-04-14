@@ -18,11 +18,38 @@ export default class Game {
         count: 0,
         activePlayer: null,
         phase: "waiting",
+        combat: null,
         timer: 30,
     };
     board = [];
     supports = [];
     trumps = [];
+
+    /*
+    turn = {
+        count: 0,
+        activePlayer: null,
+        phase: "combat",
+        combat: {
+            step: "resolve",
+            attacker: {
+                x: 0,
+                y: 0,
+                player: "",
+                card: {tribe: "europa-boarix", type: "fighters", slug: "cloboulon"},
+                cornerIndex: 2,
+            },
+            defender: {
+                x: 1,
+                y: 1,
+                player: "",
+                card: {tribe: "europa-monkus", type: "fighters", slug: "queen-mary"},
+                cornerIndex: 0,
+            },
+            winner: "attacker",
+        },
+    };
+    */
 
     constructor(server, roomId, firstPlayer) {
         this.server = server;
@@ -221,6 +248,18 @@ export default class Game {
                     }),
                 ),
             };
+
+            if (state.turn.phase === "combat") {
+                if (["choice", "wait"].includes(state.turn.combat.step)) {
+                    ["attacker", "defender"].forEach(side => {
+                        if (state.turn.combat[side].player !== id) {
+                            state.turn.combat[side].card = {
+                                tribe: state.turn.combat[side].card.tribe,
+                            };
+                        }
+                    });
+                }
+            }
 
             if (this.server.sockets[id]) {
                 this.server.sockets[id].emit("state", state);

@@ -26,5 +26,8 @@ export default io => {
                 game.move(card, destination),
             ),
         );
+        socket.on("combat", (...params) =>
+            console.log("event:combat", ...params),
+        );
     });
 };
