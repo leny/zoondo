@@ -130,7 +130,13 @@ export default class Game {
                 ...destination,
             };
             this._sendState();
-            this._sendMessage(
+            this._sendMessageToActivePlayer(
+                `**Déplacement** - _${resolveCard(card).name}_ de _${[
+                    card.x,
+                    card.y,
+                ].join(",")}_ à _${[destination.x, destination.y].join(",")}_`,
+            );
+            this._sendMessageToInactivePlayer(
                 `**Déplacement** - Zoon de _${[card.x, card.y].join(
                     ",",
                 )}_ à _${[destination.x, destination.y].join(",")}_`,
@@ -177,6 +183,20 @@ export default class Game {
 
     _sendMessage(message) {
         sendSystemMessage(this.server.to(this.room), message);
+    }
+
+    _sendMessageToActivePlayer(message) {
+        const id = this.turn.activePlayer;
+
+        sendSystemMessage(this.server.sockets[id], message);
+    }
+
+    _sendMessageToInactivePlayer(message) {
+        const id = Object.keys(this.players).find(
+            playerId => playerId !== this.turn.activePlayer,
+        );
+
+        sendSystemMessage(this.server.sockets[id], message);
     }
 
     _sendState() {
