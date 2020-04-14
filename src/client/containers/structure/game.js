@@ -78,6 +78,11 @@ const Game = ({player: rawPlayer}) => {
         [activeCard, setActiveCard],
     );
 
+    const sendCombatAction = useCallback(
+        (action, params) => socket.emit("combat", {action, ...params}),
+        [],
+    );
+
     useEffect(() => {
         // init game
         document.title = `Zoondo - ${player.name}`;
@@ -184,7 +189,13 @@ const Game = ({player: rawPlayer}) => {
             break;
 
         case "combat":
-            $content = <Combat player={player} {...(turn.combat || {})} />;
+            $content = (
+                <Combat
+                    player={player}
+                    {...(turn.combat || {})}
+                    onAction={sendCombatAction}
+                />
+            );
             break;
 
         case "waiting":
