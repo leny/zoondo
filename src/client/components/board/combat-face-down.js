@@ -21,6 +21,7 @@ const BoardCombatCardFaceDown = ({
     className,
     tribe,
     isAltColor,
+    selectableCorners = false,
     onCornerSelected = noop,
 }) => {
     const styles = usePwops({
@@ -60,6 +61,20 @@ const BoardCombatCardFaceDown = ({
         "zoneBottomLeft",
     ];
 
+    let $cornersButton;
+
+    if (selectableCorners) {
+        $cornersButton = Array.from(new Array(4).keys()).map(i => (
+            <a
+                key={`zone-${i}`}
+                css={[styles.zone, styles[stylesMapping[i]]]}
+                href={"#"}
+                onClick={preventDefault(() => onCornerSelected(i))}>
+                {NBSP}
+            </a>
+        ));
+    }
+
     return (
         <div css={styles.container} className={className}>
             <img
@@ -71,15 +86,7 @@ const BoardCombatCardFaceDown = ({
                 css={styles.decoration}
                 src={isAltColor ? cardBackAlt : cardBack}
             />
-            {Array.from(new Array(4).keys()).map(i => (
-                <a
-                    key={`zone-${i}`}
-                    css={[styles.zone, styles[stylesMapping[i]]]}
-                    href={"#"}
-                    onClick={preventDefault(() => onCornerSelected(i))}>
-                    {NBSP}
-                </a>
-            ))}
+            {$cornersButton}
         </div>
     );
 };
@@ -87,6 +94,7 @@ const BoardCombatCardFaceDown = ({
 BoardCombatCardFaceDown.propTypes = {
     tribe: PropTypes.string,
     isAltColor: PropTypes.bool,
+    selectableCorners: PropTypes.bool,
     onCornerSelected: PropTypes.func,
 };
 
