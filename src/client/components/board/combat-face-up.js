@@ -28,7 +28,7 @@ const BoardCombatCardFaceUp = ({
             size: [px(240)],
             flexColumn: ["space-around", "center"],
             border: [px(1), "solid", "#444"],
-            borderRadius: px(3),
+            borderRadius: px(20),
         },
         name: {
             display: "block",
