@@ -126,6 +126,7 @@ const Game = ({player: rawPlayer}) => {
         setOpponent(state.opponent);
         setBoard(state.board);
         setTurn(state.turn);
+        setOverlays([]);
         setActiveCard(null);
     });
 

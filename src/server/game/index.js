@@ -129,6 +129,7 @@ export default class Game {
                 ...this.board[cardIndex],
                 ...destination,
             };
+            this._sendState();
             this._sendMessage(
                 `**Déplacement** - Zoon de _${[card.x, card.y].join(
                     ",",
