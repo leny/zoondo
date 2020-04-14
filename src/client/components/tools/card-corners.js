@@ -7,6 +7,7 @@
  */
 
 import React from "react";
+import PropTypes from "prop-types";
 
 import {usePwops} from "@pwops/react-hooks";
 import {rem, percent, radialGradient} from "@pwops/core";
@@ -23,20 +24,23 @@ const getCharacter = s => {
 
 const CardCorners = ({
     className,
-    corners: [topLeft, topRight, bottomRight, bottomLeft],
+    corners,
+    forCombat = false,
+    selectedCornerIndex,
 }) => {
     const styles = usePwops({
         container: {
             relative: true,
-            size: rem(7),
+            size: percent(100),
         },
         element: {
             display: "block",
-            size: rem(2.4),
+            size: rem(forCombat ? 3.6 : 2.4),
             flexColumn: ["center", "center"],
             borderRadius: percent(100),
             backgroundImage: radialGradient("at top left", "yellow", "orange"),
-            fontSize: rem(2),
+            fontSize: rem(forCombat ? 2.8 : 2),
+            lineHeight: rem(forCombat ? 3.6 : 2.4),
             color: "black",
         },
         topLeft: {
@@ -51,28 +55,38 @@ const CardCorners = ({
         bottomRight: {
             absolute: [false, 0, 0, false],
         },
+        selected: {
+            size: rem(forCombat ? 4.2 : 3.6),
+            lineHeight: rem(forCombat ? 4.2 : 3.6),
+            fontSize: rem(forCombat ? 3.4 : 2.8),
+            backgroundImage: radialGradient("at top left", "cyan", "blue"),
+            color: "white",
+        },
     });
+
+    const stylesMapping = ["topLeft", "topRight", "bottomRight", "bottomLeft"];
 
     return (
         <div css={styles.container} className={className}>
-            <span css={[styles.element, styles.topLeft]}>
-                {getCharacter(topLeft)}
-            </span>
-            <span css={[styles.element, styles.topRight]}>
-                {getCharacter(topRight)}
-            </span>
-            <span css={[styles.element, styles.bottomLeft]}>
-                {getCharacter(bottomLeft)}
-            </span>
-            <span css={[styles.element, styles.bottomRight]}>
-                {getCharacter(bottomRight)}
-            </span>
+            {Array.from(new Array(4).keys()).map(i => (
+                <span
+                    key={`corner-${i}`}
+                    css={[
+                        styles.element,
+                        styles[stylesMapping[i]],
+                        selectedCornerIndex === i && styles.selected,
+                    ]}>
+                    {getCharacter(corners[i])}
+                </span>
+            ))}
         </div>
     );
 };
 
 CardCorners.propTypes = {
     corners: Corners,
+    selectedCornerIndex: PropTypes.number,
+    forCombat: PropTypes.bool,
 };
 
 export default CardCorners;

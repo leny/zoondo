@@ -21,6 +21,7 @@ import BoardOverlay from "components/board/overlay";
 import CardInfos from "components/tools/card-infos";
 import GameInfos from "components/tools/game-infos";
 import Chat from "components/tools/chat";
+import Combat from "components/board/combat";
 
 const Game = ({player: rawPlayer}) => {
     const [player, setPlayer] = useState(rawPlayer);
@@ -37,12 +38,15 @@ const Game = ({player: rawPlayer}) => {
         },
         main: {
             flexRow: ["space-between", "stretch"],
+            minHeight: px(720),
         },
-        board: {
-            flex: "none",
+        content: {
+            flex: [1, 0, 0],
+            flexRow: ["center", "center"],
         },
         tools: {
-            flex: [1, 0, 0],
+            width: px(440),
+            flex: "none",
             flexColumn: ["space-between", "stretch"],
             padding: [rem(2.1), 0],
             marginLeft: rem(2),
@@ -50,6 +54,10 @@ const Game = ({player: rawPlayer}) => {
         cardInfos: {flex: "none"},
         gameInfos: {flex: "none", margin: [rem(2), 0]},
         chat: {flex: [1, 0, 0]},
+        waiting: {
+            fontSize: rem(4.8),
+            textAlign: "center",
+        },
     });
 
     const sendMovement = useCallback(
@@ -127,16 +135,23 @@ const Game = ({player: rawPlayer}) => {
         setBoard(state.board);
         setTurn(state.turn);
         setOverlays([]);
-        setActiveCard(null);
+        if (state.turn.phase === "combat") {
+            ["attacker", "defender"].forEach(side => {
+                if (state.turn.combat[side].player === state.player.id) {
+                    setActiveCard(state.turn.combat[side].card);
+                }
+            });
+        } else {
+            setActiveCard(null);
+        }
     });
 
-    return (
-        <div css={styles.container}>
-            <Header round={1} player={player} opponent={opponent} />
+    let $content;
 
-            <main css={styles.main}>
+    switch (turn?.phase) {
+        case "main":
+            $content = (
                 <Board
-                    css={styles.board}
                     player={player}
                     opponent={opponent}
                     activeCell={{x: activeCard?.x, y: activeCard?.y}}
@@ -165,6 +180,26 @@ const Game = ({player: rawPlayer}) => {
                         ),
                     }))}
                 />
+            );
+            break;
+
+        case "combat":
+            $content = <Combat player={player} {...(turn.combat || {})} />;
+            break;
+
+        case "waiting":
+            $content = <div css={styles.waiting}>{"Waiting…"}</div>;
+            break;
+
+        // no default
+    }
+
+    return (
+        <div css={styles.container}>
+            <Header round={1} player={player} opponent={opponent} />
+
+            <main css={styles.main}>
+                <div css={styles.content}>{$content}</div>
                 <div css={styles.tools}>
                     <CardInfos css={styles.cardInfos} card={activeCard} />
 

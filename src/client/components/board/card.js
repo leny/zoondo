@@ -20,7 +20,7 @@ const BoardCard = ({className, tribe, isOwn = false, onSelect = noop}) => {
     const styles = usePwops({
         card: {
             size: px(120),
-            position: "relative",
+            relative: true,
             display: "block",
         },
         coat: {

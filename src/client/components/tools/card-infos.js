@@ -53,6 +53,7 @@ const CardInfos = ({className, card}) => {
             fontSize: rem(1.4),
             textAlign: "center",
         },
+        corners: {size: rem(7)},
     });
 
     let title, $content, $details;
@@ -92,7 +93,10 @@ const CardInfos = ({className, card}) => {
                     </figure>
 
                     <div css={styles.infos}>
-                        <CardCorners corners={data.corners} />
+                        <CardCorners
+                            css={styles.corners}
+                            corners={data.corners}
+                        />
                         <CardMoves moves={data.moves} />
                     </div>
                 </div>
