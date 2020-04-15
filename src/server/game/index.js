@@ -215,7 +215,7 @@ export default class Game {
 
             this.turn.combat.step = "resolve";
 
-            if (attackerValue === "*" && defenderValue === "*") {
+            if (attackerValue === defenderValue) {
                 this._sendMessage(
                     `**Combat** - le combat se solde par une égalité. Chaque Zoon conserve sa position - **NOTE:** ce comportement n'est pas tout à fait conforme aux règles, il sera implémenté correctement sous peu.`,
                 );
