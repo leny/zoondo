@@ -12,7 +12,7 @@ import {NBSP, CARD_TYPES} from "core/constants";
 
 import {rem, percent} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
-import {resolveCard} from "data/utils";
+import {resolveCard, resolveType} from "data/utils";
 
 import CardCorners from "components/tools/card-corners";
 import CardMoves from "components/tools/card-moves";
@@ -76,7 +76,7 @@ const CardInfos = ({className, card}) => {
                 <span>
                     <strong>{data.name}</strong>
                     {NBSP}
-                    {`(${data.type}, ${data.tribe})`}
+                    {`(${resolveType(data.type)}, ${data.tribe})`}
                 </span>
             </>
         );
