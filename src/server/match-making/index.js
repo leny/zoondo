@@ -26,8 +26,13 @@ export default io => {
                 game.move(card, destination),
             ),
         );
-        socket.on("combat", (...params) =>
-            console.log("event:combat", ...params),
+        socket.on(
+            "combat",
+            forwardToGame(server, socket, (game, {action, index}) => {
+                if (action === "choose") {
+                    game.combatChooseCorner(socket.id, index);
+                }
+            }),
         );
     });
 };

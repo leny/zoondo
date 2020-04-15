@@ -9,6 +9,7 @@
 import tribes from "data/tribes";
 import {sendSystemMessage} from "core/socket";
 import {resolveMoves, resolveCard} from "data/utils";
+import cloneDeep from "lodash.clonedeep";
 
 export default class Game {
     server = null;
@@ -24,6 +25,7 @@ export default class Game {
     board = [];
     supports = [];
     trumps = [];
+    graveyard = [];
 
     /*
     turn = {
@@ -110,6 +112,7 @@ export default class Game {
         this.turn.count++;
         this.turn.activePlayer = playerId;
         this.turn.phase = "main";
+        this.turn.combat = null;
         this._sendState();
         this._sendMessage(
             `Début de tour : **${this.players[playerId].name}**.`,
@@ -145,8 +148,16 @@ export default class Game {
 
         if (isCombat) {
             // perform combat
-            console.log("isCombat");
-            this._sendMessage("**Combat** - not implemented yet.");
+            this.turn.phase = "combat";
+            this.turn.combat = {
+                step: "choice",
+                attacker: cloneDeep(this._getCardAtPosition(card.x, card.y)),
+                defender: cloneDeep(
+                    this._getCardAtPosition(destination.x, destination.y),
+                ),
+            };
+            this._sendMessage("**Combat** - lancement d'un combat.");
+            this._sendState();
         } else {
             // perform move
             const cardIndex = this.board.findIndex(
@@ -168,9 +179,126 @@ export default class Game {
                     ",",
                 )}_ à _${[destination.x, destination.y].join(",")}_`,
             );
-        }
 
-        this.startTurn(this.endTurn());
+            this.startTurn(this.endTurn());
+        }
+    }
+
+    combatChooseCorner(player, cornerIndex) {
+        // encode corner
+        ["attacker", "defender"].forEach(side => {
+            if (this.turn.combat[side].player !== player) {
+                console.log(
+                    `Encoding corner for ${
+                        side === "attacker" ? "defender" : "attacker"
+                    }.`,
+                );
+                this.turn.combat[side].cornerIndex = cornerIndex;
+                this.turn.combat[side].value = resolveCard(
+                    this.turn.combat[side].card,
+                ).corners[cornerIndex];
+            }
+        });
+        // resolve combat
+        if (
+            ["attacker", "defender"].every(
+                side => this.turn.combat[side].value != null,
+            )
+        ) {
+            const {attacker, defender} = this.turn.combat;
+            const attackerValue = attacker.value;
+            const defenderValue = defender.value;
+
+            this.turn.combat.step = "resolve";
+
+            if (attackerValue === "*" && defenderValue === "*") {
+                this._sendMessage(
+                    `**Combat** - le combat se solde par une égalité. Chaque Zoon conserve sa position - **NOTE:** ce comportement n'est pas tout à fait conforme aux règles, il sera implémenté correctement sous peu.`,
+                );
+                this.turn.combat.winner = "draw";
+                // TODO: resolve draw
+            } else if (attackerValue === "*") {
+                this._sendMessage(
+                    `**Combat** - le _${
+                        resolveCard(attacker.card).name
+                    }_ de **${
+                        this.players[attacker.player].name
+                    }** active son pouvoir (_${
+                        resolveCard(attacker.card).power
+                    }_) - **NOTE:** les pouvoirs ne sont pas encore implémentés, ce résultat est comptabilisé comme une égalité.`,
+                );
+                this.turn.combat.winner = "draw";
+                this.turn.combat.withPower = "attacker";
+                // TODO: resolve attacker's power
+            } else if (defenderValue === "*") {
+                this._sendMessage(
+                    `**Combat** - le _${
+                        resolveCard(defender.card).name
+                    }_ de **${
+                        this.players[defender.player].name
+                    }** active son pouvoir (_${
+                        resolveCard(defender.card).power
+                    }_) - **NOTE:** les pouvoirs ne sont pas encore implémentés, ce résultat est comptabilisé comme une égalité.`,
+                );
+                this.turn.combat.winner = "draw";
+                this.turn.combat.withPower = "defender";
+                // TODO: resolve defender's power
+            } else if (attackerValue > defenderValue) {
+                // attacker wins
+                this._sendMessage(
+                    `**Combat** - le _${
+                        resolveCard(attacker.card).name
+                    }_ de **${
+                        this.players[attacker.player].name
+                    }** élimine le _${resolveCard(defender.card).name}_ de **${
+                        this.players[defender.player].name
+                    }** et prend sa place en _${[defender.x, defender.y].join(
+                        ",",
+                    )}_.`,
+                );
+                this.turn.combat.winner = "attacker";
+                const attackerBoardIndex = this.board.findIndex(
+                    cell => cell.x === attacker.x && cell.y === attacker.y,
+                );
+                const defenderBoardIndex = this.board.findIndex(
+                    cell => cell.x === defender.x && cell.y === defender.y,
+                );
+                this.board[attackerBoardIndex] = {
+                    ...this.board[attackerBoardIndex],
+                    x: defender.x,
+                    y: defender.y,
+                };
+                const [deadCard] = this.board.splice(defenderBoardIndex, 1);
+                // TODO: check if deadCard is the EMBLEM!
+                this.graveyard.push(deadCard);
+            } else {
+                // defender wins
+                this._sendMessage(
+                    `**Combat** - le _${
+                        resolveCard(defender.card).name
+                    }_ de **${
+                        this.players[defender.player].name
+                    }** élimine le _${resolveCard(attacker.card).name}_ de **${
+                        this.players[attacker.player].name
+                    }** et conserve sa position.`,
+                );
+                this.turn.combat.winner = "defender";
+                const attackerBoardIndex = this.board.findIndex(
+                    cell => cell.x === attacker.x && cell.y === attacker.y,
+                );
+                const [deadCard] = this.board.splice(attackerBoardIndex, 1);
+                // TODO: check if deadCard is the EMBLEM!
+                this.graveyard.push(deadCard);
+            }
+
+            this._sendState();
+
+            setTimeout(() => {
+                // TODO: resolve powers!
+
+                this.startTurn(this.endTurn());
+            }, 5000);
+        }
     }
 
     _checkMove({x, y, ...cardInfos}, {x: dX, y: dY}) {
@@ -208,6 +336,10 @@ export default class Game {
         return [!!destination, destination[3]];
     }
 
+    _getCardAtPosition(x, y) {
+        return this.board.find(cell => x === cell.x && y === cell.y);
+    }
+
     _sendMessage(message) {
         sendSystemMessage(this.server.to(this.room), message);
     }
@@ -230,7 +362,7 @@ export default class Game {
         Object.values(this.players).forEach(({id}) => {
             const state = {
                 turn: {
-                    ...this.turn,
+                    ...cloneDeep(this.turn),
                     activePlayer: this.turn.activePlayer
                         ? this.players[this.turn.activePlayer]
                         : null,
