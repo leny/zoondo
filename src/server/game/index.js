@@ -27,32 +27,6 @@ export default class Game {
     trumps = [];
     graveyard = [];
 
-    /*
-    turn = {
-        count: 0,
-        activePlayer: null,
-        phase: "combat",
-        combat: {
-            step: "resolve",
-            attacker: {
-                x: 0,
-                y: 0,
-                player: "",
-                card: {tribe: "europa-boarix", type: "fighters", slug: "cloboulon"},
-                cornerIndex: 2,
-            },
-            defender: {
-                x: 1,
-                y: 1,
-                player: "",
-                card: {tribe: "europa-monkus", type: "fighters", slug: "queen-mary"},
-                cornerIndex: 0,
-            },
-            winner: "attacker",
-        },
-    };
-    */
-
     constructor(server, roomId, firstPlayer) {
         this.server = server;
         this.room = roomId;
@@ -137,6 +111,16 @@ export default class Game {
         );
     }
 
+    endGame(winnerId) {
+        this.turn.phase = "end";
+        this.turn.winner = this.players[winnerId];
+        this._sendState();
+        this._sendMessage(
+            `Partie terminée, **${this.players[winnerId].name}** a éliminé l'emblème de son adversaire.
+[Rechargez](javascript:location.reload(true)) pour démarrer une nouvelle partie.`,
+        );
+    }
+
     move(card, destination) {
         const [isValid, isCombat] = this._checkMove(card, destination);
 
@@ -188,11 +172,6 @@ export default class Game {
         // encode corner
         ["attacker", "defender"].forEach(side => {
             if (this.turn.combat[side].player !== player) {
-                console.log(
-                    `Encoding corner for ${
-                        side === "attacker" ? "defender" : "attacker"
-                    }.`,
-                );
                 // randomly rotate corners at 180º before computation
                 const corner = ([0, 2].includes(cornerIndex) ? [0, 2] : [1, 3])[
                     Math.round(Math.random())
@@ -203,7 +182,10 @@ export default class Game {
                 ).corners[corner];
             }
         });
+
         // resolve combat
+        let gameWinner;
+
         if (
             ["attacker", "defender"].every(
                 side => this.turn.combat[side].value != null,
@@ -273,7 +255,9 @@ export default class Game {
                     y: defender.y,
                 };
                 const [deadCard] = this.board.splice(defenderBoardIndex, 1);
-                // TODO: check if deadCard is the EMBLEM!
+                if (resolveCard(deadCard.card).type === "EMBLEM") {
+                    gameWinner = attacker.player;
+                }
                 this.graveyard.push(deadCard);
             } else {
                 // defender wins
@@ -291,7 +275,9 @@ export default class Game {
                     cell => cell.x === attacker.x && cell.y === attacker.y,
                 );
                 const [deadCard] = this.board.splice(attackerBoardIndex, 1);
-                // TODO: check if deadCard is the EMBLEM!
+                if (resolveCard(deadCard.card).type === "EMBLEM") {
+                    gameWinner = defender.player;
+                }
                 this.graveyard.push(deadCard);
             }
 
@@ -300,6 +286,10 @@ export default class Game {
             setTimeout(() => {
                 // TODO: resolve powers!
 
+                if (gameWinner) {
+                    this.endGame(gameWinner);
+                    return;
+                }
                 this.startTurn(this.endTurn());
             }, 5000);
         }
