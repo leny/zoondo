@@ -11,7 +11,7 @@ import PropTypes from "prop-types";
 
 import {px, rem, percent} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
-import {resolveCard} from "data/utils";
+import {resolveCard, resolveType} from "data/utils";
 
 import CardCorners from "components/tools/card-corners";
 
@@ -36,7 +36,11 @@ const BoardCombatCardFaceUp = ({
         },
         image: {
             display: "block",
-            size: [px(180)],
+            size: [px(160)],
+        },
+        type: {
+            display: "block",
+            fontSize: rem(1.2),
         },
         corners: {absolute: true, size: percent(95)},
     });
@@ -61,6 +65,7 @@ const BoardCombatCardFaceUp = ({
                 src={`/assets/tribes/${tribe}/${card.slug}.png`}
                 alt={card.name}
             />
+            <span css={styles.type}>{resolveType(card.type)}</span>
         </div>
     );
 };

@@ -40,3 +40,14 @@ export const resolveMoves = ({x, y}, moves = [], invert = false) =>
             ])
             .filter(([pX, pY]) => 0 <= pX && pX <= 5 && 0 <= pY && pY <= 5),
     );
+
+export const resolveType = type =>
+    ({
+        CHIEF: "Chef",
+        HERO: "Héros",
+        PRIEST: "Prêtre",
+        MONSTER: "Monstre",
+        ELITE: "Élite",
+        SOLDIER: "Soldat",
+        EMBLEM: "Emblème",
+    }[type]);
