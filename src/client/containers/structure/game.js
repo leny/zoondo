@@ -14,7 +14,7 @@ import {usePwops} from "@pwops/react-hooks";
 import {useSocket} from "use-socketio";
 import {resolveMoves, resolveCard} from "data/utils";
 
-import {DEBUG_MODE} from "core/constants";
+import {DEBUG_MODE, NBSP} from "core/constants";
 
 import Header from "components/header";
 import Board from "components/board/board";
@@ -207,8 +207,21 @@ const Game = ({player: rawPlayer}) => {
             break;
 
         case "waiting":
-            $content = <div css={styles.waiting}>{"Waiting…"}</div>;
+            $content = (
+                <div css={styles.waiting}>{"En attente d'un adversaire…"}</div>
+            );
             break;
+
+        case "end":
+            $content = (
+                <div css={styles.waiting}>
+                    {"Partie terminée."}
+                    <br />
+                    {"Vainqueur:"}
+                    {NBSP}
+                    <strong>{turn.winner.name}</strong>
+                </div>
+            );
 
         // no default
     }
