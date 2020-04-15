@@ -6,6 +6,8 @@
  * started at 14/04/2020
  */
 
+/* eslint-disable no-extra-parens */ // will be fixed on cleaning
+
 import React from "react";
 import PropTypes from "prop-types";
 
@@ -45,12 +47,14 @@ const BoardCombat = ({step, player, attacker, defender, winner, onAction}) => {
         },
     });
 
-    let explain, $content;
+    let explain, details, $content;
 
     switch (step) {
         case "choice":
             explain =
                 "Veuillez choisir un des coins du Zoon de votre adversaire.";
+            details =
+                "(les cartes ont été plusieurs fois tournées aléatoirement à 180º)";
 
             $content = (
                 <div css={styles.ring}>
@@ -148,7 +152,17 @@ const BoardCombat = ({step, player, attacker, defender, winner, onAction}) => {
 
     return (
         <Box title={"Combat"}>
-            <p css={styles.explain}>{explain}</p>
+            <p css={styles.explain}>
+                {explain}
+                {details ? (
+                    <>
+                        <br />
+                        <small>{details}</small>
+                    </>
+                ) : (
+                    ""
+                )}
+            </p>
 
             {$content}
         </Box>

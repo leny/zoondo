@@ -193,10 +193,14 @@ export default class Game {
                         side === "attacker" ? "defender" : "attacker"
                     }.`,
                 );
-                this.turn.combat[side].cornerIndex = cornerIndex;
+                // randomly rotate corners at 180º before computation
+                const corner = ([0, 2].includes(cornerIndex) ? [0, 2] : [1, 3])[
+                    Math.round(Math.random())
+                ];
+                this.turn.combat[side].cornerIndex = corner;
                 this.turn.combat[side].value = resolveCard(
                     this.turn.combat[side].card,
-                ).corners[cornerIndex];
+                ).corners[corner];
             }
         });
         // resolve combat
