@@ -38,7 +38,7 @@
       "name": "Bigoth",
       "type": "PRIEST",
       "corners": [2, 6, "*", 0],
-      "power": "…",
+      "power": "Le combat se solde par une égalité. Tu recules un de tes Zoons sur une case libre adjacente de la rangée située derrière lui.",
       "value": 15,
       "moves": [
         [
