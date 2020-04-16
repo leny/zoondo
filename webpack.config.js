@@ -154,7 +154,7 @@ module.exports = ({target, env, watch = false}) => {
             DEBUG_MODE: env !== "prod" && watch,
             ...{
                 client: {
-                    SERVER_PATH: "http://localhost:8000",
+                    SERVER_PATH: watch ? "http://localhost:8000" : "/",
                 },
                 server: {
                     APP_PORT: 8000,
