@@ -6,31 +6,69 @@
  * started at 03/04/2020
  */
 
-import React from "react";
+import React, {useState} from "react";
 
 import StylesGlobal from "components/styles/global";
+import HomeMenu from "components/menu/home";
+import TribeSelectorMenu from "components/menu/tribe-selector";
 import Game from "containers/structure/game";
 import {SocketIOProvider} from "use-socketio";
 
 import {SERVER_PATH} from "core/constants";
 
-const player = {
-    name: `Player (${Math.round(Math.random() * 100)})`,
-    tribe: [
-        "europa-boarix",
-        "europa-warus",
-        "europa-monkus",
-        "europa-rhinogoths",
-    ][Math.floor(Math.random() * 100) % 4],
-};
+const RootContainer = () => {
+    const [mode, setMode] = useState(null);
+    const [name, setName] = useState(null);
+    const [[tribe, disposition], setTribe] = useState([]);
 
-const RootContainer = () => (
-    <>
-        <StylesGlobal />
-        <SocketIOProvider url={SERVER_PATH}>
-            <Game player={player} />
-        </SocketIOProvider>
-    </>
-);
+    let $content;
+
+    switch (mode) {
+        case "game":
+            $content = (
+                <SocketIOProvider url={SERVER_PATH}>
+                    <Game
+                        player={{
+                            name,
+                            tribe,
+                            disposition,
+                        }}
+                    />
+                </SocketIOProvider>
+            );
+            break;
+
+        case "tribe-selector":
+            $content = (
+                <TribeSelectorMenu
+                    name={name}
+                    onSelectTribe={(...args) => {
+                        setTribe(args);
+                        setMode("game");
+                    }}
+                />
+            );
+            break;
+
+        default:
+            $content = (
+                <HomeMenu
+                    onSelectName={s => {
+                        setName(s);
+                        setMode("tribe-selector");
+                    }}
+                />
+            );
+            break;
+    }
+
+    return (
+        <>
+            <StylesGlobal />
+
+            {$content}
+        </>
+    );
+};
 
 export default RootContainer;
