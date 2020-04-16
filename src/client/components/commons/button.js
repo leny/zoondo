@@ -6,6 +6,8 @@
  * started at 08/04/2020
  */
 
+/* eslint-disable react/button-has-type */
+
 import React from "react";
 import PropTypes from "prop-types";
 
@@ -15,7 +17,13 @@ import {BORDER_COLOR} from "core/constants";
 import {px, rem} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
 
-const Button = ({className, children, onClick = noop}) => {
+const Button = ({
+    className,
+    children,
+    onClick = noop,
+    type = "button",
+    ...props
+}) => {
     const styles = usePwops({
         button: {
             display: "inline-block",
@@ -33,7 +41,8 @@ const Button = ({className, children, onClick = noop}) => {
         <button
             className={className}
             css={styles.button}
-            type={"button"}
+            type={type}
+            {...props}
             onClick={onClick}>
             {children}
         </button>
