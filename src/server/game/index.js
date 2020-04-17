@@ -6,6 +6,8 @@
  * started at 10/04/2020
  */
 
+/* eslint-disable no-console */
+
 import tribes from "data/tribes";
 import {sendSystemMessage} from "core/socket";
 import {resolveMoves, resolveCard} from "data/utils";
@@ -135,22 +137,20 @@ export default class Game {
             this.turn.phase = "combat";
             this.turn.combat = {
                 step: "choice",
-                attacker: cloneDeep(this._getCardAtPosition(card.x, card.y)),
-                defender: cloneDeep(
-                    this._getCardAtPosition(destination.x, destination.y),
-                ),
+                attacker: {
+                    ...cloneDeep(this._getCardAtPosition(card)),
+                    role: "attacker",
+                },
+                defender: {
+                    ...cloneDeep(this._getCardAtPosition(destination)),
+                    role: "defender",
+                },
             };
             this._sendMessage("**Combat** - lancement d'un combat.");
             this._sendState();
         } else {
             // perform move
-            const cardIndex = this.board.findIndex(
-                ({x, y}) => card.x === x && card.y === y,
-            );
-            this.board[cardIndex] = {
-                ...this.board[cardIndex],
-                ...destination,
-            };
+            this._updateCardOnBoard(card, destination);
             this._sendState();
             this._sendMessageToActivePlayer(
                 `**Déplacement** - _${resolveCard(card).name}_ de _${[
@@ -243,22 +243,11 @@ export default class Game {
                     )}_.`,
                 );
                 this.turn.combat.winner = "attacker";
-                const attackerBoardIndex = this.board.findIndex(
-                    cell => cell.x === attacker.x && cell.y === attacker.y,
-                );
-                const defenderBoardIndex = this.board.findIndex(
-                    cell => cell.x === defender.x && cell.y === defender.y,
-                );
-                this.board[attackerBoardIndex] = {
-                    ...this.board[attackerBoardIndex],
+                this._eliminateCardAtPosition(defender);
+                this._updateCardOnBoard(attacker, {
                     x: defender.x,
                     y: defender.y,
-                };
-                const [deadCard] = this.board.splice(defenderBoardIndex, 1);
-                if (resolveCard(deadCard.card).type === "EMBLEM") {
-                    gameWinner = attacker.player;
-                }
-                this.graveyard.push(deadCard);
+                });
             } else {
                 // defender wins
                 this._sendMessage(
@@ -271,14 +260,7 @@ export default class Game {
                     }** et conserve sa position.`,
                 );
                 this.turn.combat.winner = "defender";
-                const attackerBoardIndex = this.board.findIndex(
-                    cell => cell.x === attacker.x && cell.y === attacker.y,
-                );
-                const [deadCard] = this.board.splice(attackerBoardIndex, 1);
-                if (resolveCard(deadCard.card).type === "EMBLEM") {
-                    gameWinner = defender.player;
-                }
-                this.graveyard.push(deadCard);
+                this._eliminateCardAtPosition(attacker);
             }
 
             this._sendState();
@@ -330,8 +312,42 @@ export default class Game {
         return [!!destination, destination[3]];
     }
 
-    _getCardAtPosition(x, y) {
+    _getCardAtPosition({x, y}) {
         return this.board.find(cell => x === cell.x && y === cell.y);
+    }
+
+    _getCardIndex({x, y}) {
+        return this.board.findIndex(cell => cell.x === x && cell.y === y);
+    }
+
+    _updateCardOnBoard({x, y}, data, replace = false) {
+        const index = this._getCardIndex({x, y});
+
+        this.board[index] = replace
+            ? data
+            : {
+                  ...this.board[index],
+                  ...data,
+              };
+    }
+
+    _eliminateCardAtPosition({x, y}) {
+        const index = this.board.findIndex(
+            cell => cell.x === x && cell.y === y,
+        );
+        const [deadCard] = this.board.splice(index, 1);
+        this._sendMessage(
+            `Zoon éliminé: **${resolveCard(deadCard.card).name}**`,
+        );
+        if (resolveCard(deadCard.card).type === "EMBLEM") {
+            this.stack.push({
+                type: "win",
+                winner: Object.keys(this.players).find(
+                    id => id !== deadCard.player,
+                ),
+            });
+        }
+        this.graveyard.push(deadCard);
     }
 
     _sendMessage(message) {
