@@ -17,6 +17,7 @@ export default class Game {
     server = null;
     room = null;
     players = {};
+    stack = [];
     turn = {
         count: 0,
         activePlayer: null,
@@ -84,9 +85,51 @@ export default class Game {
         this._sendMessage(`**${leavingPlayer.name}** a quitté la partie.`);
     }
 
+    resolveStack() {
+        const action = this.stack.shift();
+
+        // without action in the stack, change turn
+        if (!action) {
+            this.startTurn(this.endTurn());
+            return;
+        }
+
+        // resolve action
+        switch (action.type) {
+            case "power": {
+                const {name, resolver, power} = resolveCard(action.source.card);
+
+                if (!resolver) {
+                    console.warn(`Power Action: no resolver for ${name}!`);
+                    this._sendMessage(
+                        `Le pouvoir de **${name}** n'est pas encore implémenté. Le combat est traité comme une égalité.`,
+                    );
+                    this.resolveStack();
+                    return;
+                }
+
+                console.group(`${name} power resolver`);
+                console.log("Power:", power);
+                resolver(this, action, () => this.resolveStack());
+                console.groupEnd();
+                break;
+            }
+
+            case "win":
+                this.endGame(action.winner);
+                break;
+
+            default:
+                console.log("Unhandled action type:", action.type, action);
+                this.resolveStack();
+                break;
+        }
+    }
+
     startTurn(playerId) {
         this.turn.count++;
         this.turn.activePlayer = playerId;
+        this.stack = [];
         this.turn.phase = "main";
         this.turn.combat = null;
         this._sendState();
@@ -164,7 +207,7 @@ export default class Game {
                 )}_ à _${[destination.x, destination.y].join(",")}_`,
             );
 
-            this.startTurn(this.endTurn());
+            this.resolveStack();
         }
     }
 
@@ -184,8 +227,6 @@ export default class Game {
         });
 
         // resolve combat
-        let gameWinner;
-
         if (
             ["attacker", "defender"].every(
                 side => this.turn.combat[side].value != null,
@@ -211,11 +252,15 @@ export default class Game {
                         this.players[attacker.player].name
                     }** active son pouvoir (_${
                         resolveCard(attacker.card).power
-                    }_) - **NOTE:** les pouvoirs ne sont pas encore implémentés, ce résultat est comptabilisé comme une égalité.`,
+                    }_).`,
                 );
-                this.turn.combat.winner = "draw";
-                this.turn.combat.withPower = "attacker";
-                // TODO: resolve attacker's power
+                this.turn.combat.winner = "power";
+                this.turn.combat.powerOwner = "attacker";
+                this.stack.push({
+                    type: "power",
+                    source: attacker,
+                    target: defender,
+                });
             } else if (defenderValue === "*") {
                 this._sendMessage(
                     `**Combat** - le _${
@@ -224,11 +269,15 @@ export default class Game {
                         this.players[defender.player].name
                     }** active son pouvoir (_${
                         resolveCard(defender.card).power
-                    }_) - **NOTE:** les pouvoirs ne sont pas encore implémentés, ce résultat est comptabilisé comme une égalité.`,
+                    }_).`,
                 );
-                this.turn.combat.winner = "draw";
-                this.turn.combat.withPower = "defender";
-                // TODO: resolve defender's power
+                this.turn.combat.winner = "power";
+                this.turn.combat.powerOwner = "defender";
+                this.stack.push({
+                    type: "power",
+                    source: defender,
+                    target: attacker,
+                });
             } else if (attackerValue > defenderValue) {
                 // attacker wins
                 this._sendMessage(
@@ -265,15 +314,7 @@ export default class Game {
 
             this._sendState();
 
-            setTimeout(() => {
-                // TODO: resolve powers!
-
-                if (gameWinner) {
-                    this.endGame(gameWinner);
-                    return;
-                }
-                this.startTurn(this.endTurn());
-            }, 5000);
+            setTimeout(() => this.resolveStack(), 5000);
         }
     }
 
