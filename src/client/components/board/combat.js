@@ -16,16 +16,30 @@ import {usePwops} from "@pwops/react-hooks";
 import {Player} from "types";
 import {resolveCard} from "data/utils";
 
+import {NBSP} from "core/constants";
+
 import Box from "components/commons/box";
 import CardFaceUp from "components/board/combat-face-up";
 import CardFaceDown from "components/board/combat-face-down";
 
-const BoardCombat = ({step, player, attacker, defender, winner, onAction}) => {
+const BoardCombat = ({
+    step,
+    player,
+    attacker,
+    defender,
+    winner,
+    powerOwner,
+    onAction,
+}) => {
     const styles = usePwops({
         explain: {
             margin: [0, 0, rem(1)],
             fontSize: rem(1.6),
             textAlign: "center",
+        },
+        power: {
+            margin: [rem(1), 0],
+            fontSize: rem(1.8),
         },
         observation: {
             margin: [rem(1), 0, rem(1)],
@@ -113,10 +127,28 @@ const BoardCombat = ({step, player, attacker, defender, winner, onAction}) => {
             );
             break;
 
-        case "resolve":
+        case "resolve": {
+            let $power;
+
             if (winner === "draw") {
                 explain =
                     "Le combat se solde par une égalité. Le Zoon attaquant recule d'une case suivant son déplacement.";
+            } else if (winner === "power") {
+                const card = resolveCard(
+                    (powerOwner === "attacker" ? attacker : defender).card,
+                );
+
+                explain = `Le pouvoir du ${name} ${
+                    powerOwner === "attacker" ? "attaquant" : "défenseur"
+                } se déclenche :`;
+
+                $power = (
+                    <p css={styles.power}>
+                        <strong>{"Pouvoir :"}</strong>
+                        {NBSP}
+                        {card.power}
+                    </p>
+                );
             } else {
                 explain = `Le ${
                     resolveCard(
@@ -141,12 +173,15 @@ const BoardCombat = ({step, player, attacker, defender, winner, onAction}) => {
                         />
                     </div>
 
+                    {$power}
+
                     <p css={styles.observation}>
                         {"La partie continue dans 5 secondes…"}
                     </p>
                 </>
             );
             break;
+        }
         // no default
     }
 
@@ -193,6 +228,7 @@ BoardCombat.propTypes = {
         }),
     }),
     winner: PropTypes.string,
+    powerOwner: PropTypes.string,
     onAction: PropTypes.func,
 };
 
