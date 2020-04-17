@@ -8,6 +8,8 @@
 
 import tribes from "data/tribes";
 
+export const resolveTribe = tribe => tribes.get(tribe);
+
 export const resolveCard = card => {
     const {tribe, type} = card;
     const [slug, variant] = card.slug.split(":");

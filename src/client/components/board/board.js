@@ -8,9 +8,12 @@
 
 import React, {useMemo} from "react";
 import PropTypes from "prop-types";
+
 import {Player} from "types";
 import {px, rem, percent, rgba, translate} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
+
+import {resolveTribe} from "data/utils";
 
 import {BORDER_COLOR, NBSP, DEBUG_MODE} from "core/constants";
 
@@ -27,6 +30,12 @@ const Board = ({
     opponent,
     player,
 }) => {
+    const playerTribeName = useMemo(() => resolveTribe(player.tribe).name, [
+        player,
+    ]);
+    const opponentTribeName = useMemo(() => resolveTribe(opponent.tribe).name, [
+        opponent,
+    ]);
     const boardSize = useMemo(
         () => [
             CASE_SIZE * COL_SIZE + (COL_SIZE - 1) * GAP_SIZE,
@@ -91,7 +100,7 @@ const Board = ({
                 {NBSP}
                 <strong>{opponent.name}</strong>
                 {NBSP}
-                <span>{`(${opponent.tribe})`}</span>
+                <span>{`(${opponentTribeName})`}</span>
             </>
         );
     } else {
@@ -138,7 +147,7 @@ const Board = ({
                 {NBSP}
                 <strong>{player.name}</strong>
                 {NBSP}
-                <span>{`(${player.tribe})`}</span>
+                <span>{`(${playerTribeName})`}</span>
             </div>
         </div>
     );
