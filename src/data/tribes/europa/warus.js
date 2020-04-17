@@ -58,10 +58,7 @@ export default {
         berserkorse: {
             name: "Berserkorse",
             type: "ELITE",
-            variants: [
-                {corners: ["*", "*", "*", "*"]},
-                {corners: ["*", "*", "*", "*"]},
-            ],
+            variants: [{corners: [2, 3, 1, "*"]}, {corners: [3, 2, "*", 1]}],
             power: "Le Berserkorse élimine le Zoon ennemi.",
             resolver: berserkorseResolver,
             value: 10,
