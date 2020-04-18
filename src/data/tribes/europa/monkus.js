@@ -16,6 +16,7 @@ export default {
         "Ces tribus ont largement exploité les vestiges archéologiques fourmillant sur leur territoire. Leurs membres ont développé des traditions fortement inspirées par l'antiquité. Les Monkus forment un peuple expansionniste. Leur découverte précoce d'un langage primitif et d'un alphabet rudimentaire a rapidement permis à ses élites intellextuelles de saisir certaines applications des objets retrouvés sur leurs sites archéologiques. Hélas, leur soif de connaissance va à l'encontre de leur tendance naturelle à la plaisanterie lourde et au jeu. Le manque de rigueur entraîné par leur humour bête et méchant fait échouer quasi systématiquement leurs tentatives de conquêtes. De plus, leurs incessantes blagues sont souvent vécues comme des provocations par les autres tribus qui leur vouent une haîne sans limite.",
     fighters: {
         "king-louis": {
+            slug: "king-louis",
             name: "King Louis",
             type: "CHIEF",
             corners: [5, 5, 2, "*"],
@@ -39,6 +40,7 @@ export default {
             ],
         },
         titus: {
+            slug: "titus",
             name: "Titus",
             type: "HERO",
             corners: [4, 4, 2, 1],
@@ -55,6 +57,7 @@ export default {
             ],
         },
         "kombo-bongo": {
+            slug: "kombo-bongo",
             name: "Kombo Bongo",
             type: "PRIEST",
             corners: [3, 1, "*", "*"],
@@ -71,6 +74,7 @@ export default {
             ],
         },
         king: {
+            slug: "king",
             name: "King",
             type: "MONSTER",
             corners: [6, 3, 0, 2],
@@ -78,6 +82,7 @@ export default {
             moves: [[[-1, 1]], [[0, 2, true]], [[1, 1]]],
         },
         kong: {
+            slug: "kong",
             name: "Kong",
             type: "MONSTER",
             corners: [3, 6, 2, 0],
@@ -85,6 +90,7 @@ export default {
             moves: [[[-1, 1]], [[0, 2, true]], [[1, 1]]],
         },
         "coco-bang": {
+            slug: "coco-bang",
             name: "Coco Bang",
             type: "ELITE",
             variants: [{corners: [3, 2, 1, 2]}, {corners: [2, 3, 2, 1]}],
@@ -92,6 +98,7 @@ export default {
             moves: [[[-1, 0]], [[0, 1]], [[1, 0]], [[0, -1]]],
         },
         bouga: {
+            slug: "bouga",
             name: "Bouga",
             type: "SOLDIER",
             variants: [{corners: [2, 1, 0, 1]}, {corners: [1, 2, 1, 0]}],
@@ -107,6 +114,7 @@ export default {
             ],
         },
         virzil: {
+            slug: "virzil",
             name: "Virzil",
             type: "SOLDIER",
             corners: [3, 3, 0, 0],
@@ -114,6 +122,7 @@ export default {
             moves: [[[-1, 1]], [[0, 2, true]], [[1, 1]]],
         },
         "queen-mary": {
+            slug: "queen-mary",
             name: "Queen Mary",
             type: "EMBLEM",
             corners: [2, 2, 0, 0],
@@ -130,8 +139,8 @@ export default {
             ],
         },
     },
-    trumps: [
-        {
+    trumps: {
+        tortue: {
             slug: "tortue",
             name: "Tortue",
             type: "TACTICAL",
@@ -140,7 +149,7 @@ export default {
                 "Déplace jusqu'à deux de tes Soldats, l'un après l'autre. Ils ajoutent un point à leurs scores de touche.",
             value: 1,
         },
-        {
+        "coco-boum": {
             slug: "coco-boum",
             name: "Coco Boum",
             type: "SHOOTING",
@@ -150,7 +159,7 @@ export default {
             target: [[[-1, 1, true]], [[1, 1, true]]],
             value: 2,
         },
-        {
+        "grosse-bertha": {
             slug: "grosse-bertha",
             name: "Grosse Bertha",
             type: "SHOOTING",
@@ -159,7 +168,7 @@ export default {
             text: "Vise un Zoon ennemi situé dans ton camp.",
             value: 3,
         },
-    ],
+    },
     composition: [
         "king-louis",
         "kombo-bongo",

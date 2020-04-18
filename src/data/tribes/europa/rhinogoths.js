@@ -14,6 +14,7 @@ export default {
         "Cette tribu humanoïde pachydermique a développé une forme de culture de type médiévale. Sédentaires par tradition, ils sont devenus nomades par nécessité : leur nature boulimique les conduit à mener une quête sans fin de racines et de feuillages. Les besoins alimentaires engendrés par leur forte corpulence et la raréfaction des ressources dans leur région d'origine soint à l'origine du relatif développement de leur civilisation. Contraints de traverser les vastes landes des terres centrales, ils ont développé l'élevage des animaux de trait et construit des moyens de transport adaptés à leur errance. Bien que peu belliqueux, les Rhinogoths sont redoutés par les tribus vivant sur les terres qu'ils visitent. Nous souhaitons que cette tribu débonnaire puisse un jour trouver un moyen durable de calmer son interminable fringale.",
     fighters: {
         "goolgoth-1": {
+            slug: "goolgoth-1",
             name: "Goolgoth I",
             type: "CHIEF",
             corners: [5, 4, 2, 3],
@@ -30,6 +31,7 @@ export default {
             ],
         },
         "oto-von-rhino": {
+            slug: "oto-von-rhino",
             name: "Oto von Rhino",
             type: "HERO",
             corners: [5, 3, 0, 3],
@@ -44,6 +46,7 @@ export default {
             ],
         },
         bigoth: {
+            slug: "bigoth",
             name: "Bigoth",
             type: "PRIEST",
             corners: [2, 6, "*", 0],
@@ -65,6 +68,7 @@ export default {
             ],
         },
         trice: {
+            slug: "trice",
             name: "Trice",
             type: "MONSTER",
             corners: [8, 4, 0, "*"],
@@ -74,6 +78,7 @@ export default {
             moves: [[[-1, 1]], [[0, 1]], [[1, 1]]],
         },
         ratops: {
+            slug: "ratops",
             name: "Ratops",
             type: "MONSTER",
             corners: [4, 8, "*", 0],
@@ -83,6 +88,7 @@ export default {
             moves: [[[-1, 1]], [[0, 1]], [[1, 1]]],
         },
         rhinogore: {
+            slug: "rhinogore",
             name: "Rhinogore",
             type: "ELITE",
             variants: [{corners: [5, 4, 1, 2]}, {corners: [4, 5, 2, 1]}],
@@ -97,6 +103,7 @@ export default {
             ],
         },
         rhino: {
+            slug: "rhino",
             name: "Rhino",
             type: "SOLDIER",
             variants: [{corners: [3, 2, 0, 1]}, {corners: [2, 3, 1, 0]}],
@@ -104,6 +111,7 @@ export default {
             moves: [[[-1, 0]], [[0, 1]], [[1, 0]]],
         },
         ouistiti: {
+            slug: "ouistiti",
             name: "Ouistiti",
             type: "EMBLEM",
             corners: [0, 0, 0, "*"],
@@ -115,6 +123,7 @@ export default {
     },
     trumps: {
         furie: {
+            slug: "furie",
             name: "Furie",
             type: "COMBAT",
             usage: "ONCE",
@@ -122,6 +131,7 @@ export default {
             value: 1,
         },
         "binome-de-choc": {
+            slug: "binome-de-choc",
             name: "Binôme de choc",
             type: "TACTICAL",
             usage: "ONCE",
@@ -130,6 +140,7 @@ export default {
             value: 2,
         },
         "poudre-descampette": {
+            slug: "poudre-descampette",
             name: "Poudre d'escampette",
             type: "TACTICAL",
             usage: "ONCE",
