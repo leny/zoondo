@@ -80,6 +80,7 @@ const HomeMenu = ({onSelectName = noop}) => {
                         id={"name"}
                         value={name}
                         placeholder={"Aa"}
+                        autoFocus
                         onChange={e => setName(e.target.value)}
                     />
                 </div>
