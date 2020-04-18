@@ -240,11 +240,22 @@ export default class Game {
             this.turn.combat.step = "resolve";
 
             if (attackerValue === defenderValue) {
+                let attackerDestination =
+                    " Les deux Zoons concervent leurs positions.";
+
+                if (attacker.move.length > 1) {
+                    const [x, y] = attacker.move[attacker.move.length - 2];
+                    if (!this._getCardAtPosition({x, y})) {
+                        this._updateCardOnBoard(attacker, {x, y});
+                        attackerDestination = ` Le **${
+                            resolveCard(attacker.card).name
+                        }** attaquant recule en _${[x, y].join(",")}_.`;
+                    }
+                }
                 this._sendMessage(
-                    `**Combat** - le combat se solde par une égalité. Chaque Zoon conserve sa position - **NOTE:** ce comportement n'est pas tout à fait conforme aux règles, il sera implémenté correctement sous peu.`,
+                    `**Combat** - le combat se solde par une égalité.${attackerDestination}`,
                 );
                 this.turn.combat.winner = "draw";
-                // TODO: resolve draw
             } else if (attackerValue === "*") {
                 this._sendMessage(
                     `**Combat** - le _${
