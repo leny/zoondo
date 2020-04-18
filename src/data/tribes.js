@@ -9,7 +9,13 @@
 import europaTribes from "./tribes/europa";
 
 const tribes = new Map();
+const editions = new Map();
 
-[...europaTribes].forEach(tribe => tribes.set(tribe.slug, tribe));
+const setBySlug = target => elt => target.set(elt.slug, elt);
+
+[...europaTribes].forEach(setBySlug(tribes));
+
+editions.set("europa", {slug: "europa", name: "Europa", tribes: europaTribes});
 
 export default tribes;
+export {tribes, editions};
