@@ -6,6 +6,8 @@
  * started at 17/04/2020
  */
 
+import kingLouisResolver from "./resolvers/monkus/king-louis";
+
 export default {
     slug: "europa-monkus",
     edition: "europa",
@@ -19,6 +21,7 @@ export default {
             corners: [5, 5, 2, "*"],
             power:
                 "Le combat se solde par une égalité. King Louis et le Zoon ennemi échangent leur position sur le champ de bataille.",
+            resolver: kingLouisResolver,
             value: 22,
             moves: [
                 [[-1, 0]],
