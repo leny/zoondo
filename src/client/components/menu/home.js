@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 import {rem, px, percent, url} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
 
-import {noop} from "utils";
+import {noop, preventDefault} from "utils";
 import {BORDER_COLOR} from "core/constants";
 
 import Button from "components/commons/button";
@@ -66,7 +66,9 @@ const HomeMenu = ({onSelectName = noop}) => {
             <form
                 css={styles.form}
                 action={"#"}
-                onSubmit={() => onSelectName(name)}>
+                onSubmit={preventDefault(
+                    () => name.trim() && onSelectName(name),
+                )}>
                 <div css={styles.control}>
                     <label css={styles.label} htmlFor={"name"}>
                         {"Choose your nickname:"}
