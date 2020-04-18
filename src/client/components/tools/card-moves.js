@@ -54,11 +54,10 @@ const CardMoves = ({
             });
         });
 
-        // draw moves
+        // draw moves (cells)
         moves.forEach(move => {
-            move.forEach(([x, y, direct = false], i, arr) => {
+            move.forEach(([x, y, direct = false]) => {
                 const [mx, my] = getPositionFromCoordinates(2 + x, 2 - y);
-                // draw cell
                 ctx.fillStyle = direct ? "forestgreen" : "yellow";
                 ctx.fillRect(mx, my, cellSize, cellSize);
                 ctx.fillStyle = "black";
@@ -74,7 +73,13 @@ const CardMoves = ({
                 );
                 ctx.fill();
                 ctx.closePath();
-                // draw paths
+            });
+        });
+
+        // draw moves (paths)
+        moves.forEach(move => {
+            move.forEach(([x, y, direct = false], i, arr) => {
+                const [mx, my] = getPositionFromCoordinates(2 + x, 2 - y);
                 if (!direct) {
                     const [fx, fy] = getPositionFromCoordinates(
                         ...(i === 0 ? [0, 0] : arr[i - 1]).map((a, j) => {
