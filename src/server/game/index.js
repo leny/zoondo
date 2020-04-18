@@ -167,7 +167,7 @@ export default class Game {
     }
 
     move(card, destination) {
-        const [isValid, isCombat] = this._checkMove(card, destination);
+        const [move, isValid, isCombat] = this._checkMove(card, destination);
 
         if (!isValid) {
             // TODO: send proper error
@@ -183,6 +183,7 @@ export default class Game {
                 attacker: {
                     ...cloneDeep(this._getCardAtPosition(card)),
                     role: "attacker",
+                    move,
                 },
                 defender: {
                     ...cloneDeep(this._getCardAtPosition(destination)),
@@ -333,13 +334,13 @@ export default class Game {
 
                     if (cardAtPosition) {
                         if (cardAtPosition.player !== this.turn.activePlayer) {
-                            arr.push([mX, mY, isJump, true]);
+                            arr.push([mX, mY, isJump, true, move]);
                         }
 
                         return false;
                     }
 
-                    arr.push([mX, mY, isJump, false]);
+                    arr.push([mX, mY, isJump, false, move]);
                 }
 
                 return keep;
@@ -349,8 +350,9 @@ export default class Game {
         }, []);
 
         const destination = moves.find(([mX, mY]) => dX === mX && dY === mY);
+        const [, , , isCombat, move] = destination;
 
-        return [!!destination, destination[3]];
+        return [move, !!destination, isCombat];
     }
 
     _getCardAtPosition({x, y}) {
