@@ -16,6 +16,10 @@ Bienvenue sur le repository de Zoondo, la version en ligne du jeu de société d
 
 Les sources de ce repository sont conjointes à une [série de vidéos](https://www.youtube.com/playlist?list=PLiqWBsRPUup73D6Mew2s1XsoyXp6eaHjp) explicatives du processus, hébergées sur YouTube.
 
+## Zoondo
+
+Zoondo est un jeu de cartes / jeu de plateau. Selon la [théorie des jeux combinatoires](https://fr.wikipedia.org/wiki/Th%C3%A9orie_des_jeux_combinatoires), c'est un [jeu de stratégie abstraite](https://fr.wikipedia.org/wiki/Jeu_de_strat%C3%A9gie_combinatoire_abstrait) à [information non parfaite](https://fr.wikipedia.org/wiki/Th%C3%A9orie_des_jeux#Information_compl%C3%A8te_et_information_incompl%C3%A8te).
+
 ### Règles du jeu
 
 Les règles du jeu originales sont [retranscrites ici](./docs/gamerules.md).
@@ -34,6 +38,7 @@ Les règles du jeu originales sont [retranscrites ici](./docs/gamerules.md).
 - [ ] Match-making
 	- [x] Aléatoire
 	- [ ] Invitation
+- [ ] IA joueur
 
 ### Règles
 
