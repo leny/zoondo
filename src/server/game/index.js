@@ -22,6 +22,7 @@ export default class Game {
     turn = {
         count: 0,
         activePlayer: null,
+        passivePlayer: null,
         phase: "waiting",
         combat: null,
         action: null,
@@ -118,14 +119,10 @@ export default class Game {
 
                 console.group(`${name} power resolver`);
                 console.log({action, power});
-                resolver(
-                    this,
-                    action,
-                    () => {
-                        this._sendState();
-                        this.resolveStack();
-                    },
-                );
+                resolver(this, action, () => {
+                    this._sendState();
+                    this.resolveStack();
+                });
                 console.groupEnd();
                 break;
             }
@@ -144,6 +141,9 @@ export default class Game {
     startTurn(playerId) {
         this.turn.count++;
         this.turn.activePlayer = playerId;
+        this.turn.passivePlayer = Object.keys(this.players).find(
+            id => id !== playerId,
+        );
         this.stack = [];
         this.turn.phase = "main";
         this.turn.combat = null;
@@ -167,9 +167,7 @@ export default class Game {
         // TODO: close turn, clean stuffs if needed
 
         // return nextPlayer id
-        return Object.keys(this.players).find(
-            id => id !== this.turn.activePlayer,
-        );
+        return this.turn.passivePlayer;
     }
 
     endGame(winnerId) {
@@ -424,18 +422,16 @@ export default class Game {
         sendSystemMessage(this.server.to(this.room), message);
     }
 
-    _sendMessageToActivePlayer(message) {
-        const id = this.turn.activePlayer;
+    _sendMessageToPlayer(playerId, message) {
+        sendSystemMessage(this.server.sockets[playerId], message);
+    }
 
-        sendSystemMessage(this.server.sockets[id], message);
+    _sendMessageToActivePlayer(message) {
+        this._sendMessageToPlayer(this.turn.activePlayer, message);
     }
 
     _sendMessageToInactivePlayer(message) {
-        const id = Object.keys(this.players).find(
-            playerId => playerId !== this.turn.activePlayer,
-        );
-
-        sendSystemMessage(this.server.sockets[id], message);
+        this._sendMessageToPlayer(this.turn.passivePlayer, message);
     }
 
     _sendState() {
@@ -445,6 +441,9 @@ export default class Game {
                     ...cloneDeep(this.turn),
                     activePlayer: this.turn.activePlayer
                         ? this.players[this.turn.activePlayer]
+                        : null,
+                    passivePlayer: this.turn.passivePlayer
+                        ? this.players[this.turn.passivePlayer]
                         : null,
                 },
                 player: this.players[id],
@@ -478,7 +477,9 @@ export default class Game {
                 const {next, ...action} = state.turn.action;
 
                 state.turn.action = action;
-                state.turn.action.options.player=this.players[state.turn.action.options.player];
+                state.turn.action.options.player = this.players[
+                    state.turn.action.options.player
+                ];
             }
 
             if (this.server.sockets[id]) {
