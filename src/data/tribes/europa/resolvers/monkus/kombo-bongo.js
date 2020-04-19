@@ -18,21 +18,6 @@ export default (game, {source, target}, next) => {
         ({player, card: {slug}}) =>
             player === source.player && ["king", "kong"].includes(slug),
     );
-    const resolvePower = (choice, message) => {
-        game._updateCardOnBoard(choice, {x: source.x, y: source.y});
-        game._updateCardOnBoard(source, {x: choice.x, y: choice.y});
-        game._sendMessageToPlayer(source.player, message);
-        game._sendMessageToPlayer(
-            target.player,
-            `**Kombo Bongo** (en _${[source.x, source.y].join(
-                ",",
-            )}_) a échangé sa position avec **King** ou **Kong** (en _${[
-                choice.x,
-                choice.y,
-            ].join(",")}_).`,
-        );
-        next();
-    };
 
     if (!choices.length) {
         game._sendMessage(
@@ -43,12 +28,25 @@ export default (game, {source, target}, next) => {
     }
 
     if (choices.length === 1) {
-        const card = resolveCard(choices[0]);
+        const card = choices[0];
 
-        resolvePower(
-            choices[0],
-            `Seul **${card.name}** est encore présent sur le champ de bataille. Il échange sa position avec **Kombo Bongo**.`,
+        game._swapCardsOnBoard(source, card);
+        game._sendMessageToPlayer(
+            source.player,
+            `Seul **${
+                resolveCard(card.card).name
+            }** est encore présent sur le champ de bataille. Il échange sa position avec **Kombo Bongo**.`,
         );
+        game._sendMessageToPlayer(
+            target.player,
+            `**Kombo Bongo** (en _${[source.x, source.y].join(
+                ",",
+            )}_) a échangé sa position avec **King** ou **Kong** (en _${[
+                card.x,
+                card.y,
+            ].join(",")}_).`,
+        );
+        next();
         return;
     }
 
@@ -61,13 +59,30 @@ export default (game, {source, target}, next) => {
             text: "Veuillez choisir **King** ou **Kong**.",
         },
         next: choice => {
-            const cardChoice = game._getCardAtPosition(choice);
-            const card = resolveCard(cardChoice);
+            if (!choices.find(({x, y}) => choice.x === x && choice.y === y)) {
+                throw new Error("WTF"); // cheating?
+                // TODO: handle this
+            }
 
-            resolvePower(
-                card,
-                `Vous avez choisi **${card.name}**. Il échange sa position avec **Kombo Bongo**.`,
+            const card = game._getCardAtPosition(choice);
+
+            game._swapCardsOnBoard(source, card);
+            game._sendMessageToPlayer(
+                source.player,
+                `Vous avez choisi **${
+                    resolveCard(card.card).name
+                }**. Il échange sa position avec **Kombo Bongo**.`,
             );
+            game._sendMessageToPlayer(
+                target.player,
+                `**Kombo Bongo** (en _${[source.x, source.y].join(
+                    ",",
+                )}_) a échangé sa position avec **King** ou **Kong** (en _${[
+                    card.x,
+                    card.y,
+                ].join(",")}_).`,
+            );
+            next();
         },
     });
     next();
