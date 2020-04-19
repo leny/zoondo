@@ -388,6 +388,22 @@ export default class Game {
         return this.board.findIndex(cell => cell.x === x && cell.y === y);
     }
 
+    _swapCardsOnBoard(source, target) {
+        const sourceIndex = this._getCardIndex(source);
+        const targetIndex = this._getCardIndex(target);
+
+        this.board[sourceIndex] = {
+            ...this.board[sourceIndex],
+            x: target.x,
+            y: target.y,
+        };
+        this.board[targetIndex] = {
+            ...this.board[targetIndex],
+            x: source.x,
+            y: source.y,
+        };
+    }
+
     _updateCardOnBoard({x, y}, data, replace = false) {
         const index = this._getCardIndex({x, y});
 

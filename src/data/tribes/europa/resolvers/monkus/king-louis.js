@@ -10,7 +10,6 @@
 // King Louis et le Zoon ennemi échangent leur position sur le champ de bataille.,
 
 export default (game, {source, target}, next) => {
-    game._updateCardOnBoard(target, {x: source.x, y: source.y});
-    game._updateCardOnBoard(source, {x: target.x, y: target.y});
+    game._swapCardsOnBoard(source, target);
     next();
 };
