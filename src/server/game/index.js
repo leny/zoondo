@@ -226,6 +226,15 @@ export default class Game {
         }
     }
 
+    resolveAction({type, value}) {
+        if (type !== this.turn.action.type) {
+            // cheating
+            throw new Error("WTF");
+            // TODO: handle this
+        }
+        this.turn.action.next(value);
+    }
+
     fight(player, cornerIndex) {
         if (
             this.turn.phase !== "combat" ||

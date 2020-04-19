@@ -34,5 +34,11 @@ export default io => {
                 }
             }),
         );
+        socket.on(
+            "action",
+            forwardToGame(server, socket, (game, params) =>
+                game.resolveAction(params),
+            ),
+        );
     });
 };
