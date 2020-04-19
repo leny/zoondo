@@ -235,7 +235,11 @@ const Game = ({player: rawPlayer}) => {
                 <div css={styles.tools}>
                     <CardInfos css={styles.cardInfos} card={activeCard} />
 
-                    <GameInfos css={styles.gameInfos} turn={turn} />
+                    <GameInfos
+                        css={styles.gameInfos}
+                        turn={turn}
+                        player={player}
+                    />
 
                     <Chat css={styles.chat} />
                 </div>
