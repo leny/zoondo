@@ -61,8 +61,7 @@ export default {
             slug: "kombo-bongo",
             name: "Kombo Bongo",
             type: "PRIEST",
-            // corners: [3, 1, "*", "*"],
-            corners: ["*", "*", "*", "*"],
+            corners: [3, 1, "*", "*"],
             power:
                 "Le combat se solde par une égalité. Kombo Bongo et King ou Kong (au choix) échangent leur position sur le champ de bataille. Si King et Kong ne sont plus sur le champ de bataille, Kombo Bongo conserve sa position.",
             resolver: komboBongoResolver,
