@@ -30,7 +30,7 @@ export default io => {
             "combat",
             forwardToGame(server, socket, (game, {action, index}) => {
                 if (action === "choose") {
-                    game.combatChooseCorner(socket.id, index);
+                    game.fight(socket.id, index);
                 }
             }),
         );

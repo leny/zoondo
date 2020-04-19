@@ -226,7 +226,14 @@ export default class Game {
         }
     }
 
-    combatChooseCorner(player, cornerIndex) {
+    fight(player, cornerIndex) {
+        if (
+            this.turn.phase !== "combat" ||
+            this.turn.combat?.step === "resolve"
+        ) {
+            // TODO: handle this
+            throw new Error("WTF?"); // cheating attempt.
+        }
         // encode corner
         ["attacker", "defender"].forEach(side => {
             if (this.turn.combat[side].player !== player) {
