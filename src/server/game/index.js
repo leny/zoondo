@@ -12,6 +12,7 @@ import tribes from "data/tribes";
 import {sendSystemMessage} from "core/socket";
 import {resolveMoves, resolveCard} from "data/utils";
 import cloneDeep from "lodash.clonedeep";
+import {ACTIONS} from "data/constants";
 
 export default class Game {
     server = null;
@@ -23,6 +24,7 @@ export default class Game {
         activePlayer: null,
         phase: "waiting",
         combat: null,
+        action: null,
         timer: 30,
     };
     board = [];
@@ -96,6 +98,12 @@ export default class Game {
 
         // resolve action
         switch (action.type) {
+            case ACTIONS.SELECT_CARD:
+                this.turn.phase = "action";
+                this.turn.action = action;
+                this._sendState();
+                break;
+
             case "power": {
                 const {name, resolver, power} = resolveCard(action.source.card);
 
@@ -109,8 +117,15 @@ export default class Game {
                 }
 
                 console.group(`${name} power resolver`);
-                console.log("Power:", power);
-                resolver(this, action, () => this.resolveStack());
+                console.log({action, power});
+                resolver(
+                    this,
+                    action,
+                    () => {
+                        this._sendState();
+                        this.resolveStack();
+                    },
+                );
                 console.groupEnd();
                 break;
             }
@@ -132,6 +147,7 @@ export default class Game {
         this.stack = [];
         this.turn.phase = "main";
         this.turn.combat = null;
+        this.turn.action = null;
         this._sendState();
         this._sendMessage(
             `Début de tour : **${this.players[playerId].name}**.`,
@@ -455,6 +471,14 @@ export default class Game {
                         }
                     });
                 }
+            }
+
+            if (state.turn.phase === "action") {
+                // eslint-disable-next-line no-unused-vars
+                const {next, ...action} = state.turn.action;
+
+                state.turn.action = action;
+                state.turn.action.options.player=this.players[state.turn.action.options.player];
             }
 
             if (this.server.sockets[id]) {
