@@ -7,6 +7,7 @@
  */
 
 import kingLouisResolver from "./resolvers/monkus/king-louis";
+import komboBongoResolver from "./resolvers/monkus/kombo-bongo";
 
 export default {
     slug: "europa-monkus",
@@ -60,9 +61,11 @@ export default {
             slug: "kombo-bongo",
             name: "Kombo Bongo",
             type: "PRIEST",
-            corners: [3, 1, "*", "*"],
+            // corners: [3, 1, "*", "*"],
+            corners: ["*", "*", "*", "*"],
             power:
                 "Le combat se solde par une égalité. Kombo Bongo et King ou Kong (au choix) échangent leur position sur le champ de bataille. Si King et Kong ne sont plus sur le champ de bataille, Kombo Bongo conserve sa position.",
+            resolver: komboBongoResolver,
             value: 10,
             moves: [
                 [[-1, 0]],
