@@ -15,6 +15,7 @@ import {useSocket} from "use-socketio";
 import {resolveMoves, resolveCard} from "data/utils";
 
 import {DEBUG_MODE, NBSP} from "core/constants";
+import {ACTIONS} from "data/constants";
 
 import Header from "components/header";
 import Board from "components/board/board";
@@ -62,12 +63,6 @@ const Game = ({player: rawPlayer}) => {
         },
     });
 
-    const sendMovement = useCallback(
-        ({x, y}) =>
-            socket.emit("move", {card: activeCard, destination: {x, y}}),
-        [activeCard],
-    );
-
     const selectActiveCard = useCallback(
         ({x, y, ...card}) => {
             if (activeCard?.x === x && activeCard?.y === y) {
@@ -80,12 +75,27 @@ const Game = ({player: rawPlayer}) => {
         [activeCard, setActiveCard],
     );
 
+    const sendMovement = useCallback(
+        ({x, y}) =>
+            socket.emit("move", {card: activeCard, destination: {x, y}}),
+        [activeCard],
+    );
+
     const sendCombatAction = useCallback(
         (action, params) => {
             socket.emit("combat", {action, ...params});
             setTurn({...turn, combat: {...turn.combat, step: "wait"}});
         },
         [turn, setTurn],
+    );
+
+    const sendActionValue = useCallback(
+        value => {
+            const {type} = turn.action;
+
+            socket.emit("action", {type, value});
+        },
+        [turn],
     );
 
     useEffect(() => {
@@ -206,6 +216,77 @@ const Game = ({player: rawPlayer}) => {
             );
             break;
 
+        case "action": {
+            const {
+                type,
+                options: {player: targetPlayer, choices},
+            } = turn.action;
+
+            switch (type) {
+                case ACTIONS.SELECT_CARD:
+                    $content = (
+                        <Board
+                            player={player}
+                            opponent={opponent}
+                            activeCell={{x: activeCard?.x, y: activeCard?.y}}
+                            overlays={
+                                targetPlayer.id === player.id
+                                    ? choices.map(({x, y}) => ({
+                                          x,
+                                          y,
+                                          overlay: (
+                                              <BoardOverlay
+                                                  isChoice
+                                                  isSelected={
+                                                      activeCard?.x === x &&
+                                                      activeCard?.y === y
+                                                  }
+                                                  onSelect={() =>
+                                                      selectActiveCard({
+                                                          x,
+                                                          y,
+                                                          ...board.find(
+                                                              cell =>
+                                                                  cell.x ===
+                                                                      x &&
+                                                                  cell.y === y,
+                                                          ).card,
+                                                      })
+                                                  }
+                                              />
+                                          ),
+                                      }))
+                                    : []
+                            }
+                            cards={board.map(
+                                ({player: playerId, x, y, card}) => ({
+                                    x,
+                                    y,
+                                    card: (
+                                        <BoardCard
+                                            {...card}
+                                            isOwn={player.id === playerId}
+                                            onSelect={() =>
+                                                selectActiveCard({
+                                                    x,
+                                                    y,
+                                                    ...card,
+                                                })
+                                            }
+                                        />
+                                    ),
+                                }),
+                            )}
+                        />
+                    );
+                    break;
+
+                // no default
+            }
+
+            break;
+        }
+
         case "waiting":
             $content = (
                 <div css={styles.waiting}>{"En attente d'un adversaire…"}</div>
@@ -239,6 +320,8 @@ const Game = ({player: rawPlayer}) => {
                         css={styles.gameInfos}
                         turn={turn}
                         player={player}
+                        activeCard={activeCard}
+                        onValidateAction={sendActionValue}
                     />
 
                     <Chat css={styles.chat} />

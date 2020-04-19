@@ -16,7 +16,7 @@ import Button from "components/commons/button";
 import Box from "components/commons/box";
 
 import {noop, preventDefault} from "utils";
-import {NBSP} from "core/constants";
+import {NBSP, CARD_TYPES} from "core/constants";
 import {ACTIONS} from "data/constants";
 import {resolveCard} from "data/utils";
 import marked from "marked";
@@ -24,7 +24,13 @@ import marked from "marked";
 import {rem} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
 
-const GameInfos = ({className, turn, player, onValidateAction = noop}) => {
+const GameInfos = ({
+    className,
+    turn,
+    player,
+    activeCard,
+    onValidateAction = noop,
+}) => {
     const {count, activePlayer, phase, timer} = turn || {};
     const styles = usePwops({
         activePlayer: {
@@ -73,7 +79,7 @@ const GameInfos = ({className, turn, player, onValidateAction = noop}) => {
         case "action": {
             const {
                 type,
-                options: {player: targetPlayer, source, text},
+                options: {player: targetPlayer, source, text, choices},
             } = turn.action;
             const card = resolveCard(source.card);
             let $timer, $tools, tips;
@@ -88,14 +94,24 @@ const GameInfos = ({className, turn, player, onValidateAction = noop}) => {
 
                     if (player.id === targetPlayer.id) {
                         tips = text;
-                        $tools = (
-                            <div css={styles.tools}>
-                                <Button
-                                    onClick={preventDefault(onValidateAction)}>
-                                    {"Confirmer mon choix"}
-                                </Button>
-                            </div>
-                        );
+                        if (
+                            choices.find(
+                                choice =>
+                                    choice.x === activeCard?.x &&
+                                    choice.y === activeCard?.y,
+                            )
+                        ) {
+                            $tools = (
+                                <div css={styles.tools}>
+                                    <Button
+                                        onClick={preventDefault(() =>
+                                            onValidateAction(activeCard),
+                                        )}>
+                                        {"Confirmer mon choix"}
+                                    </Button>
+                                </div>
+                            );
+                        }
                     } else {
                         tips = "En attente du choix de votre adversaire…";
                     }
@@ -192,6 +208,11 @@ const GameInfos = ({className, turn, player, onValidateAction = noop}) => {
 GameInfos.propTypes = {
     turn: Turn,
     player: Player,
+    activeCard: PropTypes.shape({
+        tribe: PropTypes.string,
+        type: PropTypes.oneOf(Object.values(CARD_TYPES)),
+        slug: PropTypes.string,
+    }),
     onValidateAction: PropTypes.func,
 };
 

@@ -15,6 +15,8 @@ import {noop, preventDefault} from "utils";
 
 const BoardOverlay = ({
     className,
+    isChoice = false,
+    isSelected = false,
     isJump = false,
     isCombat = false,
     onSelect = noop,
@@ -41,6 +43,16 @@ const BoardOverlay = ({
         combatIcon: {
             fontSize: rem(4.8),
         },
+        choiceContainer: {
+            absolute: [px(-1)],
+            background: "transparent",
+            border: [px(1), "solid", "cyan"],
+            boxShadow: ["inset", 0, 0, px(10), "cyan"],
+        },
+        selectedChoiceContainer: {
+            border: [px(1), "solid", "green"],
+            boxShadow: ["inset", 0, 0, px(10), "green"],
+        },
     });
 
     return (
@@ -48,8 +60,17 @@ const BoardOverlay = ({
             href={"#"}
             onClick={preventDefault(onSelect)}
             className={className}
-            css={[styles.container, isJump && styles.jumpContainer]}>
-            <span css={[styles.centerCircle, isCombat && styles.combatIcon]}>
+            css={[
+                styles.container,
+                isJump && styles.jumpContainer,
+                isChoice && styles.choiceContainer,
+                isSelected && styles.selectedChoiceContainer,
+            ]}>
+            <span
+                css={[
+                    !isChoice && styles.centerCircle,
+                    isCombat && styles.combatIcon,
+                ]}>
                 {isCombat ? "⚔" : ""}
             </span>
         </a>
@@ -57,6 +78,8 @@ const BoardOverlay = ({
 };
 
 BoardOverlay.propTypes = {
+    isChoice: PropTypes.bool,
+    isSelected: PropTypes.bool,
     isJump: PropTypes.bool,
     isCombat: PropTypes.bool,
     onSelect: PropTypes.func,
