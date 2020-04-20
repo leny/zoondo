@@ -100,6 +100,7 @@ export default class Game {
         // resolve action
         switch (action.type) {
             case ACTIONS.SELECT_CARD:
+            case ACTIONS.MOVE_CARD:
                 this.turn.phase = "action";
                 this.turn.action = action;
                 this._sendState();
@@ -232,7 +233,7 @@ export default class Game {
             throw new Error("WTF");
             // TODO: handle this
         }
-        this.turn.action.next(value);
+        this.turn.action.next && this.turn.action.next(value);
     }
 
     fight(player, cornerIndex) {
