@@ -8,4 +8,5 @@
 
 export const ACTIONS = {
     SELECT_CARD: "select-card",
+    MOVE_CARD: "move-card",
 };

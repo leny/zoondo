@@ -6,6 +6,8 @@
  * started at 17/04/2020
  */
 
+import cloboulonResolver from "./resolvers/boarix/cloboulon";
+
 export default {
     slug: "europa-boarix",
     edition: "europa",
@@ -20,6 +22,7 @@ export default {
             corners: [4, 5, "*", 2],
             power:
                 "Le combat se solde par une égalité. Si tu viens de déplacer Cloboulon, tu déplaces un Grognard.",
+            resolver: cloboulonResolver,
             value: 20,
             moves: [
                 [[-1, 0]],
