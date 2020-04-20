@@ -85,6 +85,19 @@ const GameInfos = ({
             let $timer, $tools, tips;
 
             switch (type) {
+                case ACTIONS.MOVE_CARD:
+                    $timer = (
+                        <div css={styles.timer}>
+                            <span>{`${timer}`.padStart(2, "0")}</span>
+                        </div>
+                    );
+
+                    tips =
+                        player.id === targetPlayer.id
+                            ? text
+                            : "En attente de votre adversaire…";
+                    break;
+
                 case ACTIONS.SELECT_CARD:
                     $timer = (
                         <div css={styles.timer}>
@@ -115,7 +128,6 @@ const GameInfos = ({
                     } else {
                         tips = "En attente du choix de votre adversaire…";
                     }
-
                     break;
 
                 // no default

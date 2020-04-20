@@ -105,11 +105,28 @@ const Game = ({player: rawPlayer}) => {
     }, []);
 
     useEffect(() => {
-        if (!activeCard) {
-            setOverlays([]);
-        } else if (
+        if (
+            !activeCard &&
             turn?.activePlayer?.id === player.id &&
-            turn?.phase === "main"
+            turn?.phase === "action" &&
+            turn?.action.type === ACTIONS.MOVE_CARD &&
+            turn?.action.options.choices.length === 1
+        ) {
+            const [{x, y, card}] = turn.action.options.choices;
+            setActiveCard({x, y, ...card});
+        }
+    }, [turn, activeCard]);
+
+    useEffect(() => {
+        if (
+            activeCard &&
+            turn?.activePlayer?.id === player.id &&
+            (turn?.phase === "main" ||
+                (turn?.phase === "action" &&
+                    turn?.action.type === ACTIONS.MOVE_CARD &&
+                    turn?.action.options.choices.find(
+                        ({x, y}) => activeCard?.x === x && activeCard?.y === y,
+                    )))
         ) {
             const card = resolveCard(activeCard);
             const moves = resolveMoves(
@@ -145,6 +162,8 @@ const Game = ({player: rawPlayer}) => {
                     return arr;
                 }, []),
             );
+        } else {
+            setOverlays([]);
         }
     }, [activeCard]);
 
@@ -223,6 +242,73 @@ const Game = ({player: rawPlayer}) => {
             } = turn.action;
 
             switch (type) {
+                case ACTIONS.MOVE_CARD:
+                    $content = (
+                        <Board
+                            player={player}
+                            opponent={opponent}
+                            activeCell={{x: activeCard?.x, y: activeCard?.y}}
+                            overlays={
+                                targetPlayer.id === player.id
+                                    ? [].concat(
+                                          choices.map(({x, y}) => ({
+                                              x,
+                                              y,
+                                              overlay: (
+                                                  <BoardOverlay
+                                                      clickThrough
+                                                      isChoice
+                                                      isSelected={
+                                                          activeCard?.x === x &&
+                                                          activeCard?.y === y
+                                                      }
+                                                  />
+                                              ),
+                                          })),
+                                          overlays.map(
+                                              ([x, y, isJump, isCombat]) => ({
+                                                  x,
+                                                  y,
+                                                  overlay: (
+                                                      <BoardOverlay
+                                                          isJump={isJump}
+                                                          isCombat={isCombat}
+                                                          onSelect={() =>
+                                                              sendMovement({
+                                                                  x,
+                                                                  y,
+                                                              })
+                                                          }
+                                                      />
+                                                  ),
+                                              }),
+                                          ),
+                                      )
+                                    : []
+                            }
+                            cards={board.map(
+                                ({player: playerId, x, y, card}) => ({
+                                    x,
+                                    y,
+                                    card: (
+                                        <BoardCard
+                                            {...card}
+                                            isOwn={player.id === playerId}
+                                            onSelect={() =>
+                                                selectActiveCard({
+                                                    x,
+                                                    y,
+                                                    ...card,
+                                                })
+                                            }
+                                        />
+                                    ),
+                                }),
+                            )}
+                        />
+                    );
+                    break;
+
                 case ACTIONS.SELECT_CARD:
                     $content = (
                         <Board

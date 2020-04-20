@@ -15,6 +15,7 @@ import {noop, preventDefault} from "utils";
 
 const BoardOverlay = ({
     className,
+    clickThrough = false,
     isChoice = false,
     isSelected = false,
     isJump = false,
@@ -53,7 +54,23 @@ const BoardOverlay = ({
             border: [px(1), "solid", "green"],
             boxShadow: ["inset", 0, 0, px(10), "green"],
         },
+        clickThrough: {pointerEvents: "none"},
     });
+
+    if (clickThrough) {
+        return (
+            <span
+                className={className}
+                css={[
+                    styles.container,
+                    styles.clickThrough,
+                    isJump && styles.jumpContainer,
+                    isChoice && styles.choiceContainer,
+                    isSelected && styles.selectedChoiceContainer,
+                ]}
+            />
+        );
+    }
 
     return (
         <a
@@ -78,6 +95,7 @@ const BoardOverlay = ({
 };
 
 BoardOverlay.propTypes = {
+    clickThrough: PropTypes.bool,
     isChoice: PropTypes.bool,
     isSelected: PropTypes.bool,
     isJump: PropTypes.bool,
