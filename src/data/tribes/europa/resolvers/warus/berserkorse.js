@@ -8,10 +8,14 @@
 
 // Le Berserkorse élimine le Zoon ennemi.
 
-export default (game, {source, target}, next) => {
+const resolver = (game, {source, target}, next) => {
     game._eliminateCardAtPosition(target);
     if (source.role === "attacker") {
         game._updateCardOnBoard(source, {x: target.x, y: target.y});
     }
     next();
 };
+
+resolver.skipDraw = true;
+
+export default resolver;

@@ -264,38 +264,42 @@ export default class Game {
                 side => this.turn.combat[side].value != null,
             )
         ) {
-            const {attacker, defender} = this.turn.combat;
+            let {attacker} = this.turn.combat;
+            const {defender} = this.turn.combat;
             const attackerValue = attacker.value;
             const defenderValue = defender.value;
 
             this.turn.combat.step = "resolve";
 
             if (attackerValue === defenderValue) {
-                let attackerDestination =
-                    " Les deux Zoons concervent leurs positions.";
+                const [
+                    ,
+                    attackerDestination,
+                ] = this._solveAttackerPositionAfterDraw(attacker);
 
-                if (attacker.move.length > 1) {
-                    const [x, y] = attacker.move[attacker.move.length - 2];
-                    if (!this._getCardAtPosition({x, y})) {
-                        this._updateCardOnBoard(attacker, {x, y});
-                        attackerDestination = ` Le **${
-                            resolveCard(attacker.card).name
-                        }** attaquant recule en _${[x, y].join(",")}_.`;
-                    }
-                }
                 this._sendMessage(
                     `**Combat** - le combat se solde par une égalité.${attackerDestination}`,
                 );
                 this.turn.combat.winner = "draw";
             } else if (attackerValue === "*") {
+                const attackerCard = resolveCard(attacker.card);
+                let message = "";
+
+                if (!attackerCard.resolver?.skipDraw) {
+                    const draw = this._solveAttackerPositionAfterDraw(attacker);
+
+                    if (draw[0]) {
+                        attacker = {...attacker, ...draw[0]};
+                        message = draw[1];
+                    }
+                }
+
                 this._sendMessage(
-                    `**Combat** - le _${
-                        resolveCard(attacker.card).name
-                    }_ de **${
+                    `**Combat** - le _${attackerCard.name}_ de **${
                         this.players[attacker.player].name
                     }** active son pouvoir (_${
                         resolveCard(attacker.card).power
-                    }_).`,
+                    }_).${message}`,
                 );
                 this.turn.combat.winner = "power";
                 this.turn.combat.powerOwner = "attacker";
@@ -305,14 +309,24 @@ export default class Game {
                     target: defender,
                 });
             } else if (defenderValue === "*") {
+                const defenderCard = resolveCard(defender.card);
+                let message = "";
+
+                if (!defenderCard.resolver?.skipDraw) {
+                    const draw = this._solveAttackerPositionAfterDraw(attacker);
+
+                    if (draw[0]) {
+                        attacker = {...attacker, ...draw[0]};
+                        message = draw[1];
+                    }
+                }
+
                 this._sendMessage(
-                    `**Combat** - le _${
-                        resolveCard(defender.card).name
-                    }_ de **${
+                    `**Combat** - le _${defenderCard.name}_ de **${
                         this.players[defender.player].name
                     }** active son pouvoir (_${
                         resolveCard(defender.card).power
-                    }_).`,
+                    }_).${message}`,
                 );
                 this.turn.combat.winner = "power";
                 this.turn.combat.powerOwner = "defender";
@@ -437,6 +451,23 @@ export default class Game {
                   ...this.board[index],
                   ...data,
               };
+    }
+
+    _solveAttackerPositionAfterDraw(attacker) {
+        let message = " Les deux Zoons conservent leurs positions.";
+
+        if (attacker.move.length > 1) {
+            const [x, y] = attacker.move[attacker.move.length - 2];
+            if (!this._getCardAtPosition({x, y})) {
+                this._updateCardOnBoard(attacker, {x, y});
+                message = ` Le **${
+                    resolveCard(attacker.card).name
+                }** attaquant recule en _${[x, y].join(",")}_.`;
+            }
+            return [{x, y}, message];
+        }
+
+        return [null, message];
     }
 
     _eliminateCardAtPosition({x, y}) {
