@@ -393,8 +393,15 @@ export default class Game {
 
         const destination = moves.find(([mX, mY]) => dX === mX && dY === mY);
         const [, , , isCombat, move] = destination;
+        const moveCellIndex = move.findIndex(
+            ([mX, mY]) => dX === mX && dY === mY,
+        );
 
-        return [move, !!destination, isCombat];
+        return [
+            Array.from(move).slice(0, moveCellIndex + 1),
+            !!destination,
+            isCombat,
+        ];
     }
 
     _getCardAtPosition({x, y}) {
