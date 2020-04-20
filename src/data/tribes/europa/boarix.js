@@ -7,6 +7,7 @@
  */
 
 import cloboulonResolver from "./resolvers/boarix/cloboulon";
+import goldHureResolver from "./resolvers/boarix/gold-hure";
 
 export default {
     slug: "europa-boarix",
@@ -42,6 +43,7 @@ export default {
             corners: [4, 4, 2, "*"],
             power:
                 "Le combat se solde par une égalité. Si tu viens de déplacer Gold-Hure, tu le déplaces à nouveau.",
+            resolver: goldHureResolver,
             value: 24,
             moves: [
                 [[-1, 0]],
