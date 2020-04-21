@@ -35,10 +35,10 @@ export const resolveCard = card => {
 export const resolveMoves = ({x, y}, moves = [], invert = false) =>
     moves.map(move =>
         move
-            .map(([pX, pY, ...position]) => [
-                invert ? x - pX : x + pX,
-                invert ? y - pY : y + pY,
-                ...position,
+            .map(([pX, pY, isJump, isAbsolute]) => [
+                isAbsolute ? pX : invert ? x - pX : x + pX,
+                isAbsolute ? pY : invert ? y - pY : y + pY,
+                isJump,
             ])
             .filter(([pX, pY]) => 0 <= pX && pX <= 5 && 0 <= pY && pY <= 5),
     );
