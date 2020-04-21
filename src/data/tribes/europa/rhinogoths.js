@@ -6,6 +6,8 @@
  * started at 17/04/2020
  */
 
+import ouistitiResolver from "./resolvers/rhinogoths/ouistiti";
+
 export default {
     slug: "europa-rhinogoths",
     edition: "europa",
@@ -117,6 +119,7 @@ export default {
             corners: [0, 0, 0, "*"],
             power:
                 "Le combat se solde par une égalité. Déplace ton Ouistiti sur une case adjacente libre de ton choix. Si aucune case n'est libre, ton Ouistiti conserve sa position.",
+            resolver: ouistitiResolver,
             value: 0,
             moves: [],
         },
