@@ -8,6 +8,7 @@
 
 import cloboulonResolver from "./resolvers/boarix/cloboulon";
 import goldHureResolver from "./resolvers/boarix/gold-hure";
+import bouclefeuilleResolver from "./resolvers/boarix/bouclefeuille";
 
 export default {
     slug: "europa-boarix",
@@ -73,8 +74,9 @@ export default {
             name: "Bouclefeuille",
             type: "PRIEST",
             corners: [2, 0, 0, "*"],
+            resolver: bouclefeuilleResolver,
             power:
-                "Le combat se solde par une égalité. Tu déplaces Bouclefeuille dans une case libre du champs de bataille.",
+                "Le combat se solde par une égalité. Tu déplaces Bouclefeuille dans une case libre du champ de bataille.",
             value: 2,
             moves: [[[-1, 0]], [[1, 0]]],
         },
