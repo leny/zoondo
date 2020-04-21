@@ -377,13 +377,17 @@ export default class Game {
 
     _checkMove({x, y, ...cardInfos}, {x: dX, y: dY}) {
         const card = resolveCard(cardInfos);
+        const isMoveCardAction =
+            this.turn.phase === "action" &&
+            this.turn.action.type === ACTIONS.MOVE_CARD;
         const moves = resolveMoves(
             {x, y},
-            (this.turn.phase === "action" &&
-                this.turn.action.type === ACTIONS.MOVE_CARD &&
-                this.turn.action.options.moves) ||
-                card.moves,
-            !this.players[this.turn.activePlayer].isFirstPlayer,
+            (isMoveCardAction && this.turn.action.options.moves) || card.moves,
+            !this.players[
+                isMoveCardAction
+                    ? this.turn.action.options.player
+                    : this.turn.activePlayer
+            ].isFirstPlayer,
         ).reduce((arr, move) => {
             move.reduce((keep, [mX, mY, isJump = false]) => {
                 if (keep) {
@@ -392,7 +396,19 @@ export default class Game {
                     );
 
                     if (cardAtPosition) {
-                        if (cardAtPosition.player !== this.turn.activePlayer) {
+                        if (
+                            isMoveCardAction &&
+                            this.turn.action.options.onlyFreeCells
+                        ) {
+                            return false;
+                        }
+
+                        if (
+                            cardAtPosition.player !==
+                            (isMoveCardAction
+                                ? this.turn.action.options.player
+                                : this.turn.activePlayer)
+                        ) {
                             arr.push([mX, mY, isJump, true, move]);
                         }
 
