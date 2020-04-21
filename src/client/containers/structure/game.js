@@ -160,7 +160,7 @@ const Game = ({player: rawPlayer}) => {
                                 if (
                                     cardAtPosition.player !==
                                     (isMoveCardAction
-                                        ? turn.action.option.player.id
+                                        ? turn.action.options.player.id
                                         : turn.activePlayer.id)
                                 ) {
                                     arr.push([x, y, isJump, true]);
