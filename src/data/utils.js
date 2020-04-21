@@ -35,7 +35,7 @@ export const resolveCard = card => {
 export const resolveMoves = ({x, y}, moves = [], invert = false) =>
     moves.map(move =>
         move
-            .map(([pX, pY, isJump, isAbsolute]) => [
+            .map(([pX, pY, isJump, isAbsolute = false]) => [
                 isAbsolute ? pX : invert ? x - pX : x + pX,
                 isAbsolute ? pY : invert ? y - pY : y + pY,
                 isJump,

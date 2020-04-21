@@ -7,6 +7,7 @@
  */
 
 import {ACTIONS} from "data/constants";
+import {resolveMoves} from "data/utils";
 
 // Le combat se solde par une égalité.
 // Déplace ton Ouistiti sur une case adjacente libre de ton choix.
@@ -23,6 +24,18 @@ export default (game, {source}, next) => {
         [[0, -1]],
         [[-1, -1]],
     ];
+
+    if (
+        resolveMoves(source, moves, !game.players[source.player].isFirstPlayer)
+            .flat()
+            .every(([x, y]) => game._getCardAtPosition({x, y}))
+    ) {
+        game._sendMessage(
+            `Il n'y a aucune case libre adjacente à **Ouistiti**. Il conserve sa position.`,
+        );
+        next();
+        return;
+    }
 
     game.stack.unshift({
         type: ACTIONS.MOVE_CARD,
