@@ -379,7 +379,10 @@ export default class Game {
         const card = resolveCard(cardInfos);
         const moves = resolveMoves(
             {x, y},
-            card.moves,
+            (this.turn.phase === "action" &&
+                this.turn.action.type === ACTIONS.MOVE_CARD &&
+                this.turn.action.options.moves) ||
+                card.moves,
             !this.players[this.turn.activePlayer].isFirstPlayer,
         ).reduce((arr, move) => {
             move.reduce((keep, [mX, mY, isJump = false]) => {
