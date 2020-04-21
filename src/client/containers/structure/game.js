@@ -107,8 +107,8 @@ const Game = ({player: rawPlayer}) => {
     useEffect(() => {
         if (
             !activeCard &&
-            turn?.activePlayer?.id === player.id &&
             turn?.phase === "action" &&
+            turn?.action.options.player.id === player.id &&
             turn?.action.type === ACTIONS.MOVE_CARD &&
             turn?.action.options.choices.length === 1
         ) {
@@ -119,19 +119,23 @@ const Game = ({player: rawPlayer}) => {
 
     useEffect(() => {
         if (
-            activeCard &&
-            turn?.activePlayer?.id === player.id &&
-            (turn?.phase === "main" ||
-                (turn?.phase === "action" &&
-                    turn?.action.type === ACTIONS.MOVE_CARD &&
-                    turn?.action.options.choices.find(
-                        ({x, y}) => activeCard?.x === x && activeCard?.y === y,
-                    )))
+            (activeCard &&
+                turn?.activePlayer?.id === player.id &&
+                turn?.phase === "main") ||
+            (turn?.phase === "action" &&
+                turn?.action.options.player.id === player.id &&
+                turn?.action.type === ACTIONS.MOVE_CARD &&
+                turn?.action.options.choices.find(
+                    ({x, y}) => activeCard?.x === x && activeCard?.y === y,
+                ))
         ) {
             const card = resolveCard(activeCard);
             const moves = resolveMoves(
                 activeCard,
-                card.moves,
+                (turn?.phase === "action" &&
+                    turn?.action?.type === ACTIONS.MOVE_CARD &&
+                    turn?.action?.options?.moves) ||
+                    card.moves,
                 !turn.activePlayer.isFirstPlayer,
             );
             setOverlays(
