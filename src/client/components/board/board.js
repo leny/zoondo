@@ -16,9 +16,8 @@ import {usePwops} from "@pwops/react-hooks";
 import {resolveTribe} from "data/utils";
 
 import {BORDER_COLOR, NBSP, DEBUG_MODE} from "core/constants";
+import {BOARD_ROW_SIZE, BOARD_COL_SIZE} from "data/constants";
 
-const ROW_SIZE = 6;
-const COL_SIZE = 6;
 const CASE_SIZE = 120;
 const GAP_SIZE = 4;
 
@@ -38,8 +37,8 @@ const Board = ({
     ]);
     const boardSize = useMemo(
         () => [
-            CASE_SIZE * COL_SIZE + (COL_SIZE - 1) * GAP_SIZE,
-            CASE_SIZE * ROW_SIZE + (ROW_SIZE - 1) * GAP_SIZE,
+            CASE_SIZE * BOARD_COL_SIZE + (BOARD_COL_SIZE - 1) * GAP_SIZE,
+            CASE_SIZE * BOARD_ROW_SIZE + (BOARD_ROW_SIZE - 1) * GAP_SIZE,
         ],
         [],
     );
@@ -111,9 +110,9 @@ const Board = ({
         <div css={styles.container} className={className}>
             <div css={styles.player}>{$opponent}</div>
             <div css={styles.board}>
-                {Array.from(new Array(ROW_SIZE).keys()).map(i => (
+                {Array.from(new Array(BOARD_ROW_SIZE).keys()).map(i => (
                     <div key={`row-${i}`} css={styles.row}>
-                        {Array.from(new Array(COL_SIZE).keys()).map(j => (
+                        {Array.from(new Array(BOARD_COL_SIZE).keys()).map(j => (
                             <div
                                 key={`cell-${i}-${j}`}
                                 css={[
