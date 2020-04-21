@@ -136,7 +136,10 @@ const Game = ({player: rawPlayer}) => {
             const moves = resolveMoves(
                 activeCard,
                 (isMoveCardAction && turn.action.options.moves) || card.moves,
-                !turn.activePlayer.isFirstPlayer,
+                !(isMoveCardAction
+                    ? turn.action.options.player
+                    : turn.activePlayer
+                ).isFirstPlayer,
             );
             setOverlays(
                 moves.reduce((arr, move) => {
