@@ -130,12 +130,12 @@ const Game = ({player: rawPlayer}) => {
                 ))
         ) {
             const card = resolveCard(activeCard);
+            const isMoveCardAction =
+                turn?.phase === "action" &&
+                turn?.action?.type === ACTIONS.MOVE_CARD;
             const moves = resolveMoves(
                 activeCard,
-                (turn?.phase === "action" &&
-                    turn?.action?.type === ACTIONS.MOVE_CARD &&
-                    turn?.action?.options?.moves) ||
-                    card.moves,
+                (isMoveCardAction && turn.action.options.moves) || card.moves,
                 !turn.activePlayer.isFirstPlayer,
             );
             setOverlays(
@@ -148,8 +148,17 @@ const Game = ({player: rawPlayer}) => {
 
                             if (cardAtPosition) {
                                 if (
+                                    isMoveCardAction &&
+                                    turn.action.options.onlyFreeCells
+                                ) {
+                                    return false;
+                                }
+
+                                if (
                                     cardAtPosition.player !==
-                                    turn.activePlayer.id
+                                    (isMoveCardAction
+                                        ? turn.action.option.player.id
+                                        : turn.activePlayer.id)
                                 ) {
                                     arr.push([x, y, isJump, true]);
                                 }
