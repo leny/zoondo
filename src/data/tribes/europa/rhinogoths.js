@@ -7,6 +7,7 @@
  */
 
 import ouistitiResolver from "./resolvers/rhinogoths/ouistiti";
+import triceRatopsResolver from "./resolvers/rhinogoths/trice-ratops";
 
 export default {
     slug: "europa-rhinogoths",
@@ -76,6 +77,7 @@ export default {
             corners: [8, 4, 0, "*"],
             power:
                 "Le combat se solde par une égalité. Ton adversaire recule son Zoon sur l'une des trois cases adjacentes de la rangée située derrière lui. Toutefois, si aucune case n'est libre ou si ce mouvement fait sortir le Zoon du champ de bataille, il conserve sa position.",
+            resolver: triceRatopsResolver,
             value: 15,
             moves: [[[-1, 1]], [[0, 1]], [[1, 1]]],
         },
@@ -86,6 +88,7 @@ export default {
             corners: [4, 8, "*", 0],
             power:
                 "Le combat se solde par une égalité. Ton adversaire recule son Zoon sur l'une des trois cases adjacentes de la rangée située derrière lui. Toutefois, si aucune case n'est libre ou si ce mouvement fait sortir le Zoon du champ de bataille, il conserve sa position.",
+            resolver: triceRatopsResolver,
             value: 15,
             moves: [[[-1, 1]], [[0, 1]], [[1, 1]]],
         },

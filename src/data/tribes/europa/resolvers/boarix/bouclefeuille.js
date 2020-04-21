@@ -29,6 +29,7 @@ export default (game, {source}, next) => {
             source,
             choices: [game._getCardAtPosition(source)],
             moves,
+            onlyFreeCells: true,
             text:
                 "Veuillez déplacer **Bouclefeuille** sur une case libre du champ de bataille.",
         },
