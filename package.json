@@ -57,7 +57,7 @@
     "nodemon-webpack-plugin": "^4.3.1",
     "prettier": "^2.0.4",
     "prop-types": "^15.7.2",
-    "webpack": "^4.42.1",
+    "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3",
     "webpack-node-externals": "^1.7.2"
