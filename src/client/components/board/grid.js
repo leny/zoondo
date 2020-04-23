@@ -12,6 +12,7 @@ import PropTypes from "prop-types";
 import {px, rem, percent, rgba, translate} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
 import {BORDER_COLOR, DEBUG_MODE, CELL_SIZE, GAP_SIZE} from "core/constants";
+import {preventDefault, noop} from "core/utils";
 
 const Grid = ({
     className,
@@ -21,6 +22,7 @@ const Grid = ({
     cards = [],
     overlays = [],
     activeCell,
+    onCellDrop = noop,
 }) => {
     const boardSize = useMemo(
         () => [
@@ -74,6 +76,10 @@ const Grid = ({
                     {Array.from(new Array(colSize).keys()).map(j => (
                         <div
                             key={`cell-${i}-${j}`}
+                            onDragOver={
+                                onCellDrop && preventDefault(false, true)
+                            }
+                            onDrop={e => onCellDrop(e, {x: j, y: i})}
                             css={[
                                 styles.cell,
                                 activeCell?.x === j &&
@@ -118,6 +124,7 @@ Grid.propTypes = {
             overlay: PropTypes.element,
         }),
     ),
+    onCellDrop: PropTypes.func,
 };
 
 export default Grid;
