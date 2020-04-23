@@ -10,16 +10,15 @@ import React, {useMemo} from "react";
 import PropTypes from "prop-types";
 
 import {Player} from "types";
-import {px, rem, percent, rgba, translate} from "@pwops/core";
+import {px, rem} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
+
+import Grid from "./grid";
 
 import {resolveTribe} from "data/utils";
 
-import {BORDER_COLOR, NBSP, DEBUG_MODE} from "core/constants";
+import {NBSP, CELL_SIZE, GAP_SIZE} from "core/constants";
 import {BOARD_ROW_SIZE, BOARD_COL_SIZE} from "data/constants";
-
-const CASE_SIZE = 120;
-const GAP_SIZE = 4;
 
 const Board = ({
     className,
@@ -37,8 +36,8 @@ const Board = ({
     ]);
     const boardSize = useMemo(
         () => [
-            CASE_SIZE * BOARD_COL_SIZE + (BOARD_COL_SIZE - 1) * GAP_SIZE,
-            CASE_SIZE * BOARD_ROW_SIZE + (BOARD_ROW_SIZE - 1) * GAP_SIZE,
+            CELL_SIZE * BOARD_COL_SIZE + (BOARD_COL_SIZE - 1) * GAP_SIZE,
+            CELL_SIZE * BOARD_ROW_SIZE + (BOARD_ROW_SIZE - 1) * GAP_SIZE,
         ],
         [],
     );
@@ -54,39 +53,7 @@ const Board = ({
         },
         board: {
             size: boardSize.map(px),
-            [player.isFirstPlayer ? "flexColumnReverse" : "flexColumn"]: [
-                "space-between",
-                "middle",
-            ],
             margin: [px(5), 0],
-        },
-        row: {
-            [player.isFirstPlayer ? "flexRow" : "flexRowReverse"]: [
-                "space-between",
-                "middle",
-            ],
-        },
-        cell: {
-            relative: true,
-            size: px(CASE_SIZE),
-            border: [px(1), "solid", BORDER_COLOR],
-            borderRadius: px(3),
-        },
-        cellDebug: {
-            absolute: [percent(50), false, false, percent(50)],
-            padding: [rem(0.25)],
-            pointerEvents: "none",
-            borderRadius: rem(0.5),
-            background: rgba(0, 0, 0, 0.5),
-            fontSize: rem(1.4),
-            fontFamily: "monospace",
-            color: "white",
-            zIndex: 1000,
-            transform: translate(percent(-50), percent(-50)),
-        },
-        selectedCell: {
-            borderColor: "orange",
-            boxShadow: ["inset", 0, 0, px(10), "orange"],
         },
     });
 
@@ -109,38 +76,15 @@ const Board = ({
     return (
         <div css={styles.container} className={className}>
             <div css={styles.player}>{$opponent}</div>
-            <div css={styles.board}>
-                {Array.from(new Array(BOARD_ROW_SIZE).keys()).map(i => (
-                    <div key={`row-${i}`} css={styles.row}>
-                        {Array.from(new Array(BOARD_COL_SIZE).keys()).map(j => (
-                            <div
-                                key={`cell-${i}-${j}`}
-                                css={[
-                                    styles.cell,
-                                    activeCell?.x === j &&
-                                        activeCell?.y === i &&
-                                        styles.selectedCell,
-                                ]}>
-                                {DEBUG_MODE ? (
-                                    <span css={styles.cellDebug}>
-                                        {`${j},${i}`}
-                                    </span>
-                                ) : null}
-                                {(
-                                    cards.find(
-                                        ({x, y}) => x === j && y === i,
-                                    ) || {}
-                                ).card || null}
-                                {(
-                                    overlays.find(
-                                        ({x, y}) => x === j && y === i,
-                                    ) || {}
-                                ).overlay || null}
-                            </div>
-                        ))}
-                    </div>
-                ))}
-            </div>
+            <Grid
+                css={styles.board}
+                rowSize={BOARD_ROW_SIZE}
+                colSize={BOARD_COL_SIZE}
+                activeCell={activeCell}
+                reverse={!player.isFirstPlayer}
+                cards={cards}
+                overlays={overlays}
+            />
             <div css={styles.player}>
                 <span>{"Joueur :"}</span>
                 {NBSP}
