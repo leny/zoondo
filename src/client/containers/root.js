@@ -11,6 +11,7 @@ import React, {useState} from "react";
 import StylesGlobal from "components/styles/global";
 import HomeMenu from "components/menu/home";
 import TribeSelectorMenu from "components/menu/tribe-selector";
+import TribeDispositionMenu from "components/menu/tribe-disposition";
 import Game from "containers/structure/game";
 import {SocketIOProvider} from "use-socketio";
 
@@ -19,7 +20,8 @@ import {SERVER_PATH} from "core/constants";
 const RootContainer = () => {
     const [mode, setMode] = useState(null);
     const [name, setName] = useState(null);
-    const [[tribe, disposition], setTribe] = useState([]);
+    const [tribe, setTribe] = useState(null);
+    const [disposition, setDisposition] = useState(null);
 
     let $content;
 
@@ -42,8 +44,21 @@ const RootContainer = () => {
             $content = (
                 <TribeSelectorMenu
                     name={name}
-                    onSelectTribe={(...args) => {
-                        setTribe(args);
+                    onSelectTribe={slug => {
+                        setTribe(slug);
+                        setMode("tribe-disposition");
+                    }}
+                />
+            );
+            break;
+
+        case "tribe-disposition":
+            $content = (
+                <TribeDispositionMenu
+                    name={name}
+                    tribeSlug={tribe}
+                    onSelectDisposition={tribeDisposition => {
+                        setDisposition(tribeDisposition);
                         setMode("game");
                     }}
                 />

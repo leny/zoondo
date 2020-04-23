@@ -8,7 +8,6 @@
 
 /* eslint-disable no-console */
 
-import tribes from "data/tribes";
 import {sendSystemMessage} from "core/socket";
 import {resolveMoves, resolveCard} from "data/utils";
 import cloneDeep from "lodash.clonedeep";
@@ -37,46 +36,41 @@ export default class Game {
         this.server = server;
         this.room = roomId;
         this.players[firstPlayer.id] = {...firstPlayer, isFirstPlayer: true};
-        const tribe = tribes.get(firstPlayer.tribe);
-        Array.from(tribe.disposition)
-            .reverse()
-            .forEach((row, y) =>
-                row.forEach((slug, x) =>
-                    this.board.push({
-                        player: firstPlayer.id,
-                        x,
-                        y,
-                        card: {
-                            tribe: firstPlayer.tribe,
-                            type: "fighters",
-                            slug,
-                        },
-                    }),
-                ),
-            );
+        // TODO: check disposition
+        Array.from(firstPlayer.disposition).forEach((row, y) =>
+            row.forEach((slug, x) =>
+                this.board.push({
+                    player: firstPlayer.id,
+                    x,
+                    y,
+                    card: {
+                        tribe: firstPlayer.tribe,
+                        type: "fighters",
+                        slug,
+                    },
+                }),
+            ),
+        );
         this._sendMessage("Partie créée. En attente d'un second joueur…");
         this._sendState();
     }
 
     join(secondPlayer) {
         this.players[secondPlayer.id] = {...secondPlayer, isFirstPlayer: false};
-        const tribe = tribes.get(secondPlayer.tribe);
-        Array.from(tribe.disposition)
-            .reverse()
-            .forEach((row, y) =>
-                row.forEach((slug, x) =>
-                    this.board.push({
-                        player: secondPlayer.id,
-                        x: 5 - x,
-                        y: 5 - y,
-                        card: {
-                            tribe: secondPlayer.tribe,
-                            type: "fighters",
-                            slug,
-                        },
-                    }),
-                ),
-            );
+        Array.from(secondPlayer.disposition).forEach((row, y) =>
+            row.forEach((slug, x) =>
+                this.board.push({
+                    player: secondPlayer.id,
+                    x: 5 - x,
+                    y: 5 - y,
+                    card: {
+                        tribe: secondPlayer.tribe,
+                        type: "fighters",
+                        slug,
+                    },
+                }),
+            ),
+        );
         this._sendMessage(`**${secondPlayer.name}** a rejoint la partie.`);
         this._sendState();
         this.startTurn(Object.keys(this.players)[Math.round(Math.random())]);
