@@ -42,7 +42,7 @@ Les règles du jeu originales sont [retranscrites ici](./docs/gamerules.md).
 
 ### Règles
 
-- [ ] Placement de tribu
+- [x] Placement de tribu
 - [x] Déplacement
   - [x] Déplacement normal
   - [x] Déplacement spécial
