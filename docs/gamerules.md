@@ -35,7 +35,7 @@ Avant le combat, il est conseillée de faire pivoter plusieurs fois sa carte de 
 
 Chaque joueur du doigt un des quatre coins de son choix sur la **carte ennemie** puis chacun retourne sa carte et compare les chiffres inscrits sur les coins touchés. Le propriétaire de la carte ayant obtenu le score de touche le plus élevé remporte le combat et laisse sa carte dans la case disputée. La carte vaincue est éliminée du jeu.  
 Chaque joueur place ses cartes éliminées face cachée dans une pile près de son camp, à l'écart du champ de bataille : cette pile est appelée **Tombeau**.  
-En cas d'égalitée, le défenseur conserve sa position tandis que l'attaquant recule d'une case en suivant la trajectoire de son dernier déplacement. Si ce dernier vient d'effectuer un déplacement spécial, il retourne sur sa case de départ.
+En cas d'égalité, le défenseur conserve sa position tandis que l'attaquant recule d'une case en suivant la trajectoire de son dernier déplacement. Si ce dernier vient d'effectuer un déplacement spécial, il retourne sur sa case de départ.
 
 - Si un joueur touche le coin **★** d'un Zoon ennemi, le propriétaire de ce dernier consulte le récapitulatif de sa tribu et applique l'effet spécial indiqué pour ce Zoon.
 - Si les deux joueurs touchent en même temps un coin **★**, le combat se solde par une égalité et aucun effet spécial n'est déclenché.
@@ -102,7 +102,7 @@ Vous pouvez choisir n'importe quelle carte du jeu pour composer votre tribu.
 
 ### Comment jouer avec plus ou moins de 12 Zoons ?
 
-Si votre tribu compte plus de 12 Zoons, installez votre *Emblème* et 11 autres Zoons dans votre zone de déploiement. VOus ne gardez en main que vos Atouts et les Zoons que vous n'avez pas posés sur le champ de bataille. Ces Zoons deviennent des cartes Renfort.  
+Si votre tribu compte plus de 12 Zoons, installez votre *Emblème* et 11 autres Zoons dans votre zone de déploiement. Vous ne gardez en main que vos Atouts et les Zoons que vous n'avez pas posés sur le champ de bataille. Ces Zoons deviennent des cartes Renfort.  
 Si vous jouez avec moins de 12 Zoons, il vous appartient de choisir les cases de votre zone de déploiement qui resteront vides au moment du placement.
 
 * * *
