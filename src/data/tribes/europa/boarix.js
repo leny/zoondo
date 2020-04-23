@@ -159,6 +159,7 @@ export default {
         "kassin:0",
         "kassin:1",
         "kassin:1",
+        "sacrechene",
     ],
     disposition: [
         [
