@@ -14,7 +14,10 @@ export const noop = () => {};
 
 export const wait = ms => new Promise(r => setTimeout(r, ms));
 
-export const preventDefault = (handler, stopPropagation = false) => e => {
+export const preventDefault = (
+    handler = noop,
+    stopPropagation = false,
+) => e => {
     e.preventDefault();
     stopPropagation && e.stopPropagation();
     handler(e);
