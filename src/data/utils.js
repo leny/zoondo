@@ -12,7 +12,8 @@ export const resolveTribe = tribe => tribes.get(tribe);
 
 export const resolveCard = card => {
     const {tribe, type} = card;
-    const [slug, variant] = card.slug.split(":");
+    const [rawSlug] = card.slug.split("|");
+    const [slug, variant] = rawSlug.split(":");
 
     const tribeData = tribes.get(tribe);
 
