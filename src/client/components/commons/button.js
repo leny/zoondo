@@ -34,6 +34,11 @@ const Button = ({
             background: "transparent",
             color: "white",
             cursor: "pointer",
+            "&:disabled": {
+                color: "gray",
+                borderColor: "gray",
+                cursor: "not-allowed",
+            },
         },
     });
 
