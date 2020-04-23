@@ -14,6 +14,9 @@ export const DEBUG_MODE = process.env.DEBUG_MODE;
 
 export const SERVER_PATH = process.env.SERVER_PATH;
 
+export const CELL_SIZE = 120;
+export const GAP_SIZE = 4;
+
 export const NBSP = "\u00a0";
 
 export const BCG_COLOR = "black";
