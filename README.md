@@ -26,7 +26,38 @@ Les règles du jeu originales sont [retranscrites ici](./docs/gamerules.md).
 
 ## Documentation
 
-*TODO*
+> **⚠️ ATTENTION:** la présente documentation se réfère à la _version de développement_ de Zoondo. La version finale sera _probablement_ accessible sous forme d'un site en ligne.
+
+### Prérequis
+
+Installer et faire fonctionner la version *dev* de Zoondo n'est pas très sorcier. Il vous faut juste quelques *connaissances de base* avec le terminal, et [node.js installé](https://nodejs.org/en/download/) sur votre machine (version 12 ou plus).
+
+### Installation
+
+Pour commencer, téléchargez le fichier zip correspondant à la version que vous voulez tester. Les versions sont listées sur la page [releases](https://github.com/leny/zoondo/releases) du repo GitHub.
+
+Dézipper le fichier et utilisez votre terminal pour naviguer dans le dossier de Zoondo. Vous devriez être dans un dossier comprenant un dossier `src`, ainsi que les fichiers `package.json`, `package-lock.json` et quelques autres.
+
+De là, lancez les commandes suivantes :
+
+- `npm ci` (installe les dépendances)
+- `npm run build` (build le code serveur et le code client)
+
+C'est tout pour l'installation.
+
+### Exécution
+
+Pour exécuter Zoondo et faire votre première partie, lancez simplement la commande `npm start` depuis le dossier de Zoondo.
+
+De là, le jeu est accessible sur l'adresse [http://localhost:8000](http://localhost:8000), depuis votre navigateur web.
+
+> ☝️ Durant le développement, Zoondo n'est testé que sur **Google Chrome**.
+
+Pour lancer une partie, vous devez être deux joueurs. Vous pouvez soit jouer avec deux onglets sur le même navigateur, ou, sur le même réseau local, utiliser l'IP locale de la machine hôte (la plupart du temps quelque chose comme `192.168.0.XXX`) pour acceder au jeu depuis une autre machine.
+
+En ligne, vous pouvez également utiliser [ngrok](https://ngrok.com), mais ça sort un peu de cette documentation.
+
+Pour couper le serveur de Zoondo en fin de partie, il vous suffit de faire `CTRL+C` dans le terminal.
 
 ## Fonctionnalités
 
