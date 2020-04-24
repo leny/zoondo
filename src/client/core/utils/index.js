@@ -20,5 +20,5 @@ export const preventDefault = (
 ) => e => {
     e.preventDefault();
     stopPropagation && e.stopPropagation();
-    handler(e);
+    handler && handler(e);
 };
