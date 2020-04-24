@@ -12,7 +12,7 @@ import Game from "game";
 import {getGameRooms} from "core/socket";
 
 export default (server, socket) => ({player}) => {
-    console.log("register:", player);
+    console.log("register:", player.name);
 
     const roomId = Object.values(socket.rooms).find(id =>
         id.startsWith("game-"),
