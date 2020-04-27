@@ -59,16 +59,6 @@ const CardInfos = ({className, card}) => {
     let title, $content, $details;
 
     if (data) {
-        if (data.power) {
-            $details = (
-                <div css={styles.details}>
-                    <strong>{"Pouvoir :"}</strong>
-                    {NBSP}
-                    {data.power}
-                </div>
-            );
-        }
-
         title = (
             <>
                 {"Carte active:"}
@@ -81,28 +71,96 @@ const CardInfos = ({className, card}) => {
             </>
         );
 
-        $content = (
-            <>
-                <div css={styles.params}>
-                    <figure css={styles.illustration}>
-                        <img
-                            css={styles.image}
-                            src={`/assets/tribes/${card.tribe}/${data.slug}.png`}
-                            alt={data.name}
-                        />
-                    </figure>
+        if (card.type === "trumps") {
+            let $usableBy, $usageCount, $corners, $target;
 
-                    <div css={styles.infos}>
-                        <CardCorners
-                            css={styles.corners}
-                            corners={data.corners}
-                        />
-                        <CardMoves moves={data.moves} />
+            if (data.usableBy) {
+                $usableBy = (
+                    <>
+                        <strong>
+                            {`Utilisable par un ${resolveType(data.usableBy)}.`}
+                        </strong>
+                        <br />
+                    </>
+                );
+            }
+
+            if (data.usage === "ONCE") {
+                $usageCount = (
+                    <>
+                        <br />
+                        {`Utilisable une seule fois par partie.`}
+                    </>
+                );
+            }
+
+            if (data.corners) {
+                $corners = (
+                    <CardCorners css={styles.corners} corners={data.corners} />
+                );
+            }
+
+            if (data.target) {
+                $target = <CardMoves moves={data.target} isShooting />;
+            }
+
+            $content = (
+                <>
+                    <div css={styles.params}>
+                        <figure css={styles.illustration}>
+                            <img
+                                css={styles.image}
+                                src={`/assets/tribes/${card.tribe}/${data.slug}.png`}
+                                alt={data.name}
+                            />
+                        </figure>
+
+                        <div css={styles.infos}>
+                            {$corners}
+                            {$target}
+                        </div>
                     </div>
-                </div>
-                {$details}
-            </>
-        );
+                    <div css={styles.details}>
+                        {$usableBy}
+                        {data.text}
+                        {$usageCount}
+                    </div>
+                </>
+            );
+        } else if (card.type === "fighters") {
+            if (data.power) {
+                $details = (
+                    <div css={styles.details}>
+                        <strong>{"Pouvoir :"}</strong>
+                        {NBSP}
+                        {data.power}
+                    </div>
+                );
+            }
+
+            $content = (
+                <>
+                    <div css={styles.params}>
+                        <figure css={styles.illustration}>
+                            <img
+                                css={styles.image}
+                                src={`/assets/tribes/${card.tribe}/${data.slug}.png`}
+                                alt={data.name}
+                            />
+                        </figure>
+
+                        <div css={styles.infos}>
+                            <CardCorners
+                                css={styles.corners}
+                                corners={data.corners}
+                            />
+                            <CardMoves moves={data.moves} />
+                        </div>
+                    </div>
+                    {$details}
+                </>
+            );
+        }
     } else {
         title = "Carte active:";
         $content = (

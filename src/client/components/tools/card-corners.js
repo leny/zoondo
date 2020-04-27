@@ -15,6 +15,10 @@ import {rem, percent, radialGradient} from "@pwops/core";
 import {Corners} from "types";
 
 const getCharacter = s => {
+    if (s === "X") {
+        return "╳";
+    }
+
     if (s === "*") {
         return "★";
     }
