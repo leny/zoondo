@@ -9,7 +9,7 @@
 /* eslint-disable no-console */
 
 import {sendSystemMessage} from "core/socket";
-import {resolveMoves, resolveCard} from "data/utils";
+import {resolveMoves, resolveCard, resolveTribe} from "data/utils";
 import cloneDeep from "lodash.clonedeep";
 import {ACTIONS} from "data/constants";
 
@@ -51,6 +51,13 @@ export default class Game {
                 }),
             ),
         );
+        this.trumps = resolveTribe(firstPlayer.tribe).composition.trumps.map(
+            slug => ({
+                tribe: firstPlayer.tribe,
+                type: "trumps",
+                slug,
+            }),
+        );
         this._sendMessage("Partie créée. En attente d'un second joueur…");
         this._sendState();
     }
@@ -70,6 +77,13 @@ export default class Game {
                     },
                 }),
             ),
+        );
+        this.trumps = resolveTribe(secondPlayer.tribe).composition.trumps.map(
+            slug => ({
+                tribe: secondPlayer.tribe,
+                type: "trumps",
+                slug,
+            }),
         );
         this._sendMessage(`**${secondPlayer.name}** a rejoint la partie.`);
         this._sendState();
@@ -542,6 +556,7 @@ export default class Game {
                         card: player === id ? {tribe, type, slug} : {tribe},
                     }),
                 ),
+                trumps: Array.from(this.trumps),
             };
 
             if (state.turn.phase === "combat") {
