@@ -53,4 +53,8 @@ export const resolveType = type =>
         ELITE: "Élite",
         SOLDIER: "Soldat",
         EMBLEM: "Emblème",
+        SHOOTING: "Atout de tir",
+        PROTECTION: "Atout de protection",
+        COMBAT: "Atout de combat",
+        TACTICAL: "Atout tactique",
     }[type]);
