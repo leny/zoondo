@@ -16,22 +16,24 @@ import {Moves} from "types";
 const CELL_SIZE = 12;
 const CELL_GAP = 2;
 const GRID_SIZE = 5;
+const OFFSET = 5;
 
 const CardMoves = ({
     className,
     moves,
+    isShooting = false,
     cellSize = CELL_SIZE,
     cellGap = CELL_GAP,
     gridSize = GRID_SIZE,
 }) => {
     const size = useMemo(
-        () => gridSize * cellSize + (cellGap * gridSize - 1),
+        () => gridSize * cellSize + (cellGap * gridSize - 1) + OFFSET * 2,
         [],
     );
     const getPositionFromCoordinates = useCallback(
         (x, y) => [
-            x * cellSize + x * cellGap + 0.5,
-            y * cellSize + y * cellGap + 0.5,
+            x * cellSize + x * cellGap + 0.5 + OFFSET,
+            y * cellSize + y * cellGap + 0.5 + OFFSET,
         ],
         [cellSize, cellGap],
     );
@@ -58,21 +60,39 @@ const CardMoves = ({
         moves.forEach(move => {
             move.forEach(([x, y, direct = false]) => {
                 const [mx, my] = getPositionFromCoordinates(2 + x, 2 - y);
-                ctx.fillStyle = direct ? "forestgreen" : "yellow";
-                ctx.fillRect(mx, my, cellSize, cellSize);
-                ctx.fillStyle = "black";
-                ctx.beginPath();
-                ctx.ellipse(
-                    mx + cellSize / 2,
-                    my + cellSize / 2,
-                    cellSize / 3.1,
-                    cellSize / 3.1,
-                    0,
-                    0,
-                    2 * Math.PI,
-                );
-                ctx.fill();
-                ctx.closePath();
+                if (isShooting) {
+                    const textSize = 24;
+                    ctx.strokeStyle = "black";
+                    ctx.lineWidth = 2;
+                    ctx.font = `${textSize}px Arial`;
+                    ctx.textBaseline = "middle";
+                    const gradient = ctx.createRadialGradient(0, 0, 0, 2, 2, 2);
+                    gradient.addColorStop(0, "yellow");
+                    gradient.addColorStop(1, "orange");
+                    ctx.fillStyle = gradient;
+                    const textCoords = [
+                        mx - CELL_SIZE / 4,
+                        my + CELL_SIZE / 1.5,
+                    ];
+                    ctx.strokeText("✹", ...textCoords);
+                    ctx.fillText("✹", ...textCoords);
+                } else {
+                    ctx.fillStyle = direct ? "forestgreen" : "yellow";
+                    ctx.fillRect(mx, my, cellSize, cellSize);
+                    ctx.fillStyle = "black";
+                    ctx.beginPath();
+                    ctx.ellipse(
+                        mx + cellSize / 2,
+                        my + cellSize / 2,
+                        cellSize / 3.1,
+                        cellSize / 3.1,
+                        0,
+                        0,
+                        2 * Math.PI,
+                    );
+                    ctx.fill();
+                    ctx.closePath();
+                }
             });
         });
 
@@ -86,8 +106,9 @@ const CardMoves = ({
                             return j ? 2 - a : 2 + a;
                         }),
                     );
-                    ctx.strokeStyle = "black";
+                    ctx.strokeStyle = isShooting ? "white" : "black";
                     ctx.lineWidth = 3;
+                    ctx.lineCap = "round";
                     ctx.beginPath();
                     ctx.moveTo(fx + cellSize / 2, fy + cellSize / 2);
                     ctx.lineTo(mx + cellSize / 2, my + cellSize / 2);
@@ -99,10 +120,10 @@ const CardMoves = ({
 
         // draw center cell
         const [cx, cy] = getPositionFromCoordinates(2, 2);
-        ctx.fillStyle = "fuchsia";
+        ctx.fillStyle = "mediumaquamarine";
         ctx.fillRect(cx, cy, cellSize, cellSize);
         ctx.strokeStyle = "black";
-        ctx.fillStyle = "red";
+        ctx.fillStyle = "deeppink";
         ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.ellipse(
@@ -132,6 +153,7 @@ const CardMoves = ({
 
 CardMoves.propTypes = {
     moves: Moves.isRequired,
+    isShooting: PropTypes.bool,
     cellSize: PropTypes.number,
     cellGap: PropTypes.number,
     gridSize: PropTypes.number,
