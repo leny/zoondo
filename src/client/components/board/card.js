@@ -104,7 +104,7 @@ const BoardCard = ({
             </>
         );
 
-        if (hover) {
+        if (hover && (card.corners || card.moves || card.target)) {
             $content = [];
 
             if (card.corners) {
@@ -122,6 +122,15 @@ const BoardCard = ({
                     <CardMoves
                         key={"moves"}
                         moves={card.moves || card.target}
+                    />,
+                );
+            } else {
+                $content.push(
+                    <img
+                        key={"image"}
+                        css={styles.image}
+                        src={`/assets/tribes/${tribe}/${card.slug}.png`}
+                        alt={card.name}
                     />,
                 );
             }

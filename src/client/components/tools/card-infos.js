@@ -89,7 +89,7 @@ const CardInfos = ({className, card}) => {
                 $usageCount = (
                     <>
                         <br />
-                        {`Utilisable une seule fois par partie.`}
+                        <small>{`Utilisable une seule fois par partie.`}</small>
                     </>
                 );
             }

@@ -8,29 +8,33 @@
 
 /* eslint-disable react/no-danger */
 
-import React from "react";
+import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {Turn, Player} from "types";
 
 import Button from "components/commons/button";
 import Box from "components/commons/box";
+import Card from "components/board/card";
 
 import {noop, preventDefault} from "utils";
-import {NBSP, CARD_TYPES} from "core/constants";
+import {NBSP, CARD_TYPES, BORDER_COLOR} from "core/constants";
 import {ACTIONS} from "data/constants";
 import {resolveCard} from "data/utils";
 import marked from "marked";
 
-import {rem} from "@pwops/core";
+import {rem, px, calc, percent, rotate, deg} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
 
 const GameInfos = ({
     className,
     turn,
+    trumps,
     player,
     activeCard,
     onValidateAction = noop,
+    onSelectTrump = noop,
 }) => {
+    const [showTrumps, setShowTrumps] = useState(false);
     const {count, activePlayer, phase, timer} = turn || {};
     const styles = usePwops({
         activePlayer: {
@@ -62,6 +66,29 @@ const GameInfos = ({
         },
         tools: {
             flexRow: ["space-around", "center"],
+        },
+        trumps: {
+            relative: true,
+            marginTop: rem(1.5),
+            paddingLeft: rem(2.5),
+            flexRow: ["space-around", "center"],
+        },
+        trumpsTitle: {
+            absolute: [
+                rem(-1),
+                calc(`${percent(100)} - ${rem(1.8)}`),
+                null,
+                null,
+            ],
+            fontSize: rem(1.4),
+            textTransform: "uppercase",
+            transform: rotate(deg(-90)),
+            transformOrigin: ["bottom", "right"],
+            textAlign: "right",
+        },
+        trump: {
+            border: [px(1), "solid", BORDER_COLOR],
+            borderRadius: px(3),
         },
     });
 
@@ -164,7 +191,7 @@ const GameInfos = ({
             break;
 
         case "main": {
-            let $actions;
+            let $actions, $trumps;
 
             if (player.id === turn.activePlayer.id) {
                 $actions = (
@@ -178,10 +205,49 @@ const GameInfos = ({
                         </div>
 
                         <div css={styles.tools}>
-                            <Button>{"Voir mes atouts"}</Button>
+                            <Button onClick={() => setShowTrumps(!showTrumps)}>
+                                {showTrumps
+                                    ? "Masquer mes atouts"
+                                    : "Voir mes atouts"}
+                            </Button>
                             <Button>{"Voir mes renforts"}</Button>
                         </div>
                     </>
+                );
+            }
+
+            if (showTrumps) {
+                let $list;
+
+                if (trumps.length) {
+                    $list = trumps.map(({tribe, type, slug}) => (
+                        <Card
+                            key={slug}
+                            css={styles.trump}
+                            tribe={tribe}
+                            type={type}
+                            slug={slug}
+                            isOwn
+                            onSelect={() =>
+                                onSelectTrump({
+                                    x: `${tribe}-${type}-${slug}`,
+                                    y: `${tribe}-${type}-${slug}`,
+                                    tribe,
+                                    type,
+                                    slug,
+                                })
+                            }
+                        />
+                    ));
+                } else {
+                    $list = <p>{"Vous n'avez plus d'atout."}</p>;
+                }
+
+                $trumps = (
+                    <div css={styles.trumps}>
+                        <h4 css={styles.trumpsTitle}>{"Atouts"}</h4>
+                        {$list}
+                    </div>
                 );
             }
 
@@ -200,6 +266,8 @@ const GameInfos = ({
                     </div>
 
                     {$actions}
+
+                    {$trumps}
                 </>
             );
             break;
@@ -225,6 +293,14 @@ GameInfos.propTypes = {
         type: PropTypes.oneOf(Object.values(CARD_TYPES)),
         slug: PropTypes.string,
     }),
+    trumps: PropTypes.arrayOf(
+        PropTypes.shape({
+            tribe: PropTypes.string,
+            type: PropTypes.oneOf(Object.values(CARD_TYPES)),
+            slug: PropTypes.string,
+        }),
+    ),
+    onSelectTrump: PropTypes.func,
     onValidateAction: PropTypes.func,
 };
 

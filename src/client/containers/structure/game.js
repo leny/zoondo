@@ -30,6 +30,7 @@ const Game = ({player: rawPlayer}) => {
     const [player, setPlayer] = useState(rawPlayer);
     const [opponent, setOpponent] = useState(null);
     const [turn, setTurn] = useState(null);
+    const [trumps, setTrumps] = useState(null);
     const [board, setBoard] = useState([]);
     const [overlays, setOverlays] = useState([]);
     const [activeCard, setActiveCard] = useState(null);
@@ -192,6 +193,7 @@ const Game = ({player: rawPlayer}) => {
         setOpponent(state.opponent);
         setBoard(state.board);
         setTurn(state.turn);
+        setTrumps(state.trumps);
         setOverlays([]);
         if (state.turn.phase === "combat") {
             ["attacker", "defender"].forEach(side => {
@@ -421,8 +423,10 @@ const Game = ({player: rawPlayer}) => {
                     <GameInfos
                         css={styles.gameInfos}
                         turn={turn}
+                        trumps={trumps}
                         player={player}
                         activeCard={activeCard}
+                        onSelectTrump={selectActiveCard}
                         onValidateAction={sendActionValue}
                     />
 
