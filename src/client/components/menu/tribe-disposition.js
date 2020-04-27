@@ -9,7 +9,7 @@
 import React, {useCallback, useMemo, useState} from "react";
 import PropTypes from "prop-types";
 
-import {rem, px, percent, url, translate} from "@pwops/core";
+import {rem, px, percent, url, translate, rotate, deg, calc} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
 
 import {BOARD_COL_SIZE} from "data/constants";
@@ -32,7 +32,7 @@ const TribeDispositionMenu = ({
         container: {
             width: px(1200),
             minHeight: percent(100),
-            margin: [rem(3), "auto", 0],
+            margin: [rem(3), "auto", rem(5)],
             flexColumn: ["flex-start", "center"],
         },
         title: {
@@ -53,9 +53,27 @@ const TribeDispositionMenu = ({
             width: px(960),
             flexRow: ["space-between", "flex-start"],
         },
-        zoons: {
+        composition: {
             width: percent(54),
-            flexRow: ["flex-start", "flex-start"],
+        },
+        section: {
+            relative: true,
+        },
+        sectionTitle: {
+            absolute: [
+                rem(-1),
+                calc(`${percent(100)} + ${rem(0.25)}`),
+                null,
+                null,
+            ],
+            fontSize: rem(1.4),
+            textTransform: "uppercase",
+            transform: rotate(deg(-90)),
+            transformOrigin: ["bottom", "right"],
+            textAlign: "right",
+        },
+        zoons: {
+            flexRow: ["flex-start", "center"],
             flexWrap: "wrap",
         },
         zoon: {
@@ -71,6 +89,12 @@ const TribeDispositionMenu = ({
         },
         zoonOnBoard: {
             transform: translate(px(-1), px(-1)),
+        },
+        separator: {
+            size: [percent(50), px(1)],
+            margin: [rem(1.5), "auto", rem(2)],
+            border: 0,
+            background: "dimgray",
         },
     });
     const tribe = useMemo(() => tribes.get(tribeSlug), [tribeSlug]);
@@ -120,7 +144,7 @@ const TribeDispositionMenu = ({
     );
     const handleRandomDisposition = useCallback(
         preventDefault(() => {
-            const roster = Array.from(tribe.composition).sort(
+            const roster = Array.from(tribe.composition.fighters).sort(
                 () => Math.random() - 0.5,
             );
             const d = [];
@@ -151,6 +175,51 @@ const TribeDispositionMenu = ({
         [disposition],
     );
 
+    let $fighters, $trumps;
+
+    if (disposition.length !== tribe.composition.fighters.length) {
+        $fighters = (
+            <div css={styles.section}>
+                <h4 css={styles.sectionTitle}>{"Combattants"}</h4>
+                <div css={styles.zoons}>
+                    {tribe.composition.fighters
+                        .filter(s => !disposition.find(({slug}) => s === slug))
+                        .map(slug => (
+                            <DispositionZoon
+                                css={styles.zoon}
+                                key={`${tribeSlug}-${slug}`}
+                                tribe={tribeSlug}
+                                type={"fighters"}
+                                slug={slug}
+                                onClick={setActiveCard}
+                                onDragStart={handleDragStart(slug)}
+                            />
+                        ))}
+                </div>
+            </div>
+        );
+    }
+
+    if (tribe.composition.trumps.length) {
+        $trumps = (
+            <div css={styles.section}>
+                <h4 css={styles.sectionTitle}>{"Atouts"}</h4>
+                <div css={styles.zoons}>
+                    {tribe.composition.trumps.map(slug => (
+                        <DispositionZoon
+                            css={styles.zoon}
+                            key={`${tribeSlug}-${slug}`}
+                            tribe={tribeSlug}
+                            type={"trumps"}
+                            slug={slug}
+                            onClick={setActiveCard}
+                        />
+                    ))}
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div css={styles.container}>
             <h1 css={styles.title}>{"Zoondo"}</h1>
@@ -175,6 +244,7 @@ const TribeDispositionMenu = ({
                             css={styles.zoonOnBoard}
                             key={`${x}-${y}-${tribeSlug}-${slug}`}
                             tribe={tribeSlug}
+                            type={"fighters"}
                             slug={slug}
                             onClick={setActiveCard}
                             onDragStart={handleDragStart(slug, {x, y})}
@@ -185,19 +255,10 @@ const TribeDispositionMenu = ({
             />
 
             <div css={styles.holder}>
-                <div css={styles.zoons}>
-                    {tribe.composition
-                        .filter(s => !disposition.find(({slug}) => s === slug))
-                        .map(slug => (
-                            <DispositionZoon
-                                css={styles.zoon}
-                                key={`${tribeSlug}-${slug}`}
-                                tribe={tribeSlug}
-                                slug={slug}
-                                onClick={setActiveCard}
-                                onDragStart={handleDragStart(slug)}
-                            />
-                        ))}
+                <div css={styles.composition}>
+                    {$fighters}
+                    {$fighters && $trumps ? <hr css={styles.separator} /> : ""}
+                    {$trumps}
                 </div>
                 <div css={styles.infos}>
                     <div css={styles.tools}>

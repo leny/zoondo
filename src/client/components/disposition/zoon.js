@@ -16,8 +16,14 @@ import {CELL_SIZE, BORDER_COLOR} from "core/constants";
 import {preventDefault} from "core/utils";
 import {resolveCard, resolveType} from "data/utils";
 
-const DispositionZoon = ({className, tribe, slug, onClick, onDragStart}) => {
-    const type = "fighters";
+const DispositionZoon = ({
+    className,
+    type,
+    tribe,
+    slug,
+    onClick,
+    onDragStart,
+}) => {
     const styles = usePwops({
         container: {
             display: "block",
@@ -47,12 +53,16 @@ const DispositionZoon = ({className, tribe, slug, onClick, onDragStart}) => {
             textTransform: "uppercase",
         },
     });
-    const card = useMemo(() => resolveCard({type, tribe, slug}), [tribe, slug]);
+    const card = useMemo(() => resolveCard({type, tribe, slug}), [
+        tribe,
+        type,
+        slug,
+    ]);
 
     return (
         <a
             css={styles.container}
-            draggable={"true"}
+            draggable={onDragStart ? "true" : "false"}
             className={className}
             href={"#"}
             onDragStart={onDragStart}
@@ -69,6 +79,7 @@ const DispositionZoon = ({className, tribe, slug, onClick, onDragStart}) => {
 };
 
 DispositionZoon.propTypes = {
+    type: PropTypes.oneOf(["fighters", "trumps"]),
     tribe: PropTypes.string.isRequired,
     slug: PropTypes.string.isRequired,
     onClick: PropTypes.func,
