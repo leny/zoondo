@@ -109,7 +109,10 @@ Grid.propTypes = {
     rowSize: PropTypes.number.isRequired,
     colSize: PropTypes.number.isRequired,
     reverse: PropTypes.bool,
-    activeCell: PropTypes.shape({x: PropTypes.number, y: PropTypes.number}),
+    activeCell: PropTypes.shape({
+        x: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        y: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    }),
     cards: PropTypes.arrayOf(
         PropTypes.shape({
             x: PropTypes.number.isRequired,

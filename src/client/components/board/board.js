@@ -98,8 +98,8 @@ const Board = ({
 
 Board.propTypes = {
     activeCell: PropTypes.shape({
-        x: PropTypes.number,
-        y: PropTypes.number,
+        x: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        y: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     }),
     cards: PropTypes.arrayOf(
         PropTypes.shape({
