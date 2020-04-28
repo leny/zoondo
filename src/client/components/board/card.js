@@ -9,7 +9,7 @@
 import React, {useMemo, useState} from "react";
 import PropTypes from "prop-types";
 
-import {px, rotateX, deg, rem} from "@pwops/core";
+import {px, rotateX, deg, rem, important} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
 import {noop, preventDefault} from "utils";
 import {CELL_SIZE} from "core/constants";
@@ -28,6 +28,7 @@ const BoardCard = ({
     slug,
     isFaceUp = false,
     isOwn = false,
+    isSelected = false,
     onSelect = noop,
     onDragStart = noop,
 }) => {
@@ -39,6 +40,10 @@ const BoardCard = ({
             display: "block",
             flexColumn: ["space-around", "center"],
             textDecoration: "none",
+        },
+        selectedContainer: {
+            borderColor: important("orange"),
+            boxShadow: ["inset", 0, 0, px(10), "orange"],
         },
         coat: {
             size: px(CELL_SIZE / 3),
@@ -141,7 +146,7 @@ const BoardCard = ({
                 href={"#"}
                 draggable={onDragStart ? "true" : "false"}
                 className={className}
-                css={[styles.container]}
+                css={[styles.container, isSelected && styles.selectedContainer]}
                 onMouseEnter={() => setHover(true)}
                 onMouseLeave={() => setHover(false)}
                 onDragStart={onDragStart}
@@ -154,7 +159,11 @@ const BoardCard = ({
     return (
         <span
             className={className}
-            css={[styles.container, isOwn || styles.opponentCard]}>
+            css={[
+                styles.container,
+                isOwn || styles.opponentCard,
+                isSelected && styles.selectedContainer,
+            ]}>
             <img
                 css={styles.coat}
                 src={`/assets/tribes/${tribe}/coat.png`}
