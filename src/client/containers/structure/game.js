@@ -25,12 +25,12 @@ import CardInfos from "components/tools/card-infos";
 import GameInfos from "components/tools/game-infos";
 import Chat from "components/tools/chat";
 import Combat from "components/board/combat";
+import HandHolder from "components/tools/hand-holder";
 
 const Game = ({player: rawPlayer}) => {
     const [player, setPlayer] = useState(rawPlayer);
     const [opponent, setOpponent] = useState(null);
     const [turn, setTurn] = useState(null);
-    const [trumps, setTrumps] = useState(null);
     const [board, setBoard] = useState([]);
     const [overlays, setOverlays] = useState([]);
     const [activeCard, setActiveCard] = useState(null);
@@ -56,8 +56,9 @@ const Game = ({player: rawPlayer}) => {
             marginLeft: rem(2),
         },
         cardInfos: {flex: "none"},
-        gameInfos: {flex: "none", margin: [rem(2), 0]},
-        chat: {flex: [1, 0, 0]},
+        gameInfos: {flex: "none", margin: [rem(2), 0, 0]},
+        handHolder: {flex: "none", margin: [rem(2), 0, 0]},
+        chat: {flex: [1, 0, 0], margin: [rem(2), 0, 0]},
         waiting: {
             fontSize: rem(4.8),
             textAlign: "center",
@@ -193,7 +194,6 @@ const Game = ({player: rawPlayer}) => {
         setOpponent(state.opponent);
         setBoard(state.board);
         setTurn(state.turn);
-        setTrumps(state.trumps);
         setOverlays([]);
         if (state.turn.phase === "combat") {
             ["attacker", "defender"].forEach(side => {
@@ -423,11 +423,16 @@ const Game = ({player: rawPlayer}) => {
                     <GameInfos
                         css={styles.gameInfos}
                         turn={turn}
-                        trumps={trumps}
                         player={player}
                         activeCard={activeCard}
-                        onSelectTrump={selectActiveCard}
                         onValidateAction={sendActionValue}
+                    />
+
+                    <HandHolder
+                        css={styles.handHolder}
+                        trumps={player.trumps}
+                        activeCard={activeCard}
+                        onSelectTrump={selectActiveCard}
                     />
 
                     <Chat css={styles.chat} />

@@ -28,14 +28,22 @@ export default class Game {
         timer: 30,
     };
     board = [];
-    supports = [];
-    trumps = [];
     graveyard = [];
 
     constructor(server, roomId, firstPlayer) {
         this.server = server;
         this.room = roomId;
-        this.players[firstPlayer.id] = {...firstPlayer, isFirstPlayer: true};
+        this.players[firstPlayer.id] = {
+            ...firstPlayer,
+            isFirstPlayer: true,
+            trumps: resolveTribe(firstPlayer.tribe).composition.trumps.map(
+                slug => ({
+                    tribe: firstPlayer.tribe,
+                    type: "trumps",
+                    slug,
+                }),
+            ),
+        };
         // TODO: check disposition
         Array.from(firstPlayer.disposition).forEach((row, y) =>
             row.forEach((slug, x) =>
@@ -51,19 +59,22 @@ export default class Game {
                 }),
             ),
         );
-        this.trumps = resolveTribe(firstPlayer.tribe).composition.trumps.map(
-            slug => ({
-                tribe: firstPlayer.tribe,
-                type: "trumps",
-                slug,
-            }),
-        );
         this._sendMessage("Partie créée. En attente d'un second joueur…");
         this._sendState();
     }
 
     join(secondPlayer) {
-        this.players[secondPlayer.id] = {...secondPlayer, isFirstPlayer: false};
+        this.players[secondPlayer.id] = {
+            ...secondPlayer,
+            isFirstPlayer: false,
+            trumps: resolveTribe(secondPlayer.tribe).composition.trumps.map(
+                slug => ({
+                    tribe: secondPlayer.tribe,
+                    type: "trumps",
+                    slug,
+                }),
+            ),
+        };
         Array.from(secondPlayer.disposition).forEach((row, y) =>
             row.forEach((slug, x) =>
                 this.board.push({
@@ -77,13 +88,6 @@ export default class Game {
                     },
                 }),
             ),
-        );
-        this.trumps = resolveTribe(secondPlayer.tribe).composition.trumps.map(
-            slug => ({
-                tribe: secondPlayer.tribe,
-                type: "trumps",
-                slug,
-            }),
         );
         this._sendMessage(`**${secondPlayer.name}** a rejoint la partie.`);
         this._sendState();
@@ -556,7 +560,6 @@ export default class Game {
                         card: player === id ? {tribe, type, slug} : {tribe},
                     }),
                 ),
-                trumps: Array.from(this.trumps),
             };
 
             if (state.turn.phase === "combat") {
