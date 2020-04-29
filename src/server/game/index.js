@@ -434,6 +434,10 @@ export default class Game {
                     );
 
                     if (cardAtPosition) {
+                        if (cardAtPosition.player === "OBSTACLE") {
+                            return false;
+                        }
+
                         if (
                             isMoveCardAction &&
                             this.turn.action.options.onlyFreeCells
@@ -579,11 +583,19 @@ export default class Game {
                     player => player.id !== id,
                 ),
                 board: this.board.map(
-                    ({player, x, y, card: {tribe, type, slug}}) => ({
+                    ({
                         player,
                         x,
                         y,
-                        card: player === id ? {tribe, type, slug} : {tribe},
+                        card: {tribe, type, originalType, slug},
+                    }) => ({
+                        player,
+                        x,
+                        y,
+                        card:
+                            player === id || player === "OBSTACLE"
+                                ? {tribe, type, originalType, slug}
+                                : {tribe},
                     }),
                 ),
             };
