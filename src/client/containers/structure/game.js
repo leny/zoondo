@@ -91,6 +91,11 @@ const Game = ({player: rawPlayer}) => {
         [turn, setTurn],
     );
 
+    const sendTrumpSelection = useCallback(
+        () => socket.emit("trump", activeCard),
+        [activeCard],
+    );
+
     const sendActionValue = useCallback(
         value => {
             const {type} = turn.action;
@@ -425,6 +430,7 @@ const Game = ({player: rawPlayer}) => {
                         turn={turn}
                         player={player}
                         activeCard={activeCard}
+                        onUseTrump={sendTrumpSelection}
                         onValidateAction={sendActionValue}
                     />
 

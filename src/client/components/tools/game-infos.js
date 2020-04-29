@@ -30,6 +30,7 @@ const GameInfos = ({
     player,
     activeCard,
     onValidateAction = noop,
+    onUseTrump = noop,
 }) => {
     const {count, activePlayer, phase, timer} = turn || {};
     const styles = usePwops({
@@ -167,13 +168,23 @@ const GameInfos = ({
             let $actions;
 
             if (player.id === turn.activePlayer.id) {
-                $actions = (
-                    <div css={styles.tips}>
-                        {
-                            "Cliquez sur une carte ou choisissez une action ci-dessous."
-                        }
-                    </div>
-                );
+                if (activeCard?.type === "trumps") {
+                    $actions = (
+                        <div css={styles.tools}>
+                            <Button onClick={onUseTrump}>
+                                {`Utiliser ${resolveCard(activeCard).name}`}
+                            </Button>
+                        </div>
+                    );
+                } else {
+                    $actions = (
+                        <div css={styles.tips}>
+                            {
+                                "Cliquez sur une carte ou choisissez une action ci-dessous."
+                            }
+                        </div>
+                    );
+                }
             }
 
             $content = (
@@ -217,6 +228,7 @@ GameInfos.propTypes = {
         slug: PropTypes.string,
     }),
     onValidateAction: PropTypes.func,
+    onUseTrump: PropTypes.func,
 };
 
 export default GameInfos;
