@@ -29,6 +29,7 @@ const GameInfos = ({
     turn,
     player,
     activeCard,
+    activeCell,
     onValidateAction = noop,
     onUseTrump = noop,
 }) => {
@@ -97,6 +98,37 @@ const GameInfos = ({
                         player.id === targetPlayer.id
                             ? text
                             : "En attente de votre adversaire…";
+                    break;
+
+                case ACTIONS.SELECT_CELL:
+                    $timer = (
+                        <div css={styles.timer}>
+                            <span>{`${timer}`.padStart(2, "0")}</span>
+                        </div>
+                    );
+
+                    if (player.id === targetPlayer.id) {
+                        tips = text;
+                        if (
+                            choices.find(
+                                ([x, y]) =>
+                                    x === activeCell?.x && y === activeCell?.y,
+                            )
+                        ) {
+                            $tools = (
+                                <div css={styles.tools}>
+                                    <Button
+                                        onClick={preventDefault(() =>
+                                            onValidateAction(activeCell),
+                                        )}>
+                                        {"Confirmer mon choix"}
+                                    </Button>
+                                </div>
+                            );
+                        }
+                    } else {
+                        tips = "En attente du choix de votre adversaire…";
+                    }
                     break;
 
                 case ACTIONS.SELECT_CARD:
@@ -222,6 +254,10 @@ const GameInfos = ({
 GameInfos.propTypes = {
     turn: Turn,
     player: Player,
+    activeCell: PropTypes.shape({
+        x: PropTypes.number,
+        y: PropTypes.number,
+    }),
     activeCard: PropTypes.shape({
         tribe: PropTypes.string,
         type: PropTypes.oneOf(Object.values(CARD_TYPES)),

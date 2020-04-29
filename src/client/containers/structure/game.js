@@ -33,6 +33,7 @@ const Game = ({player: rawPlayer}) => {
     const [turn, setTurn] = useState(null);
     const [board, setBoard] = useState([]);
     const [overlays, setOverlays] = useState([]);
+    const [activeCell, setActiveCell] = useState(null);
     const [activeCard, setActiveCard] = useState(null);
     const {socket} = useSocket();
     const styles = usePwops({
@@ -75,6 +76,18 @@ const Game = ({player: rawPlayer}) => {
             setActiveCard({x, y, ...card});
         },
         [activeCard, setActiveCard],
+    );
+
+    const selectActiveCell = useCallback(
+        ({x, y}) => {
+            if (activeCell?.x === x && activeCell?.y === y) {
+                setActiveCell(null);
+                return;
+            }
+
+            setActiveCell({x, y});
+        },
+        [activeCell, setActiveCell],
     );
 
     const sendMovement = useCallback(
@@ -336,6 +349,58 @@ const Game = ({player: rawPlayer}) => {
                     );
                     break;
 
+                case ACTIONS.SELECT_CELL:
+                    $content = (
+                        <Board
+                            player={player}
+                            opponent={opponent}
+                            activeCell={{x: activeCell?.x, y: activeCell?.y}}
+                            overlays={
+                                targetPlayer.id === player.id
+                                    ? choices.map(([x, y]) => ({
+                                          x,
+                                          y,
+                                          overlay: (
+                                              <BoardOverlay
+                                                  isChoice
+                                                  isSelected={
+                                                      activeCell?.x === x &&
+                                                      activeCell?.y === y
+                                                  }
+                                                  onSelect={() =>
+                                                      selectActiveCell({
+                                                          x,
+                                                          y,
+                                                      })
+                                                  }
+                                              />
+                                          ),
+                                      }))
+                                    : []
+                            }
+                            cards={board.map(
+                                ({player: playerId, x, y, card}) => ({
+                                    x,
+                                    y,
+                                    card: (
+                                        <BoardCard
+                                            {...card}
+                                            isOwn={player.id === playerId}
+                                            onSelect={() =>
+                                                selectActiveCard({
+                                                    x,
+                                                    y,
+                                                    ...card,
+                                                })
+                                            }
+                                        />
+                                    ),
+                                }),
+                            )}
+                        />
+                    );
+                    break;
+
                 case ACTIONS.SELECT_CARD:
                     $content = (
                         <Board
@@ -433,6 +498,7 @@ const Game = ({player: rawPlayer}) => {
                         css={styles.gameInfos}
                         turn={turn}
                         player={player}
+                        activeCell={activeCell}
                         activeCard={activeCard}
                         onUseTrump={sendTrumpSelection}
                         onValidateAction={sendActionValue}

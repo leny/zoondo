@@ -111,6 +111,7 @@ export default class Game {
 
         // resolve action
         switch (action.type) {
+            case ACTIONS.SELECT_CELL:
             case ACTIONS.SELECT_CARD:
             case ACTIONS.MOVE_CARD:
                 this.turn.phase = "action";
@@ -267,7 +268,7 @@ export default class Game {
                 this.players[this.turn.activePlayer].name
             }** active son atout **${name}** (_${text}_).`,
         );
-        resolver(this, () => {
+        resolver(this, {source: {card, player: this.turn.activePlayer}}, () => {
             this._sendState();
             this.resolveStack();
         });

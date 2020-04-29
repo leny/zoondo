@@ -11,5 +11,6 @@ export const BOARD_COL_SIZE = 6;
 
 export const ACTIONS = {
     SELECT_CARD: "select-card",
+    SELECT_CELL: "select-cell",
     MOVE_CARD: "move-card",
 };
