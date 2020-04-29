@@ -40,5 +40,9 @@ export default io => {
                 game.resolveAction(params),
             ),
         );
+        socket.on(
+            "trump",
+            forwardToGame(server, socket, (game, params) => game.trump(params)),
+        );
     });
 };

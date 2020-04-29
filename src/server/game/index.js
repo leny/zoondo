@@ -248,6 +248,32 @@ export default class Game {
         this.turn.action.next && this.turn.action.next(value);
     }
 
+    trump(card) {
+        const {name, resolver, text} = resolveCard(card);
+
+        if (!resolver) {
+            console.warn(`Power Action: no resolver for ${name}!`);
+            this._sendMessage(
+                `L'atout **${name}** n'est pas encore implémenté. Le tour est terminé.`,
+            );
+            this.resolveStack();
+            return;
+        }
+
+        console.group(`${name} trump resolver`);
+        console.log({text});
+        this._sendMessage(
+            `**Atout** - **${
+                this.players[this.turn.activePlayer].name
+            }** active son atout **${name}** (_${text}_).`,
+        );
+        resolver(this, () => {
+            this._sendState();
+            this.resolveStack();
+        });
+        console.groupEnd();
+    }
+
     fight(player, cornerIndex) {
         if (
             this.turn.phase !== "combat" ||
