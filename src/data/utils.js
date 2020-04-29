@@ -11,14 +11,14 @@ import tribes from "data/tribes";
 export const resolveTribe = tribe => tribes.get(tribe);
 
 export const resolveCard = card => {
-    const {tribe, type} = card;
+    const {tribe, type, originalType} = card;
     const [rawSlug] = card.slug.split("|");
     const [slug, variant] = rawSlug.split(":");
 
     const tribeData = tribes.get(tribe);
 
     const cardData = {
-        ...tribeData[type][slug],
+        ...tribeData[type !== "obstacles" ? type : originalType][slug],
         slug,
         tribe: tribeData.name,
     };
@@ -53,6 +53,7 @@ export const resolveType = type =>
         ELITE: "Élite",
         SOLDIER: "Soldat",
         EMBLEM: "Emblème",
+        OBSTACLE: "Obstacle",
         SHOOTING: "Atout de tir",
         PROTECTION: "Atout de protection",
         COMBAT: "Atout de combat",

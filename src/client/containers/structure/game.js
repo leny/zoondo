@@ -157,6 +157,10 @@ const Game = ({player: rawPlayer}) => {
                             );
 
                             if (cardAtPosition) {
+                                if (cardAtPosition.player === "OBSTACLE") {
+                                    return false;
+                                }
+
                                 if (
                                     isMoveCardAction &&
                                     turn.action.options.onlyFreeCells
