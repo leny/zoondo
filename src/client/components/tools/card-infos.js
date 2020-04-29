@@ -66,12 +66,31 @@ const CardInfos = ({className, card}) => {
                 <span>
                     <strong>{data.name}</strong>
                     {NBSP}
-                    {`(${resolveType(data.type)}, ${data.tribe})`}
+                    {`(${resolveType(
+                        card.type === "obstacles" ? "OBSTACLE" : data.type,
+                    )}, ${data.tribe})`}
                 </span>
             </>
         );
 
-        if (card.type === "trumps") {
+        if (card.type === "obstacles") {
+            $content = (
+                <>
+                    <div css={styles.params}>
+                        <figure css={styles.illustration}>
+                            <img
+                                css={styles.image}
+                                src={`/assets/tribes/${card.tribe}/${data.slug}.png`}
+                                alt={data.name}
+                            />
+                        </figure>
+                    </div>
+                    <div css={styles.details}>
+                        {"Un obstacle est fixe et ne peut être attaqué."}
+                    </div>
+                </>
+            );
+        } else if (card.type === "trumps") {
             let $usableBy, $usageCount, $corners, $target;
 
             if (data.usableBy) {

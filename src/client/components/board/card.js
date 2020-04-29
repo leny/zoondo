@@ -9,10 +9,10 @@
 import React, {useMemo, useState} from "react";
 import PropTypes from "prop-types";
 
-import {px, rotateX, deg, rem, important} from "@pwops/core";
+import {px, rotateX, deg, rem, important, percent} from "@pwops/core";
 import {usePwops} from "@pwops/react-hooks";
 import {noop, preventDefault} from "utils";
-import {CELL_SIZE} from "core/constants";
+import {CELL_SIZE, BORDER_COLOR} from "core/constants";
 import {resolveCard, resolveType} from "data/utils";
 
 import cardBack from "assets/game/card-back-board.png";
@@ -25,6 +25,7 @@ const BoardCard = ({
     className,
     tribe,
     type,
+    originalType,
     slug,
     isFaceUp = false,
     isOwn = false,
@@ -40,6 +41,9 @@ const BoardCard = ({
             display: "block",
             flexColumn: ["space-around", "center"],
             textDecoration: "none",
+        },
+        obstacle: {
+            flexColumn: ["space-between", "center"],
         },
         selectedContainer: {
             borderColor: important("orange"),
@@ -71,6 +75,14 @@ const BoardCard = ({
             fontSize: rem(1.4),
             color: "white",
         },
+        obstacleName: {
+            width: percent(100),
+            padding: [rem(0.25), 0],
+            background: BORDER_COLOR,
+            color: "black",
+            textAlign: "center",
+            borderRadius: [px(3), px(3), 0, 0],
+        },
         image: {
             display: "block",
             size: px(CELL_SIZE / 2),
@@ -83,6 +95,14 @@ const BoardCard = ({
             color: "white",
             textTransform: "uppercase",
         },
+        obstacleType: {
+            width: percent(100),
+            padding: [rem(0.25), 0],
+            background: BORDER_COLOR,
+            color: "black",
+            textAlign: "center",
+            borderRadius: [0, 0, px(3), px(3)],
+        },
         corners: {
             absolute: [CELL_SIZE * 0.05, null, null, CELL_SIZE * 0.05],
             size: [CELL_SIZE * 0.9, CELL_SIZE * 0.9],
@@ -90,12 +110,50 @@ const BoardCard = ({
         },
     });
 
+    if (type === "obstacles") {
+        const card = useMemo(
+            () =>
+                resolveCard({
+                    type: originalType,
+                    tribe,
+                    slug,
+                }),
+            [tribe, originalType, slug],
+        );
+
+        return (
+            <span
+                className={className}
+                css={[
+                    styles.container,
+                    styles.obstacle,
+                    isSelected && styles.selectedContainer,
+                ]}>
+                <strong css={[styles.name, styles.obstacleName]}>
+                    {card.name}
+                </strong>
+                <img
+                    css={styles.image}
+                    src={`/assets/tribes/${tribe}/${card.slug}.png`}
+                    alt={card.name}
+                />
+                <span css={[styles.type, styles.obstacleType]}>
+                    {"Obstacle"}
+                </span>
+            </span>
+        );
+    }
+
     if (isOwn || isFaceUp) {
-        const card = useMemo(() => resolveCard({type, tribe, slug}), [
-            tribe,
-            type,
-            slug,
-        ]);
+        const card = useMemo(
+            () =>
+                resolveCard({
+                    type,
+                    tribe,
+                    slug,
+                }),
+            [tribe, type, slug],
+        );
 
         let $content = (
             <>
@@ -175,7 +233,8 @@ const BoardCard = ({
 };
 
 BoardCard.propTypes = {
-    type: PropTypes.oneOf(["fighters", "trumps"]),
+    type: PropTypes.oneOf(["fighters", "trumps", "obstacles"]),
+    originalType: PropTypes.string,
     tribe: PropTypes.string.isRequired,
     slug: PropTypes.string,
     onClick: PropTypes.func,

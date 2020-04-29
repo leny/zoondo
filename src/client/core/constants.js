@@ -37,4 +37,5 @@ export const FIGHTER_TYPES = [
 export const CARD_TYPES = {
     FIGHTER: "fighters",
     TRUMP: "trumps",
+    OBSTACLE: "obstacles",
 };
