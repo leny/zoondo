@@ -9,6 +9,7 @@
 import cloboulonResolver from "./resolvers/boarix/cloboulon";
 import goldHureResolver from "./resolvers/boarix/gold-hure";
 import bouclefeuilleResolver from "./resolvers/boarix/bouclefeuille";
+import murDArbresResolver from "./resolvers/boarix/mur-darbres";
 
 export default {
     slug: "europa-boarix",
@@ -120,7 +121,7 @@ export default {
     trumps: {
         "pluie-de-menhirs": {
             slug: "pluie-de-menhirs",
-            name: "Pluie de menhirs",
+            name: "Pluie de Menhirs",
             type: "SHOOTING",
             usage: "ONCE",
             corners: [6, 4, 0, 2],
@@ -129,16 +130,17 @@ export default {
         },
         "mur-darbres": {
             slug: "mur-darbres",
-            name: "Mur d'arbres",
+            name: "Mur d'Arbres",
             type: "PROTECTION",
             usage: "ONCE",
             text:
                 "Place le Mur d'Arbres sur une case libre du champ de bataille. Cette case devient un Obstacle jusqu'à la fin de la partie.",
             value: 2,
+            resolver: murDArbresResolver,
         },
         "cage-de-racines": {
             slug: "cage-de-racines",
-            name: "Cage de racines",
+            name: "Cage de Racines",
             type: "PROTECTION",
             usableBy: ["PRIEST"],
             usage: "ONCE",
