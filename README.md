@@ -85,7 +85,7 @@ Pour couper le serveur de Zoondo en fin de partie, il vous suffit de faire `CTRL
 	  - [x] Pouvoir
 - [ ] Atouts
 - [ ] Renforts 
-- [ ] Obstacles
+- [x] Obstacles
 - [ ] Conditions de victoire
     - [x] Élimination de l'emblème
     - [ ] _Gamelock_
