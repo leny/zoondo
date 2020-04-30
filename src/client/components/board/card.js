@@ -6,7 +6,7 @@
  * started at 03/04/2020
  */
 
-import React, {useMemo, useState} from "react";
+import React, {useState} from "react";
 import PropTypes from "prop-types";
 
 import {px, rotateX, deg, rem, important, percent} from "@pwops/core";
@@ -28,6 +28,7 @@ const BoardCard = ({
     originalType,
     slug,
     isFaceUp = false,
+    bottomCard,
     isOwn = false,
     isSelected = false,
     onSelect = noop,
@@ -111,15 +112,21 @@ const BoardCard = ({
     });
 
     if (type === "obstacles") {
-        const card = useMemo(
-            () =>
-                resolveCard({
-                    type: originalType,
-                    tribe,
-                    slug,
-                }),
-            [tribe, originalType, slug],
-        );
+        const card = resolveCard({
+            type: originalType,
+            tribe,
+            slug,
+        });
+        let $onTopOfCard;
+
+        if (bottomCard) {
+            $onTopOfCard = (
+                <>
+                    <br />
+                    {`(${resolveCard(bottomCard).name})`}
+                </>
+            );
+        }
 
         return (
             <span
@@ -131,6 +138,7 @@ const BoardCard = ({
                 ]}>
                 <strong css={[styles.name, styles.obstacleName]}>
                     {card.name}
+                    {$onTopOfCard}
                 </strong>
                 <img
                     css={styles.image}
@@ -145,16 +153,11 @@ const BoardCard = ({
     }
 
     if (isOwn || isFaceUp) {
-        const card = useMemo(
-            () =>
-                resolveCard({
-                    type,
-                    tribe,
-                    slug,
-                }),
-            [tribe, type, slug],
-        );
-
+        const card = resolveCard({
+            type,
+            tribe,
+            slug,
+        });
         let $content = (
             <>
                 <strong css={styles.name}>{card.name}</strong>
@@ -237,6 +240,7 @@ BoardCard.propTypes = {
     originalType: PropTypes.string,
     tribe: PropTypes.string.isRequired,
     slug: PropTypes.string,
+    bottomCard: PropTypes.object,
     onClick: PropTypes.func,
     onDragStart: PropTypes.func,
     isOwn: PropTypes.bool,
