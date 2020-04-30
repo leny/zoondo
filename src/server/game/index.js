@@ -630,6 +630,7 @@ export default class Game {
                         player,
                         x,
                         y,
+                        bottomCard,
                         card: {tribe, type, originalType, slug},
                     }) => ({
                         player,
@@ -637,7 +638,7 @@ export default class Game {
                         y,
                         card:
                             player === id || player === "OBSTACLE"
-                                ? {tribe, type, originalType, slug}
+                                ? {tribe, type, originalType, slug, bottomCard}
                                 : {tribe},
                     }),
                 ),
