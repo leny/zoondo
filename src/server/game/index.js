@@ -562,6 +562,37 @@ export default class Game {
         this.graveyard.push(deadCard);
     }
 
+    _checkTrumpCaster({player, card}) {
+        const trump = resolveCard(card);
+
+        if (!trump.usableBy) {
+            return true;
+        }
+
+        return this.board.reduce((check, cell) => {
+            if (check) {
+                return check;
+            }
+
+            if (player !== cell.player) {
+                return false;
+            }
+
+            const {type} = resolveCard(cell.card);
+
+            return trump.usableBy.includes(type);
+        }, false);
+    }
+
+    _removeTrumpFromHand({player, card: {tribe, slug}}) {
+        const index = this.players[player].trumps.findIndex(
+            trump => trump.tribe === tribe && trump.slug === slug,
+        );
+        const [trump] = this.players[player].trumps.splice(index, 1);
+
+        this.graveyard.push(trump);
+    }
+
     _sendMessage(message) {
         sendSystemMessage(this.server.to(this.room), message);
     }
