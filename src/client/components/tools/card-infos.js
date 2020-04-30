@@ -20,7 +20,7 @@ import Box from "components/commons/box";
 
 const CardInfos = ({className, card}) => {
     const data = useMemo(() => {
-        if (!card) {
+        if (!card || !(card.slug || card.type)) {
             return null;
         }
 
