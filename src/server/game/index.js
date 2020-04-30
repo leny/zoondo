@@ -263,15 +263,26 @@ export default class Game {
 
         console.group(`${name} trump resolver`);
         console.log({text});
-        this._sendMessage(
-            `**Atout** - **${
-                this.players[this.turn.activePlayer].name
-            }** active son atout **${name}** (_${text}_).`,
+        const check = resolver(
+            this,
+            {source: {card, player: this.turn.activePlayer}},
+            () => {
+                this._sendState();
+                this.resolveStack();
+            },
         );
-        resolver(this, {source: {card, player: this.turn.activePlayer}}, () => {
-            this._sendState();
-            this.resolveStack();
-        });
+        // check will be strict false if requirement aren't meets
+        if (check === false) {
+            this._sendMessageToActivePlayer(
+                `**Atout** - Vous ne pouvez activer l'atout **${name}**, faute de cible ou de lanceur valide.`,
+            );
+        } else {
+            this._sendMessage(
+                `**Atout** - **${
+                    this.players[this.turn.activePlayer].name
+                }** active son atout **${name}** (_${text}_).`,
+            );
+        }
         console.groupEnd();
     }
 
