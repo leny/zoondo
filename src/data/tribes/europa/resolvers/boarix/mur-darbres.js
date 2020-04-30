@@ -14,9 +14,9 @@ import {ACTIONS, BOARD_ROW_SIZE, BOARD_COL_SIZE} from "data/constants";
 export default (game, {source}, next) => {
     const choices = [];
 
-    Array.from(new Array(BOARD_ROW_SIZE).keys()).forEach(x =>
-        Array.from(new Array(BOARD_COL_SIZE).keys()).forEach(
-            y => !game._getCardAtPosition({x, y}) && choices.push([x, y]),
+    Array.from(new Array(BOARD_COL_SIZE).keys()).forEach(x =>
+        Array.from(new Array(BOARD_ROW_SIZE).keys()).forEach(
+            y => !game._getCardAtPosition({x, y}) && choices.push({x, y}),
         ),
     );
 

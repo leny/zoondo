@@ -357,7 +357,7 @@ const Game = ({player: rawPlayer}) => {
                             activeCell={{x: activeCell?.x, y: activeCell?.y}}
                             overlays={
                                 targetPlayer.id === player.id
-                                    ? choices.map(([x, y]) => ({
+                                    ? choices.map(({x, y}) => ({
                                           x,
                                           y,
                                           overlay: (

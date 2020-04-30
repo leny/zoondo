@@ -111,7 +111,7 @@ const GameInfos = ({
                         tips = text;
                         if (
                             choices.find(
-                                ([x, y]) =>
+                                ({x, y}) =>
                                     x === activeCell?.x && y === activeCell?.y,
                             )
                         ) {
