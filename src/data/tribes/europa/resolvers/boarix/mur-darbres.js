@@ -7,6 +7,7 @@
  */
 
 import {ACTIONS, BOARD_ROW_SIZE, BOARD_COL_SIZE} from "data/constants";
+import {resolveCard} from "data/utils";
 
 // Place le Mur d'Arbres sur une case libre du champ de bataille.
 // Cette case devient un Obstacle jusqu'à la fin de la partie.
@@ -39,12 +40,12 @@ export default (game, {source}, next) => {
                     originalType: source.card.type,
                 },
             });
-            const index = game.players[source.player].trumps.findIndex(
-                ({tribe, slug}) =>
-                    source.card.tribe === tribe && source.card.slug === slug,
+            game._sendMessage(
+                `**Atout** - **${game.players[source.player].name}** place **${
+                    resolveCard(source.card).name
+                }** en _${[x, y].join(",")}_.`,
             );
-            const [trump] = game.players[source.player].trumps.splice(index, 1);
-            game.graveyard.push(trump);
+            game._removeTrumpFromHand(source);
             next();
         },
     });
