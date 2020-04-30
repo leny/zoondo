@@ -10,6 +10,7 @@ import cloboulonResolver from "./resolvers/boarix/cloboulon";
 import goldHureResolver from "./resolvers/boarix/gold-hure";
 import bouclefeuilleResolver from "./resolvers/boarix/bouclefeuille";
 import murDArbresResolver from "./resolvers/boarix/mur-darbres";
+import cageDeRacinesResolver from "./resolvers/boarix/cage-de-racines";
 
 export default {
     slug: "europa-boarix",
@@ -147,6 +148,7 @@ export default {
             text:
                 "Place la Cage de racines sur un Zoon ennemi situé dans ta zone de déploiement. Il devient un Obstacle sans déplacement jusqu'à la fin de la partie.",
             value: 3,
+            resolver: cageDeRacinesResolver,
         },
     },
     composition: {
