@@ -206,16 +206,28 @@ export default class Game {
         if (isCombat) {
             // perform combat
             this.turn.phase = "combat";
+            const attacker = cloneDeep(this._getCardAtPosition(card));
+            const defender = cloneDeep(this._getCardAtPosition(destination));
             this.turn.combat = {
                 step: "choice",
                 attacker: {
-                    ...cloneDeep(this._getCardAtPosition(card)),
+                    ...attacker,
                     role: "attacker",
                     move,
+                    corners:
+                        this.turn?.action?.options?.corners &&
+                        this.turn?.action?.options?.player === attacker.player
+                            ? this.turn.action.options.corners
+                            : null,
                 },
                 defender: {
-                    ...cloneDeep(this._getCardAtPosition(destination)),
+                    ...defender,
                     role: "defender",
+                    corners:
+                        this.turn?.action?.options?.corners &&
+                        this.turn?.action?.options?.player === defender.player
+                            ? this.turn.action.options.corners
+                            : null,
                 },
             };
             this._sendMessage("**Combat** - lancement d'un combat.");
@@ -318,9 +330,19 @@ export default class Game {
                     Math.round(Math.random())
                 ];
                 this.turn.combat[side].cornerIndex = corner;
-                this.turn.combat[side].value = resolveCard(
-                    this.turn.combat[side].card,
-                ).corners[corner];
+
+                // apply action-related corners modifiers
+                let corners = resolveCard(this.turn.combat[side].card).corners;
+
+                if (this.turn.combat[side].corners) {
+                    if (Array.isArray(this.turn.combat[side].corners)) {
+                        corners = this.turn.combat[side].corners;
+                    } else {
+                        corners = corners.map(this.turn.combat[side].corners);
+                    }
+                }
+
+                this.turn.combat[side].value = corners[corner];
             }
         });
 
@@ -677,10 +699,38 @@ export default class Game {
             if (state.turn.phase === "combat") {
                 if (["choice", "wait"].includes(state.turn.combat.step)) {
                     ["attacker", "defender"].forEach(side => {
-                        if (state.turn.combat[side].player !== id) {
+                        if (state.turn.combat[side].player === id) {
+                            if (state.turn.combat[side].corners) {
+                                if (
+                                    !Array.isArray(
+                                        state.turn.combat[side].corners,
+                                    )
+                                ) {
+                                    state.turn.combat[
+                                        side
+                                    ].corners = resolveCard(
+                                        state.turn.combat[side].card,
+                                    ).corners.map(
+                                        state.turn.combat[side].corners,
+                                    );
+                                }
+                            }
+                        } else {
                             state.turn.combat[side].card = {
                                 tribe: state.turn.combat[side].card.tribe,
                             };
+                        }
+                    });
+                } else if (state.turn.combat.step === "resolve") {
+                    ["attacker", "defender"].forEach(side => {
+                        if (state.turn.combat[side].corners) {
+                            if (
+                                !Array.isArray(state.turn.combat[side].corners)
+                            ) {
+                                state.turn.combat[side].corners = resolveCard(
+                                    state.turn.combat[side].card,
+                                ).corners.map(state.turn.combat[side].corners);
+                            }
                         }
                     });
                 }
