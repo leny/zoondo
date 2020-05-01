@@ -7,6 +7,7 @@
  */
 
 import berserkorseResolver from "./resolvers/warus/berserkorse";
+import conqueDeChargeResolver from "./resolvers/warus/conque-de-charge";
 
 export default {
     slug: "europa-warus",
@@ -113,6 +114,7 @@ export default {
             usage: "ONCE",
             text: "Déplace jusqu'à trois de tes Zoons, l'un après l'autre.",
             value: 3,
+            resolver: conqueDeChargeResolver,
         },
     },
     composition: {
