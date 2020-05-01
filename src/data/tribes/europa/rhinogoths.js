@@ -10,6 +10,7 @@ import ouistitiResolver from "./resolvers/rhinogoths/ouistiti";
 import triceRatopsResolver from "./resolvers/rhinogoths/trice-ratops";
 import furieResolver from "./resolvers/rhinogoths/furie";
 import binomeDeChocResolver from "./resolvers/rhinogoths/binome-de-choc";
+import poudreDEscampetteResolver from "./resolvers/rhinogoths/poudre-descampette";
 
 export default {
     slug: "europa-rhinogoths",
@@ -157,6 +158,7 @@ export default {
             text:
                 "Recule jusqu'à trois de tes Zoons, chacun sur une case adjacente libre de la rangée située derrière lui.",
             value: 3,
+            resolver: poudreDEscampetteResolver,
         },
     },
     composition: {
