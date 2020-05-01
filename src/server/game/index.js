@@ -236,17 +236,33 @@ export default class Game {
                 )}_ à _${[destination.x, destination.y].join(",")}_`,
             );
 
+            if (
+                this.turn.action?.type === ACTIONS.MOVE_CARD &&
+                this.turn.action.next
+            ) {
+                this.turn.action.next({card, destination}, false, this);
+            }
             this.resolveStack();
         }
     }
 
-    resolveAction({type, value}) {
+    resolveAction({type, value, discard}) {
         if (type !== this.turn.action.type) {
             // cheating
             throw new Error("WTF");
             // TODO: handle this
         }
-        this.turn.action.next && this.turn.action.next(value);
+        if (discard && this.turn.action.options.discardable) {
+            if (this.turn.action.next) {
+                this.turn.action.next({}, true, this);
+                this._sendState();
+                this.resolveStack();
+                return;
+            }
+            this.resolveStack();
+            return;
+        }
+        this.turn.action.next && this.turn.action.next(value, false, this);
     }
 
     trump(card) {
@@ -309,6 +325,7 @@ export default class Game {
         });
 
         // resolve combat
+
         if (
             ["attacker", "defender"].every(
                 side => this.turn.combat[side].value != null,
@@ -323,9 +340,10 @@ export default class Game {
 
             if (attackerValue === defenderValue) {
                 const [
-                    ,
+                    attackerPosition,
                     attackerDestination,
                 ] = this._solveAttackerPositionAfterDraw(attacker);
+                attacker = {...attacker, ...attackerPosition};
 
                 this._sendMessage(
                     `**Combat** - le combat se solde par une égalité.${attackerDestination}`,
@@ -404,6 +422,7 @@ export default class Game {
                     x: defender.x,
                     y: defender.y,
                 });
+                attacker = {...attacker, x: defender.x, y: defender.y};
             } else {
                 // defender wins
                 this._sendMessage(
@@ -420,6 +439,17 @@ export default class Game {
             }
 
             this._sendState();
+
+            if (
+                this.turn.action?.type === ACTIONS.MOVE_CARD &&
+                this.turn.action.next
+            ) {
+                this.turn.action.next(
+                    {card: attacker, destination: attacker},
+                    false,
+                    this,
+                );
+            }
 
             setTimeout(() => this.resolveStack(), 5000);
         }
