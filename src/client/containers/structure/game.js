@@ -109,6 +109,12 @@ const Game = ({player: rawPlayer}) => {
         [activeCard],
     );
 
+    const sendDiscardAction = useCallback(() => {
+        const {type} = turn.action;
+
+        socket.emit("action", {type, discard: true});
+    }, [turn]);
+
     const sendActionValue = useCallback(
         value => {
             const {type} = turn.action;
@@ -501,6 +507,7 @@ const Game = ({player: rawPlayer}) => {
                         activeCell={activeCell}
                         activeCard={activeCard}
                         onUseTrump={sendTrumpSelection}
+                        onDiscardAction={sendDiscardAction}
                         onValidateAction={sendActionValue}
                     />
 

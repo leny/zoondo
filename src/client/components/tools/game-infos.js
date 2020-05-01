@@ -30,6 +30,7 @@ const GameInfos = ({
     player,
     activeCard,
     activeCell,
+    onDiscardAction = noop,
     onValidateAction = noop,
     onUseTrump = noop,
 }) => {
@@ -81,10 +82,24 @@ const GameInfos = ({
         case "action": {
             const {
                 type,
-                options: {player: targetPlayer, source, text, choices},
+                options: {
+                    player: targetPlayer,
+                    source,
+                    text,
+                    choices,
+                    discardable,
+                },
             } = turn.action;
             const card = resolveCard(source.card);
-            let $timer, $tools, tips;
+            let $timer, $tools, $discard, tips;
+
+            if (player.id === targetPlayer.id && discardable) {
+                $discard = (
+                    <Button onClick={preventDefault(onDiscardAction)}>
+                        {"Passer cette action"}
+                    </Button>
+                );
+            }
 
             switch (type) {
                 case ACTIONS.MOVE_CARD:
@@ -93,6 +108,10 @@ const GameInfos = ({
                             <span>{`${timer}`.padStart(2, "0")}</span>
                         </div>
                     );
+
+                    if (discardable) {
+                        $tools = <div css={styles.tools}>{$discard}</div>;
+                    }
 
                     tips =
                         player.id === targetPlayer.id
@@ -117,6 +136,7 @@ const GameInfos = ({
                         ) {
                             $tools = (
                                 <div css={styles.tools}>
+                                    {$discard}
                                     <Button
                                         onClick={preventDefault(() =>
                                             onValidateAction(activeCell),
@@ -149,6 +169,7 @@ const GameInfos = ({
                         ) {
                             $tools = (
                                 <div css={styles.tools}>
+                                    {$discard}
                                     <Button
                                         onClick={preventDefault(() =>
                                             onValidateAction(activeCard),
@@ -263,6 +284,7 @@ GameInfos.propTypes = {
         type: PropTypes.oneOf(Object.values(CARD_TYPES)),
         slug: PropTypes.string,
     }),
+    onDiscardAction: PropTypes.func,
     onValidateAction: PropTypes.func,
     onUseTrump: PropTypes.func,
 };
