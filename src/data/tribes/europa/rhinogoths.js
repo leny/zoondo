@@ -8,6 +8,7 @@
 
 import ouistitiResolver from "./resolvers/rhinogoths/ouistiti";
 import triceRatopsResolver from "./resolvers/rhinogoths/trice-ratops";
+import furieResolver from "./resolvers/rhinogoths/furie";
 
 export default {
     slug: "europa-rhinogoths",
@@ -135,6 +136,7 @@ export default {
             usage: "ONCE",
             text: "Déplace un de tes Soldats. Il double son score de touche.",
             value: 1,
+            resolver: furieResolver,
         },
         "binome-de-choc": {
             slug: "binome-de-choc",
