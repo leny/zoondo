@@ -9,6 +9,7 @@
 import ouistitiResolver from "./resolvers/rhinogoths/ouistiti";
 import triceRatopsResolver from "./resolvers/rhinogoths/trice-ratops";
 import furieResolver from "./resolvers/rhinogoths/furie";
+import binomeDeChocResolver from "./resolvers/rhinogoths/binome-de-choc";
 
 export default {
     slug: "europa-rhinogoths",
@@ -146,6 +147,7 @@ export default {
             text:
                 "Déplace jusqu'à deux de tes Élites ou Monstres, l'un après l'autre.",
             value: 2,
+            resolver: binomeDeChocResolver,
         },
         "poudre-descampette": {
             slug: "poudre-descampette",

@@ -19,7 +19,7 @@ export default (game, {source}, next) => {
             player: source.player,
             source,
             choices: game.board.filter(({player}) => player === source.player),
-            text: "Premier mouvement: veuillez déplacer un Zoon.",
+            text: "Premier mouvement : veuillez déplacer un Zoon.",
             discardable: true,
         },
         next: ({destination: firstDestination}, discard, game) =>
@@ -38,7 +38,7 @@ export default (game, {source}, next) => {
                                   )
                                 : true),
                     ),
-                    text: "Second mouvement: veuillez déplacer un Zoon.",
+                    text: "Second mouvement : veuillez déplacer un Zoon.",
                     discardable: true,
                 },
                 next: ({destination: secondDestination}, discard, game) =>
@@ -68,7 +68,7 @@ export default (game, {source}, next) => {
                                         : true),
                             ),
                             text:
-                                "Troisième mouvement: veuillez déplacer un Zoon.",
+                                "Troisième mouvement : veuillez déplacer un Zoon.",
                             discardable: true,
                         },
                     }),

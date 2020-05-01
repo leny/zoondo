@@ -30,6 +30,7 @@ export default (game, {source}, next) => {
             choices,
             text: "Veuillez déplacer un soldat. Il double son score de touche.",
             corners: value => value * 2,
+            discardable: true,
         },
     });
 
