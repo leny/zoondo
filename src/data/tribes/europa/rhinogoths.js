@@ -8,6 +8,7 @@
 
 import ouistitiResolver from "./resolvers/rhinogoths/ouistiti";
 import triceRatopsResolver from "./resolvers/rhinogoths/trice-ratops";
+import bigothResolver from "./resolvers/rhinogoths/bigoth";
 import furieResolver from "./resolvers/rhinogoths/furie";
 import binomeDeChocResolver from "./resolvers/rhinogoths/binome-de-choc";
 import poudreDEscampetteResolver from "./resolvers/rhinogoths/poudre-descampette";
@@ -58,6 +59,7 @@ export default {
             corners: [2, 6, "*", 0],
             power:
                 "Le combat se solde par une égalité. Tu recules un de tes Zoons sur une case libre adjacente de la rangée située derrière lui.",
+            resolver: bigothResolver,
             value: 15,
             moves: [
                 [
