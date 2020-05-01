@@ -20,6 +20,7 @@ const BoardCombatCardFaceUp = ({
     tribe,
     type,
     slug,
+    corners,
     selectedCornerIndex,
 }) => {
     const styles = usePwops({
@@ -51,6 +52,8 @@ const BoardCombatCardFaceUp = ({
         slug,
     ]);
 
+    const resolvedCorners = corners || card.corners;
+
     return (
         <div css={styles.container} className={className}>
             <strong css={styles.name}>{card.name}</strong>
@@ -58,7 +61,7 @@ const BoardCombatCardFaceUp = ({
                 css={styles.corners}
                 selectedCornerIndex={selectedCornerIndex}
                 forCombat
-                corners={card.corners}
+                corners={resolvedCorners}
             />
             <img
                 css={styles.image}
@@ -74,6 +77,7 @@ BoardCombatCardFaceUp.propTypes = {
     tribe: PropTypes.string,
     type: PropTypes.string,
     slug: PropTypes.string,
+    corners: PropTypes.arrayOf(PropTypes.number),
     selectedCornerIndex: PropTypes.number,
 };
 

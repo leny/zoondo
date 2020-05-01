@@ -73,7 +73,10 @@ const BoardCombat = ({
             $content = (
                 <div css={styles.ring}>
                     {attacker.player === player.id ? (
-                        <CardFaceUp {...attacker.card} />
+                        <CardFaceUp
+                            {...attacker.card}
+                            corners={attacker.corners}
+                        />
                     ) : (
                         <CardFaceDown
                             isAltColor={player.isFirstPlayer}
@@ -86,7 +89,10 @@ const BoardCombat = ({
                     )}
                     <span css={styles.vs}>{"VS"}</span>
                     {defender.player === player.id ? (
-                        <CardFaceUp {...defender.card} />
+                        <CardFaceUp
+                            {...defender.card}
+                            corners={defender.corners}
+                        />
                     ) : (
                         <CardFaceDown
                             isAltColor={player.isFirstPlayer}
@@ -164,11 +170,13 @@ const BoardCombat = ({
                     <div css={styles.ring}>
                         <CardFaceUp
                             {...attacker.card}
+                            corners={attacker.corners}
                             selectedCornerIndex={attacker.cornerIndex}
                         />
                         <span css={styles.vs}>{"VS"}</span>
                         <CardFaceUp
                             {...defender.card}
+                            corners={defender.corners}
                             selectedCornerIndex={defender.cornerIndex}
                         />
                     </div>
