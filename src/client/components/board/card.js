@@ -75,6 +75,7 @@ const BoardCard = ({
             margin: [0, "auto"],
             fontSize: rem(1.4),
             color: "white",
+            textAlign: "center",
         },
         obstacleName: {
             width: percent(100),
