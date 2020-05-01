@@ -84,7 +84,7 @@ Pour couper le serveur de Zoondo en fin de partie, il vous suffit de faire `CTRL
 	  - [x] Victoire/défaite
 	  - [x] Pouvoir
 - [ ] Atouts
-- [ ] Renforts 
+- [ ] Renforts
 - [x] Obstacles
 - [ ] Conditions de victoire
     - [x] Élimination de l'emblème
@@ -96,7 +96,7 @@ Pour couper le serveur de Zoondo en fin de partie, il vous suffit de faire `CTRL
 	- [ ] Boarix - Tribu de Cloboulon
 	- [ ] Warus - Tribu de Harold de Jarl
 	- [ ] Monkus - Tribu de King Louis
-	- [ ] Rhinogoths - Tribu de Goolgoth I
+	- [x] Rhinogoths - Tribu de Goolgoth I
 - [ ] Gandzoreille
 	- [ ] Zools - Tribu de Mama Zool
 	- [ ] Zyons - Tribu de Jadu
