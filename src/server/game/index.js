@@ -268,8 +268,6 @@ export default class Game {
             if (this.turn.action.next) {
                 this.turn.action.next({}, true, this);
                 this._sendState();
-                this.resolveStack();
-                return;
             }
             this.resolveStack();
             return;
