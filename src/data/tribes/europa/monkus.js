@@ -8,6 +8,7 @@
 
 import kingLouisResolver from "./resolvers/monkus/king-louis";
 import komboBongoResolver from "./resolvers/monkus/kombo-bongo";
+import tortueResolver from "./resolvers/monkus/tortue";
 
 export default {
     slug: "europa-monkus",
@@ -150,6 +151,7 @@ export default {
             text:
                 "Déplace jusqu'à deux de tes Soldats, l'un après l'autre. Ils ajoutent un point à leurs scores de touche.",
             value: 1,
+            resolver: tortueResolver,
         },
         "coco-boum": {
             slug: "coco-boum",
