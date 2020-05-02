@@ -9,6 +9,7 @@
 import cloboulonResolver from "./resolvers/boarix/cloboulon";
 import goldHureResolver from "./resolvers/boarix/gold-hure";
 import bouclefeuilleResolver from "./resolvers/boarix/bouclefeuille";
+import pluieDeMenhirs from "./resolvers/boarix/pluie-de-menhirs";
 import murDArbresResolver from "./resolvers/boarix/mur-darbres";
 import cageDeRacinesResolver from "./resolvers/boarix/cage-de-racines";
 
@@ -128,6 +129,7 @@ export default {
             corners: [6, 4, 0, 2],
             text: "Vise un Zoon ennemi situé dans ton camp.",
             value: 1,
+            resolver: pluieDeMenhirs,
         },
         "mur-darbres": {
             slug: "mur-darbres",
