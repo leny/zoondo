@@ -9,7 +9,7 @@
 /* eslint-disable no-console */
 
 import {sendSystemMessage} from "core/socket";
-import {resolveMoves, resolveCard, resolveTribe} from "data/utils";
+import {resolveMoves, resolveCard, resolveTribe, resolveType} from "data/utils";
 import cloneDeep from "lodash.clonedeep";
 import {ACTIONS} from "data/constants";
 
@@ -276,7 +276,7 @@ export default class Game {
     }
 
     trump(card) {
-        const {name, resolver, text} = resolveCard(card);
+        const {name, resolver, text, type} = resolveCard(card);
 
         if (!resolver) {
             console.warn(`Power Action: no resolver for ${name}!`);
@@ -306,7 +306,9 @@ export default class Game {
             this._sendMessage(
                 `**Atout** - **${
                     this.players[this.turn.activePlayer].name
-                }** active son atout **${name}** (_${text}_).`,
+                }** active son atout **${name}** (_${
+                    text || resolveType(type)
+                }_).`,
             );
         }
         console.groupEnd();
