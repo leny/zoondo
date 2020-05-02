@@ -48,7 +48,7 @@ export default (game, {source}, next) => {
             source,
             choices,
             text:
-                "Veuillez choisir un Zoon ennemie dans votre zone de déploiement.",
+                "Veuillez choisir un Zoon ennemi dans votre zone de déploiement.",
         },
         next: choice => {
             if (!choices.find(({x, y}) => choice.x === x && choice.y === y)) {
