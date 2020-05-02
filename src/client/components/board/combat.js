@@ -216,8 +216,9 @@ BoardCombat.propTypes = {
     step: PropTypes.string.isRequired,
     player: Player,
     attacker: PropTypes.shape({
-        x: PropTypes.number,
-        y: PropTypes.number,
+        x: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        y: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        isTrump: PropTypes.bool,
         player: PropTypes.string,
         card: PropTypes.shape({
             tribe: PropTypes.string,
