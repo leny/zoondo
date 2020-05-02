@@ -8,6 +8,7 @@
 
 import berserkorseResolver from "./resolvers/warus/berserkorse";
 import hacheVirevoltanteResolver from "./resolvers/warus/hache-virevoltante";
+import flechePetardResolver from "./resolvers/warus/fleche-petard";
 import conqueDeChargeResolver from "./resolvers/warus/conque-de-charge";
 
 export default {
@@ -108,6 +109,7 @@ export default {
             corners: [3, 4, 0, "X"],
             target: [[[0, 2, true]]],
             value: 2,
+            resolver: flechePetardResolver,
         },
         "conque-de-charge": {
             slug: "conque-de-charge",
