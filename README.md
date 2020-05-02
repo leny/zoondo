@@ -83,7 +83,7 @@ Pour couper le serveur de Zoondo en fin de partie, il vous suffit de faire `CTRL
 	  - [x] Égalité
 	  - [x] Victoire/défaite
 	  - [x] Pouvoir
-- [ ] Atouts
+- [x] Atouts
 - [ ] Renforts
 - [x] Obstacles
 - [ ] Conditions de victoire
@@ -139,4 +139,26 @@ Pour couper le serveur de Zoondo en fin de partie, il vous suffit de faire `CTRL
 
 ## Roadmap
 
-La roadmap est gêrée sous la forme d'un [GitHub Project](https://github.com/leny/zoondo/projects/1).
+> 🤘 **NOTE: ** cette roadmap n'engage personne. 🙃
+
+- [ ] Implémentation du chat entre joueurs
+- [ ] Implémentation du _gamelock_ (condition de victoire)
+- [ ] Réflexion sur le design et l'ergonomie
+- [ ] Mise en ligne version beta 1
+- [ ] Bloc *Gandzoreille*
+- [ ] Construction de Tribu
+- [ ] Bloc *UZA*
+- [ ] Mise en ligne version beta 2
+- [ ] Match-making ciblé
+- [ ] Réflexion sur l'IA joueur
+- [ ] Bloc *Ziatic*
+- [ ] Bloc *Straly*
+- [ ] Mise en ligne version beta 3
+- [ ] Bloc *Gandent*
+- [ ] Bloc *Donuts*
+- [ ] Mise en ligne version beta 4
+- [ ] Réflexion sur une version Electron
+- [ ] Bloc *Europa, le retour*
+- [ ] Règles additionnelles _Bôplatô_
+- [ ] Mise en ligne version beta 5
+- [ ] Mise en ligne version finale
