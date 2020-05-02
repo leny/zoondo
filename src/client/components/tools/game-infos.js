@@ -191,7 +191,11 @@ const GameInfos = ({
                 <>
                     <div css={styles.powerSource}>
                         <span>
-                            {"Pouvoir :"}
+                            {`${
+                                source.card.type === "trumps"
+                                    ? "Atout"
+                                    : "Pouvoir"
+                            } :`}
                             {NBSP}
                             <strong>{card.name}</strong>
                         </span>
