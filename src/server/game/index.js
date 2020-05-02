@@ -735,6 +735,40 @@ export default class Game {
         this.graveyard.push(trump);
     }
 
+    _getValidCastersForShootingTrump(trump, resolver) {
+        return this.board.filter(({x, y, player, card}) => {
+            if (player !== trump.player) {
+                return false;
+            }
+
+            const caster = resolveCard(card);
+            if (!resolver(caster)) {
+                return false;
+            }
+
+            const targets = this._getValidTargetsFromShootingTrumpCaster(
+                trump,
+                {x, y},
+            );
+
+            return targets.length > 0;
+        });
+    }
+
+    _getValidTargetsFromShootingTrumpCaster(trump, caster) {
+        return resolveMoves(
+            caster,
+            resolveCard(trump.card).target,
+            !this.players[trump.player].isFirstPlayer,
+        )
+            .flat()
+            .map(([x, y]) => this._getCardAtPosition({x, y}))
+            .filter(
+                card =>
+                    card && ![trump.player, "OBSTACLE"].includes(card.player),
+            );
+    }
+
     _sendMessage(message) {
         sendSystemMessage(this.server.to(this.room), message);
     }

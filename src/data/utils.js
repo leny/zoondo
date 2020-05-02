@@ -59,3 +59,6 @@ export const resolveType = type =>
         COMBAT: "Atout de combat",
         TACTICAL: "Atout tactique",
     }[type]);
+
+export const resolveTrumpUsableBy = trump => ({type}) =>
+    resolveCard(trump).usableBy.includes(type);
