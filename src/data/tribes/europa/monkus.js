@@ -9,6 +9,7 @@
 import kingLouisResolver from "./resolvers/monkus/king-louis";
 import komboBongoResolver from "./resolvers/monkus/kombo-bongo";
 import tortueResolver from "./resolvers/monkus/tortue";
+import grosseBerthaResolver from "./resolvers/monkus/grosse-bertha";
 
 export default {
     slug: "europa-monkus",
@@ -171,6 +172,7 @@ export default {
             corners: [2, 4, 0, "X"],
             text: "Vise un Zoon ennemi situé dans ton camp.",
             value: 3,
+            resolver: grosseBerthaResolver,
         },
     },
     composition: {
