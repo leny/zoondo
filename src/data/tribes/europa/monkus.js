@@ -9,6 +9,7 @@
 import kingLouisResolver from "./resolvers/monkus/king-louis";
 import komboBongoResolver from "./resolvers/monkus/kombo-bongo";
 import tortueResolver from "./resolvers/monkus/tortue";
+import cocoBoumResolver from "./resolvers/monkus/coco-boum";
 import grosseBerthaResolver from "./resolvers/monkus/grosse-bertha";
 
 export default {
@@ -163,6 +164,7 @@ export default {
             corners: [3, 2, "X", 0],
             target: [[[-1, 1, true]], [[1, 1, true]]],
             value: 2,
+            resolver: cocoBoumResolver,
         },
         "grosse-bertha": {
             slug: "grosse-bertha",
