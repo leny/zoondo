@@ -312,6 +312,31 @@ export default class Game {
         console.groupEnd();
     }
 
+    shoot(trump, target, next) {
+        this.turn.phase = "combat";
+        const {x, y, ...card} = cloneDeep(trump.card);
+        const defender = cloneDeep(target);
+        this.turn.combat = {
+            shooting: true,
+            step: "choice",
+            attacker: {
+                x,
+                y,
+                card,
+                player: trump.player,
+                role: "attacker",
+                isTrump: true,
+            },
+            defender: {
+                ...defender,
+                role: "defender",
+            },
+            next,
+        };
+        this._sendMessage("**Combat** - lancement d'un combat (Atout de Tir).");
+        this._sendState();
+    }
+
     fight(player, cornerIndex) {
         if (
             this.turn.phase !== "combat" ||
@@ -359,16 +384,33 @@ export default class Game {
             this.turn.combat.step = "resolve";
 
             if (attackerValue === defenderValue) {
-                const [
-                    attackerPosition,
-                    attackerDestination,
-                ] = this._solveAttackerPositionAfterDraw(attacker);
-                attacker = {...attacker, ...attackerPosition};
+                let attackerDestination = "";
+                if (!attacker.isTrump) {
+                    const draw = this._solveAttackerPositionAfterDraw(attacker);
+                    if (draw[0]) {
+                        attacker = {...attacker, ...draw[0]};
+                        attackerDestination = draw[1];
+                    }
+                }
 
                 this._sendMessage(
                     `**Combat** - le combat se solde par une égalité.${attackerDestination}`,
                 );
                 this.turn.combat.winner = "draw";
+            } else if (attacker.isTrump && attackerValue === "X") {
+                this._removeTrumpFromHand(attacker);
+                this._sendMessage(
+                    `**Combat** - le _${
+                        resolveCard(defender.card).name
+                    }_ de **${
+                        this.players[defender.player].name
+                    }** détruit l'Atout de tir _${
+                        resolveCard(attacker.card).name
+                    }_ de **${
+                        this.players[attacker.player].name
+                    }** et conserve sa position.`,
+                );
+                this.turn.combat.winner = "defender";
             } else if (attackerValue === "*") {
                 const attackerCard = resolveCard(attacker.card);
                 let message = "";
@@ -397,81 +439,129 @@ export default class Game {
                     target: defender,
                 });
             } else if (defenderValue === "*") {
-                const defenderCard = resolveCard(defender.card);
-                let message = "";
+                if (attacker.isTrump) {
+                    this._sendMessage(
+                        `**Combat** - lors d'un combat déclenché par un Atout de Tir, si un coin "★" du défenseur est touché, le pouvoir ne se déclenche pas et le combat se solde par une égalité.`,
+                    );
+                    this.turn.combat.winner = "draw";
+                } else {
+                    const defenderCard = resolveCard(defender.card);
+                    let message = "";
 
-                if (!defenderCard.resolver?.skipDraw) {
-                    const draw = this._solveAttackerPositionAfterDraw(attacker);
+                    if (!defenderCard.resolver?.skipDraw) {
+                        const draw = this._solveAttackerPositionAfterDraw(
+                            attacker,
+                        );
 
-                    if (draw[0]) {
-                        attacker = {...attacker, ...draw[0]};
-                        message = draw[1];
+                        if (draw[0]) {
+                            attacker = {...attacker, ...draw[0]};
+                            message = draw[1];
+                        }
                     }
-                }
 
-                this._sendMessage(
-                    `**Combat** - le _${defenderCard.name}_ de **${
-                        this.players[defender.player].name
-                    }** active son pouvoir (_${
-                        resolveCard(defender.card).power
-                    }_).${message}`,
-                );
-                this.turn.combat.winner = "power";
-                this.turn.combat.powerOwner = "defender";
-                this.stack.push({
-                    type: "power",
-                    source: defender,
-                    target: attacker,
-                });
+                    this._sendMessage(
+                        `**Combat** - le _${defenderCard.name}_ de **${
+                            this.players[defender.player].name
+                        }** active son pouvoir (_${
+                            resolveCard(defender.card).power
+                        }_).${message}`,
+                    );
+                    this.turn.combat.winner = "power";
+                    this.turn.combat.powerOwner = "defender";
+                    this.stack.push({
+                        type: "power",
+                        source: defender,
+                        target: attacker,
+                    });
+                }
             } else if (attackerValue > defenderValue) {
                 // attacker wins
-                this._sendMessage(
-                    `**Combat** - le _${
-                        resolveCard(attacker.card).name
-                    }_ de **${
-                        this.players[attacker.player].name
-                    }** élimine le _${resolveCard(defender.card).name}_ de **${
-                        this.players[defender.player].name
-                    }** et prend sa place en _${[defender.x, defender.y].join(
-                        ",",
-                    )}_.`,
-                );
+                if (attacker.isTrump) {
+                    this._sendMessage(
+                        `**Combat** - le tir de l'Atout _${
+                            resolveCard(attacker.card).name
+                        }_ de **${
+                            this.players[attacker.player].name
+                        }** élimine le _${
+                            resolveCard(defender.card).name
+                        }_ de **${this.players[defender.player].name}**.`,
+                    );
+                } else {
+                    this._sendMessage(
+                        `**Combat** - le _${
+                            resolveCard(attacker.card).name
+                        }_ de **${
+                            this.players[attacker.player].name
+                        }** élimine le _${
+                            resolveCard(defender.card).name
+                        }_ de **${
+                            this.players[defender.player].name
+                        }** et prend sa place en _${[
+                            defender.x,
+                            defender.y,
+                        ].join(",")}_.`,
+                    );
+                }
                 this.turn.combat.winner = "attacker";
                 this._eliminateCardAtPosition(defender);
-                this._updateCardOnBoard(attacker, {
-                    x: defender.x,
-                    y: defender.y,
-                });
-                attacker = {...attacker, x: defender.x, y: defender.y};
+                if (!attacker.isTrump) {
+                    this._updateCardOnBoard(attacker, {
+                        x: defender.x,
+                        y: defender.y,
+                    });
+                    attacker = {...attacker, x: defender.x, y: defender.y};
+                }
             } else {
                 // defender wins
-                this._sendMessage(
-                    `**Combat** - le _${
-                        resolveCard(defender.card).name
-                    }_ de **${
-                        this.players[defender.player].name
-                    }** élimine le _${resolveCard(attacker.card).name}_ de **${
-                        this.players[attacker.player].name
-                    }** et conserve sa position.`,
-                );
+                if (attacker.isTrump) {
+                    this._sendMessage(
+                        `**Combat** - le _${
+                            resolveCard(defender.card).name
+                        }_ de **${
+                            this.players[defender.player].name
+                        }** esquive le tir de l'Atout _${
+                            resolveCard(attacker.card).name
+                        }_ de **${
+                            this.players[attacker.player].name
+                        }** et conserve sa position.`,
+                    );
+                } else {
+                    this._sendMessage(
+                        `**Combat** - le _${
+                            resolveCard(defender.card).name
+                        }_ de **${
+                            this.players[defender.player].name
+                        }** élimine le _${
+                            resolveCard(attacker.card).name
+                        }_ de **${
+                            this.players[attacker.player].name
+                        }** et conserve sa position.`,
+                    );
+                }
                 this.turn.combat.winner = "defender";
-                this._eliminateCardAtPosition(attacker);
+                if (!attacker.isTrump) {
+                    this._eliminateCardAtPosition(attacker);
+                }
             }
 
             this._sendState();
 
-            if (
-                this.turn.action?.type === ACTIONS.MOVE_CARD &&
-                this.turn.action.next
-            ) {
-                this.turn.action.next(
-                    {card: attacker, destination: attacker},
-                    false,
-                    this,
-                );
-            }
-
-            setTimeout(() => this.resolveStack(), 5000);
+            setTimeout(() => {
+                if (
+                    this.turn.action?.type === ACTIONS.MOVE_CARD &&
+                    this.turn.action.next
+                ) {
+                    this.turn.action.next(
+                        {card: attacker, destination: attacker},
+                        false,
+                        this,
+                    );
+                } else if (this.turn.combat.next) {
+                    this.turn.combat.next(this.turn.combat, this);
+                } else {
+                    this.resolveStack();
+                }
+            }, 5000);
         }
     }
 
