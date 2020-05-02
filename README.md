@@ -92,10 +92,10 @@ Pour couper le serveur de Zoondo en fin de partie, il vous suffit de faire `CTRL
 
 ### Tribus
 
-- [ ] Europa
-	- [ ] Boarix - Tribu de Cloboulon
-	- [ ] Warus - Tribu de Harold de Jarl
-	- [ ] Monkus - Tribu de King Louis
+- [x] Europa
+	- [x] Boarix - Tribu de Cloboulon
+	- [x] Warus - Tribu de Harold de Jarl
+	- [x] Monkus - Tribu de King Louis
 	- [x] Rhinogoths - Tribu de Goolgoth I
 - [ ] Gandzoreille
 	- [ ] Zools - Tribu de Mama Zool
