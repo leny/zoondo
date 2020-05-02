@@ -7,6 +7,7 @@
  */
 
 import berserkorseResolver from "./resolvers/warus/berserkorse";
+import hacheVirevoltanteResolver from "./resolvers/warus/hache-virevoltante";
 import conqueDeChargeResolver from "./resolvers/warus/conque-de-charge";
 
 export default {
@@ -96,6 +97,7 @@ export default {
             corners: [3, 2, "X", 0],
             target: [[[0, 1, true]]],
             value: 1,
+            resolver: hacheVirevoltanteResolver,
         },
         "fleche-petard": {
             slug: "fleche-petard",
