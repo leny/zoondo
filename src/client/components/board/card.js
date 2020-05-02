@@ -188,6 +188,7 @@ const BoardCard = ({
                 $content.push(
                     <CardMoves
                         key={"moves"}
+                        isShooting={!!card.target}
                         moves={card.moves || card.target}
                     />,
                 );
